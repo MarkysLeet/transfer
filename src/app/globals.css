@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold-50: #FCF9F0;
+  --color-gold-100: #F7EFCF;
+  --color-gold-200: #F0DE9E;
+  --color-gold-300: #E8CD6D;
+  --color-gold-400: #D4AF37; /* Primary Gold */
+  --color-gold-500: #B8962E;
+  --color-gold-600: #9C7E26;
+  --color-gold-700: #80661E;
+  --color-gold-800: #665218;
+  --color-gold-900: #4D3D12;
+  --color-gold-950: #292009;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: var(--font-playfair), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+/* Base styles */
+body {
+  @apply font-sans bg-slate-900 text-slate-100 antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-serif;
+}
+
+/* Lenis Scroll */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}

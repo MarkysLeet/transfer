@@ -1,0 +1,31 @@
+{
+  "Hero": {
+    "title": "BLACK DIAMOND GRAND TRANSFER",
+    "subtitle": "Sınır Tanımayan Konfor. Premium Business Class Hizmeti.",
+    "cta": "30 Saniyede Rezervasyon Yapın"
+  },
+  "Features": {
+    "wifi": "Ultra hızlı 5G Wi-Fi",
+    "climate": "Gelişmiş İklim Kontrolü",
+    "childSeat": "Ücretsiz çocuk koltuğu (ISOFIX)",
+    "minibar": "İçecekli mini bar (istek üzerine)",
+    "payment": "Araçta ödeme (Nakit / Kart)",
+    "noHiddenFees": "Sabit fiyat garantisi"
+  },
+  "Destinations": {
+    "title": "Güzergahlar",
+    "tabAirports": "Havalimanları",
+    "tabResorts": "Tatil Köyleri",
+    "tabTours": "Tarihi Turlar",
+    "airportsDesc": "İstanbul — tüm havalimanları, Antalya — 7/24 VIP Karşılama",
+    "resortsDesc": "Belek, Side, Alanya, Kemer, Lara, Kundu, Manavgat, Avsallar, Mahmutlar, Tekirova, Çamyuva, Göynük",
+    "toursDesc": "Demre, Mira, Kaş, Kalkan, Patara, Olympos, Adrasan, Finike, Pamukkale"
+  },
+  "Loyalty": {
+    "title": "Black Diamond Club",
+    "privilege1Title": "Sadakat Bonusu",
+    "privilege1Desc": "Düzenli müşteriler için özel şartlar: Her 5. transferde %10 ayrıcalık.",
+    "privilege2Title": "Arkadaşını Getir",
+    "privilege2Desc": "Misafirleriniz için statü: Bizi tavsiye edin ve arkadaşlarınıza ilk seyahatlerinde %5 ikramda bulunun. Onların her seyahati bir sonraki bonus transferinizi yaklaştırır."
+  }
+}

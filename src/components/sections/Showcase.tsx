@@ -24,14 +24,22 @@ export const Showcase = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="w-full lg:w-1/2 relative h-[300px] md:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl"
+            className="w-full lg:w-1/2 relative h-[350px] md:h-[450px] lg:h-[550px]"
           >
-            <Image
-              src="https://images.unsplash.com/photo-1569388330292-7a6a84165c6c?q=80&w=2070&auto=format&fit=crop" // Interior
-              alt="Mercedes Vito Interior"
-              fill
-              className="object-cover hover:scale-105 transition-transform duration-700"
-            />
+             {/* Decorative Elements */}
+            <div className="absolute inset-0 bg-gold-400/10 blur-3xl rounded-full scale-90 translate-x-10 translate-y-10" />
+            <div className="absolute -inset-4 border border-gold-400/20 rounded-[2.5rem] hidden md:block" />
+
+            <div className="relative h-full w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 z-10">
+              <Image
+                src="https://images.unsplash.com/photo-1569388330292-7a6a84165c6c?q=80&w=2070&auto=format&fit=crop" // Interior
+                alt="Mercedes Vito Interior"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover hover:scale-110 transition-transform duration-[10s] ease-out"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent" />
+            </div>
           </motion.div>
 
           {/* Text Side */}
@@ -42,10 +50,11 @@ export const Showcase = () => {
             transition={{ duration: 0.8 }}
             className="w-full lg:w-1/2"
           >
-            <h2 className="text-3xl md:text-5xl font-bold font-serif mb-6 text-white leading-tight">
-              Mercedes Benz <span className="text-gold-400">Vito</span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-serif mb-6 text-white leading-[1.1] tracking-tight">
+              Mercedes Benz <br className="hidden md:block"/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-600">Vito</span>
             </h2>
-            <p className="text-slate-300 text-lg mb-8 leading-relaxed">
+            <p className="text-slate-400 text-lg md:text-xl mb-10 leading-relaxed font-light">
               Ваш личный кабинет на колесах. Идеальное сочетание стиля, комфорта и безопасности для деловых поездок и семейного отдыха.
             </p>
 

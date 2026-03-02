@@ -2,7 +2,7 @@
   "Hero": {
     "title": "BLACK DIAMOND GRAND TRANSFER",
     "subtitle": "Comfort without borders. Premium business class service.",
-    "cta": "Book in 30 seconds"
+    "cta": "Book"
   },
   "Features": {
     "wifi": "Ultra-fast 5G Wi-Fi",
@@ -27,5 +27,8 @@
     "privilege1Desc": "Special conditions for regular clients: every 5th transfer with a 10% privilege.",
     "privilege2Title": "Arkadaşını Getir",
     "privilege2Desc": "Status for your guests: recommend us and give friends a 5% compliment on their first trip. Each of their trips brings your next bonus transfer closer."
+  },
+  "Navigation": {
+    "contact": "Contact"
   }
 }

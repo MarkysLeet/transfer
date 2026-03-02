@@ -14,61 +14,65 @@ const features = [
 
 export const Showcase = () => {
   return (
-    <section className="py-20 md:py-32 bg-slate-950 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+    <section className="py-20 md:py-32 bg-[#111111] overflow-hidden relative">
+      <div className="container mx-auto px-4 relative">
+        <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-20">
 
           {/* Image Side */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="w-full lg:w-1/2 relative h-[350px] md:h-[450px] lg:h-[550px]"
-          >
+          <div className="w-full lg:w-1/2 relative h-[350px] md:h-[450px] lg:h-auto lg:sticky lg:top-32 flex items-center justify-center">
              {/* Decorative Elements */}
-            <div className="absolute inset-0 bg-gold-400/10 blur-3xl rounded-full scale-90 translate-x-10 translate-y-10" />
-            <div className="absolute -inset-4 border border-gold-400/20 rounded-[2.5rem] hidden md:block" />
+            <div className="absolute inset-0 bg-white/5 blur-3xl rounded-full scale-110" />
 
-            <div className="relative h-full w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 z-10">
+            <div className="relative w-full aspect-[4/3] z-10 flex items-center justify-center">
               <Image
-                src="https://images.unsplash.com/photo-1569388330292-7a6a84165c6c?q=80&w=2070&auto=format&fit=crop" // Interior
-                alt="Mercedes Vito Interior"
+                src="https://res.cloudinary.com/dcnwhciua/image/upload/v1772476361/Mercedes_V-Class_Mercedes-Benz_Viano_Mercedes-Benz_Vito_Mercedes-Benz_S-Class_Minivan_PNG-removebg-preview_jmtgkz.png"
+                alt="Mercedes Vito"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover hover:scale-110 transition-transform duration-[10s] ease-out"
+                className="object-contain drop-shadow-2xl"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent" />
             </div>
-          </motion.div>
+          </div>
 
           {/* Text Side */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="w-full lg:w-1/2"
-          >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-serif mb-6 text-white leading-[1.1] tracking-tight">
-              Mercedes Benz <br className="hidden md:block"/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-600">Vito</span>
-            </h2>
-            <p className="text-slate-400 text-lg md:text-xl mb-10 leading-relaxed font-light">
+          <div className="w-full lg:w-1/2 lg:py-20">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white leading-[1.1] tracking-wider uppercase"
+            >
+              Mercedes Benz <br className="hidden md:block"/> Vito
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="text-slate-400 text-lg md:text-xl mb-12 leading-relaxed font-light"
+            >
               Ваш личный кабинет на колесах. Идеальное сочетание стиля, комфорта и безопасности для деловых поездок и семейного отдыха.
-            </p>
+            </motion.p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-6">
               {features.map((feature, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full bg-gold-400/20 flex items-center justify-center flex-shrink-0">
-                    <Check size={14} className="text-gold-400" />
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.1 * index }}
+                  className="flex items-center gap-4"
+                >
+                  <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                    <Check size={16} className="text-white" />
                   </div>
-                  <span className="text-slate-200">{feature}</span>
-                </div>
+                  <span className="text-slate-200 text-lg">{feature}</span>
+                </motion.div>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

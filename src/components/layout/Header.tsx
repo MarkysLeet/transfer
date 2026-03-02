@@ -6,7 +6,7 @@ import { Phone, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { usePathname, useRouter } from "@/i18n/routing";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
@@ -21,6 +21,7 @@ export const Header = () => {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations("Navigation");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,23 +62,23 @@ export const Header = () => {
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent",
-          scrolled ? "bg-slate-900/80 backdrop-blur-md border-white/10 py-4" : "bg-transparent py-6"
+          scrolled ? "bg-[#0F172A]/80 backdrop-blur-md border-white/10 py-4" : "bg-transparent py-6"
         )}
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/" className="text-xl md:text-2xl font-bold tracking-wider text-white font-serif z-50 relative">
-            TURKEY VIP <span className="text-gold-400">TRANSFER</span>
+          <Link href="/" className="text-xl md:text-2xl font-bold tracking-widest text-white z-50 relative uppercase">
+            TURKEY VIP <span className="text-white/70">TRANSFER</span>
           </Link>
           <div className="hidden md:flex items-center gap-6">
             <LanguageSwitcher />
             <Button variant="primary" size="sm" className="flex gap-2" onClick={() => window.open('https://wa.me/905550000000', '_blank')}>
               <Phone size={18} />
-              <span>Связаться</span>
+              <span>{t("contact")}</span>
             </Button>
           </div>
           <button
             onClick={toggleMenu}
-            className="md:hidden text-white z-50 relative p-2 focus:outline-none focus:ring-2 focus:ring-gold-400 rounded-md"
+            className="md:hidden text-white z-50 relative p-2 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-md"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -92,7 +93,7 @@ export const Header = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-xl flex flex-col justify-center items-center overflow-hidden"
+            className="fixed inset-0 z-40 bg-[#0F172A]/95 backdrop-blur-xl flex flex-col justify-center items-center overflow-hidden"
           >
              <nav className="flex flex-col items-center gap-8 mb-16">
               {links.map((link, idx) => (
@@ -105,7 +106,7 @@ export const Header = () => {
                   <Link
                     href={link.href}
                     onClick={closeMenu}
-                    className="text-3xl font-serif text-white hover:text-gold-400 transition-colors tracking-wide"
+                    className="text-3xl font-semibold text-white hover:text-white/70 transition-colors tracking-wider"
                   >
                     {link.label}
                   </Link>
@@ -124,7 +125,7 @@ export const Header = () => {
                   key={l}
                   onClick={() => switchLocale(l)}
                   className={`text-xl uppercase tracking-widest transition-colors ${
-                    l === locale ? "text-gold-400 font-bold border-b-2 border-gold-400 pb-1" : "text-slate-400 hover:text-white"
+                    l === locale ? "text-white font-bold border-b-2 border-white pb-1" : "text-slate-400 hover:text-white"
                   }`}
                 >
                   {l}

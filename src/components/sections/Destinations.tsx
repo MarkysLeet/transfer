@@ -50,30 +50,33 @@ export const Destinations = () => {
           {destinations.map((dest, index) => (
              <motion.div
                key={index}
-               initial={{ opacity: 0, scale: 0.9 }}
-               whileInView={{ opacity: 1, scale: 1 }}
+               initial={{ opacity: 0, y: 30 }}
+               whileInView={{ opacity: 1, y: 0 }}
                viewport={{ once: true }}
-               transition={{ duration: 0.5, delay: index * 0.1 }}
-               className="min-w-[280px] md:min-w-0 flex-shrink-0 snap-center rounded-2xl overflow-hidden bg-slate-800 shadow-lg group relative"
+               transition={{ duration: 0.6, delay: index * 0.1 }}
+               className="min-w-[280px] md:min-w-0 flex-shrink-0 snap-center rounded-3xl overflow-hidden bg-white/[0.02] border border-white/5 shadow-2xl group relative backdrop-blur-sm hover:border-gold-400/30 transition-colors duration-500 flex flex-col h-full"
              >
-               <div className="relative h-64 overflow-hidden">
+               <div className="relative h-64 md:h-72 overflow-hidden rounded-t-3xl">
                  <Image
                    src={dest.image}
                    alt={dest.title}
                    fill
-                   className="object-cover group-hover:scale-110 transition-transform duration-700"
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                   className="object-cover group-hover:scale-110 transition-transform duration-[8s] ease-out"
                  />
-                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-80" />
-                 <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="text-xl font-bold text-white mb-1">{dest.title}</h3>
-                    <p className="text-gold-400 font-medium">{dest.price}</p>
+                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-500" />
+                 <div className="absolute bottom-6 left-6 right-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                    <h3 className="text-xl md:text-2xl font-bold text-white mb-2 leading-tight drop-shadow-md">{dest.title}</h3>
+                    <div className="inline-block px-3 py-1 rounded-full bg-gold-400/20 backdrop-blur-md border border-gold-400/30">
+                       <p className="text-gold-400 font-semibold text-sm">{dest.price}</p>
+                    </div>
                  </div>
                </div>
 
-               <div className="p-4">
-                  <Button variant="outline" size="sm" className="w-full justify-between group-hover:bg-gold-400 group-hover:text-slate-900" onClick={() => window.open(`https://wa.me/905550000000?text=Здравствуйте, меня интересует трансфер ${dest.title}`, '_blank')}>
-                    <span>Заказать</span>
-                    <ArrowRight size={16} />
+               <div className="p-6 mt-auto">
+                  <Button variant="outline" size="sm" className="w-full justify-between group-hover:bg-gold-400 group-hover:text-slate-950 transition-all duration-300" onClick={() => window.open(`https://wa.me/905550000000?text=Здравствуйте, меня интересует трансфер ${dest.title}`, '_blank')}>
+                    <span className="font-semibold tracking-wide">Заказать</span>
+                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                   </Button>
                </div>
              </motion.div>

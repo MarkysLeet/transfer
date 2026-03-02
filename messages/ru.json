@@ -1,0 +1,33 @@
+{
+  "Hero": {
+    "title": "BLACK DIAMOND GRAND TRANSFER",
+    "subtitle": "Комфорт без границ. Премиальный сервис бизнес-класса.",
+    "cta": "Забронировать за 30 секунд",
+    "whatsapp_message": "Здравствуйте, я хотел бы забронировать VIP трансфер"
+  },
+  "Features": {
+    "title": "Оснащение и Сервис",
+    "wifi": "Ультраскоростной 5G Wi-Fi",
+    "climate": "Продвинутый климат-контроль",
+    "child_seat": "Бесплатное детское кресло (ISOFIX)",
+    "minibar": "Мини-бар с прохладительными напитками (по запросу / extra)",
+    "payment": "Оплата в авто (Наличные / Карта)",
+    "no_hidden_fees": "Никаких скрытых комиссий (Гарантия фиксированной цены)"
+  },
+  "Destinations": {
+    "title": "Маршруты",
+    "tab_airports": "Аэропорты",
+    "tab_resorts": "Курорты",
+    "tab_tours": "Исторические туры",
+    "airports_desc": "Стамбул — все аэропорты, Анталья — 7/24 VIP встреча.",
+    "resorts_desc": "Belek, Side, Alanya, Kemer, Lara, Kundu, Manavgat, Avsallar, Mahmutlar, Tekirova, Çamyuva, Göynük",
+    "tours_desc": "Demre, Mira, Kaş, Kalkan, Patara, Olympos, Adrasan, Finike, Pamukkale"
+  },
+  "Club": {
+    "title": "Black Diamond Club",
+    "privilege_1_title": "Бонус лояльности",
+    "privilege_1_desc": "Особые условия для постоянных клиентов: каждый 5-й трансфер с привилегией 10%.",
+    "privilege_2_title": "Приведи друга",
+    "privilege_2_desc": "Статус для ваших гостей: рекомендуйте нас и дарите друзьям комплимент 5% на первую поездку. Каждая их поездка приближает ваш следующий бонусный трансфер."
+  }
+}

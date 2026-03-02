@@ -1,0 +1,33 @@
+{
+  "Hero": {
+    "title": "BLACK DIAMOND GRAND TRANSFER",
+    "subtitle": "Comfort without borders. Premium business class service.",
+    "cta": "Book in 30 seconds",
+    "whatsapp_message": "Hello, I would like to book a VIP transfer"
+  },
+  "Features": {
+    "title": "Equipment and Service",
+    "wifi": "Ultra-fast 5G Wi-Fi",
+    "climate": "Advanced climate control",
+    "child_seat": "Free child seat (ISOFIX)",
+    "minibar": "Minibar with refreshments (on request / extra)",
+    "payment": "In-car payment (Cash / Card)",
+    "no_hidden_fees": "No hidden fees (Fixed price guarantee)"
+  },
+  "Destinations": {
+    "title": "Routes",
+    "tab_airports": "Airports",
+    "tab_resorts": "Resorts",
+    "tab_tours": "Historical Tours",
+    "airports_desc": "Istanbul — all airports, Antalya — 7/24 VIP meet & greet.",
+    "resorts_desc": "Belek, Side, Alanya, Kemer, Lara, Kundu, Manavgat, Avsallar, Mahmutlar, Tekirova, Çamyuva, Göynük",
+    "tours_desc": "Demre, Mira, Kaş, Kalkan, Patara, Olympos, Adrasan, Finike, Pamukkale"
+  },
+  "Club": {
+    "title": "Black Diamond Club",
+    "privilege_1_title": "Loyalty Bonus",
+    "privilege_1_desc": "Special conditions for regular clients: every 5th transfer comes with a 10% privilege.",
+    "privilege_2_title": "Bring a Friend",
+    "privilege_2_desc": "Status for your guests: recommend us and gift your friends a 5% compliment on their first trip. Every trip they make brings your next bonus transfer closer."
+  }
+}

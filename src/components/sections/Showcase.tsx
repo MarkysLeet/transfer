@@ -1,72 +1,72 @@
 "use client";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { Check } from "lucide-react";
-
-const features = [
-  "Вместимость до 7 пассажиров",
-  "Кожаный салон класса люкс",
-  "Раздельный климат-контроль",
-  "Wi-Fi и зарядки для устройств",
-  "Детские кресла (по запросу)",
-  "Вода для каждого пассажира",
-];
+import { useTranslations } from "next-intl";
+import { Crown, Sparkles } from "lucide-react";
 
 export const Showcase = () => {
+  const t = useTranslations("Club");
+
   return (
-    <section className="py-20 md:py-32 bg-slate-950 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+    <section className="py-20 md:py-32 bg-slate-950 relative overflow-hidden">
+      {/* Decorative Background */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-gold-500/5 blur-[120px] pointer-events-none" />
 
-          {/* Image Side */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-16">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="w-full lg:w-1/2 relative h-[350px] md:h-[450px] lg:h-[550px]"
+            transition={{ duration: 0.6 }}
+            className="text-3xl md:text-5xl font-bold font-serif mb-4 text-white tracking-wide"
           >
-             {/* Decorative Elements */}
-            <div className="absolute inset-0 bg-gold-400/10 blur-3xl rounded-full scale-90 translate-x-10 translate-y-10" />
-            <div className="absolute -inset-4 border border-gold-400/20 rounded-[2.5rem] hidden md:block" />
+            {t("title")}
+          </motion.h2>
+          <div className="h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent w-48 mx-auto opacity-50" />
+        </div>
 
-            <div className="relative h-full w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 z-10">
-              <Image
-                src="https://images.unsplash.com/photo-1569388330292-7a6a84165c6c?q=80&w=2070&auto=format&fit=crop" // Interior
-                alt="Mercedes Vito Interior"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover hover:scale-110 transition-transform duration-[10s] ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {/* Privilege 1 */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="p-8 md:p-12 rounded-[2rem] bg-gradient-to-b from-white/[0.04] to-transparent border border-white/10 hover:border-gold-400/30 transition-colors duration-500 group relative overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gold-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <div className="w-16 h-16 rounded-full bg-gold-400/10 flex items-center justify-center mb-6 text-gold-400 ring-1 ring-gold-400/30">
+                <Crown size={32} />
+              </div>
+              <h3 className="text-2xl font-serif font-semibold text-white mb-4 group-hover:text-gold-400 transition-colors">
+                {t("privilege_1_title")}
+              </h3>
+              <p className="text-slate-400 leading-relaxed font-light text-lg">
+                {t("privilege_1_desc")}
+              </p>
             </div>
           </motion.div>
 
-          {/* Text Side */}
+          {/* Privilege 2 */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="w-full lg:w-1/2"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="p-8 md:p-12 rounded-[2rem] bg-gradient-to-b from-white/[0.04] to-transparent border border-white/10 hover:border-gold-400/30 transition-colors duration-500 group relative overflow-hidden"
           >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-serif mb-6 text-white leading-[1.1] tracking-tight">
-              Mercedes Benz <br className="hidden md:block"/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-600">Vito</span>
-            </h2>
-            <p className="text-slate-400 text-lg md:text-xl mb-10 leading-relaxed font-light">
-              Ваш личный кабинет на колесах. Идеальное сочетание стиля, комфорта и безопасности для деловых поездок и семейного отдыха.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {features.map((feature, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full bg-gold-400/20 flex items-center justify-center flex-shrink-0">
-                    <Check size={14} className="text-gold-400" />
-                  </div>
-                  <span className="text-slate-200">{feature}</span>
-                </div>
-              ))}
+            <div className="absolute inset-0 bg-gold-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <div className="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mb-6 text-slate-300 ring-1 ring-slate-600 group-hover:ring-gold-400/30 group-hover:text-gold-400 transition-all">
+                <Sparkles size={32} />
+              </div>
+              <h3 className="text-2xl font-serif font-semibold text-white mb-4 group-hover:text-gold-400 transition-colors">
+                {t("privilege_2_title")}
+              </h3>
+              <p className="text-slate-400 leading-relaxed font-light text-lg">
+                {t("privilege_2_desc")}
+              </p>
             </div>
           </motion.div>
         </div>

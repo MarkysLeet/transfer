@@ -3,8 +3,12 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { MessageCircle } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export const Hero = () => {
+  const t = useTranslations("Hero");
+  const whatsappUrl = `https://wa.me/905550000000?text=${encodeURIComponent(t("whatsapp_message"))}`;
+
   return (
     <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -21,24 +25,14 @@ export const Hero = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center mt-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8"
-        >
-          <span className="w-2 h-2 rounded-full bg-gold-400 animate-pulse" />
-          <span className="text-sm font-medium text-slate-200 tracking-wider uppercase">Premium Service</span>
-        </motion.div>
-
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold font-serif mb-6 leading-[1.1] text-white tracking-tight"
+          className="text-5xl md:text-6xl lg:text-8xl font-bold font-serif mb-6 leading-[1.1] text-white tracking-tight"
         >
-          Ваш премиальный <br className="hidden md:block" />
-          трансфер <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-500">в Турции</span>
+          <span className="font-bold">BLACK</span> DIAMOND <br className="hidden md:block" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-500 text-4xl md:text-5xl lg:text-7xl">GRAND TRANSFER</span>
         </motion.h1>
 
         <motion.p
@@ -47,7 +41,7 @@ export const Hero = () => {
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           className="text-lg md:text-xl text-slate-300 mb-10 max-w-2xl mx-auto font-light leading-relaxed"
         >
-          Комфорт бизнес-класса на новом Mercedes Vito. Встреча в аэропорту, поездки по городам и экскурсии.
+          {t("subtitle")}
         </motion.p>
 
         <motion.div
@@ -59,10 +53,10 @@ export const Hero = () => {
           <Button
             size="lg"
             className="group"
-            onClick={() => window.open('https://wa.me/905550000000', '_blank')}
+            onClick={() => window.open(whatsappUrl, '_blank')}
           >
             <MessageCircle className="mr-2 w-5 h-5 group-hover:scale-110 transition-transform" />
-            Рассчитать стоимость
+            {t("cta")}
           </Button>
         </motion.div>
       </div>

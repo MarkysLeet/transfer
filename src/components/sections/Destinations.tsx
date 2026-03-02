@@ -29,7 +29,7 @@ export const Destinations = () => {
   ];
 
   return (
-    <section id="destinations" className="py-20 md:py-32 bg-slate-900 overflow-hidden">
+    <section id="destinations" className="py-20 md:py-32 bg-[#0F172A] overflow-hidden">
       <div className="container mx-auto px-4 max-w-5xl">
         <div className="text-center mb-16">
           <motion.h2
@@ -37,28 +37,28 @@ export const Destinations = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold font-serif mb-6 text-white tracking-tight"
+            className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-wider"
           >
             {t("title")}
           </motion.h2>
-          <div className="h-1 bg-gold-400 w-24 rounded-full mx-auto" />
+          <div className="h-1 bg-white/20 w-24 rounded-full mx-auto" />
         </div>
 
         {/* Tabs Navigation */}
         <div className="flex flex-col md:flex-row justify-center items-center gap-2 mb-12">
-          <div className="flex overflow-x-auto w-full md:w-auto p-1 rounded-full bg-slate-950/50 border border-white/5 scrollbar-hide snap-x">
+          <div className="flex overflow-x-auto w-full md:w-auto p-1 rounded-full bg-[#111111]/50 border border-white/5 scrollbar-hide snap-x">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`relative px-6 md:px-8 py-3 rounded-full text-sm md:text-base font-medium transition-colors whitespace-nowrap snap-center ${
-                  activeTab === tab.id ? "text-slate-950" : "text-slate-400 hover:text-white"
+                  activeTab === tab.id ? "text-white" : "text-slate-400 hover:text-white"
                 }`}
               >
                 {activeTab === tab.id && (
                   <motion.div
                     layoutId="active-tab"
-                    className="absolute inset-0 bg-gradient-to-r from-gold-300 to-gold-500 rounded-full"
+                    className="absolute inset-0 bg-white/10 border border-white/20 rounded-full"
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}

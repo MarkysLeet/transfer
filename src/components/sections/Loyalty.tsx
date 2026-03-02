@@ -20,10 +20,10 @@ export const Loyalty = () => {
   ];
 
   return (
-    <section id="loyalty" className="py-20 md:py-32 bg-slate-950 relative overflow-hidden border-t border-white/5">
-      {/* Dark Gradient / Gold Accents */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold-400/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gold-400/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
+    <section id="loyalty" className="py-20 md:py-32 bg-[#111111] relative overflow-hidden border-t border-white/5">
+      {/* Soft Gradients */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-20">
@@ -32,9 +32,9 @@ export const Loyalty = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-slate-800 to-slate-900 border border-white/10 mb-8 shadow-[0_0_30px_rgba(212,175,55,0.15)]"
+            className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-slate-800 to-slate-900 border border-white/10 mb-8 shadow-xl"
           >
-            <Gem className="w-8 h-8 text-gold-400" />
+            <Gem className="w-8 h-8 text-white" />
           </motion.div>
 
           <motion.h2
@@ -42,11 +42,11 @@ export const Loyalty = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold font-serif mb-6 text-white tracking-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white tracking-wider"
           >
             {t("title")}
           </motion.h2>
-          <div className="h-[2px] bg-gradient-to-r from-transparent via-gold-400/50 to-transparent w-48 mx-auto" />
+          <div className="h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent w-48 mx-auto" />
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -57,17 +57,17 @@ export const Loyalty = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="relative p-8 md:p-12 rounded-3xl bg-slate-900/50 border border-white/5 backdrop-blur-sm group hover:border-gold-400/30 transition-colors duration-500 overflow-hidden"
+              className="relative p-8 md:p-12 rounded-3xl bg-[#0F172A]/50 border border-white/5 backdrop-blur-sm group hover:border-white/20 transition-colors duration-500 overflow-hidden"
             >
               {/* Internal Accent */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gold-600 via-gold-400 to-gold-300 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-white/10 via-white/30 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               <div className="flex flex-col gap-6">
                 <div className="w-12 h-12 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                  <privilege.icon className="w-6 h-6 text-slate-300 group-hover:text-gold-400 transition-colors duration-300" />
+                  <privilege.icon className="w-6 h-6 text-slate-300 group-hover:text-white transition-colors duration-300" />
                 </div>
 
-                <h3 className="text-2xl font-serif text-white tracking-wide group-hover:text-gold-400 transition-colors duration-300">
+                <h3 className="text-2xl font-bold text-white tracking-wide transition-colors duration-300">
                   {privilege.title}
                 </h3>
 

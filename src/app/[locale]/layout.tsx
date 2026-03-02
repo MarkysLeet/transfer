@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter } from "next/font/google";
 import "../../globals.css";
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages, setRequestLocale} from 'next-intl/server';
@@ -13,12 +13,6 @@ import { MobileBottomBar } from "@/components/layout/MobileBottomBar";
 
 const inter = Inter({
   variable: "--font-inter",
-  subsets: ["latin", "cyrillic"],
-  display: "swap",
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
   subsets: ["latin", "cyrillic"],
   display: "swap",
 });
@@ -51,9 +45,9 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={clsx(inter.variable, playfair.variable)}>
+    <html lang={locale} className={clsx(inter.variable)}>
       <body
-        className="antialiased bg-slate-900 text-slate-50 selection:bg-gold-500 selection:text-white"
+        className="antialiased bg-[#0F172A] text-slate-50 selection:bg-gold-500 selection:text-white"
       >
         <NextIntlClientProvider messages={messages}>
           <SmoothScroll>

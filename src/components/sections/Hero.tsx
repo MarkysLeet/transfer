@@ -3,8 +3,11 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { MessageCircle } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export const Hero = () => {
+  const t = useTranslations("Hero");
+
   return (
     <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -35,10 +38,14 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold font-serif mb-6 leading-[1.1] text-white tracking-tight"
+          className="text-4xl md:text-6xl lg:text-7xl font-bold font-serif mb-6 leading-[1.1] text-white tracking-tight"
         >
-          Ваш премиальный <br className="hidden md:block" />
-          трансфер <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-500">в Турции</span>
+          {t('title').split(' ').map((word, index, arr) => {
+             if (index === arr.length - 1) {
+                return <span key={index} className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-gold-500">{word}</span>
+             }
+             return word + ' ';
+          })}
         </motion.h1>
 
         <motion.p
@@ -47,7 +54,7 @@ export const Hero = () => {
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           className="text-lg md:text-xl text-slate-300 mb-10 max-w-2xl mx-auto font-light leading-relaxed"
         >
-          Комфорт бизнес-класса на новом Mercedes Vito. Встреча в аэропорту, поездки по городам и экскурсии.
+          {t('subtitle')}
         </motion.p>
 
         <motion.div
@@ -58,11 +65,11 @@ export const Hero = () => {
         >
           <Button
             size="lg"
-            className="group"
+            className="group bg-gold-500 hover:bg-gold-600 text-slate-900 font-semibold"
             onClick={() => window.open('https://wa.me/905550000000', '_blank')}
           >
             <MessageCircle className="mr-2 w-5 h-5 group-hover:scale-110 transition-transform" />
-            Рассчитать стоимость
+            {t('cta')}
           </Button>
         </motion.div>
       </div>

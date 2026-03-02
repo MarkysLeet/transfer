@@ -23,17 +23,23 @@ export const FeaturesShowcase = () => {
         {/* Left Side: Sticky Image */}
         <div className="w-full lg:w-1/2 lg:sticky lg:top-0 h-[50vh] lg:h-screen flex flex-col justify-center p-8 relative">
           <div className="absolute inset-0 flex items-center justify-center">
-            {/* Subtle glow behind the car */}
-            <div className="absolute w-[80%] h-[80%] bg-white/[0.03] blur-[100px] rounded-full" />
-            <div className="relative w-[90%] lg:w-[120%] max-w-3xl aspect-[16/9] -ml-4 lg:-ml-20">
-              <Image
-                src="https://res.cloudinary.com/dcnwhciua/image/upload/v1772476361/Mercedes_V-Class_Mercedes-Benz_Viano_Mercedes-Benz_Vito_Mercedes-Benz_S-Class_Minivan_PNG-removebg-preview_jmtgkz.png"
-                alt="Mercedes Vito"
-                fill
-                className="object-contain drop-shadow-2xl z-10"
-                sizes="(max-width: 1024px) 100vw, 60vw"
-                priority
-              />
+            {/* Halo glow behind the car */}
+            <div className="absolute w-[80%] h-[60%] bg-[#C5A028]/10 blur-[100px] rounded-full" />
+
+            <div className="relative w-[90%] lg:w-[120%] max-w-3xl aspect-[16/9] -ml-4 lg:-ml-20 flex flex-col items-center justify-center">
+              <div className="relative w-full h-full z-10">
+                <Image
+                  src="https://res.cloudinary.com/dcnwhciua/image/upload/v1772476361/Mercedes_V-Class_Mercedes-Benz_Viano_Mercedes-Benz_Vito_Mercedes-Benz_S-Class_Minivan_PNG-removebg-preview_jmtgkz.png"
+                  alt="Mercedes Vito"
+                  fill
+                  className="object-contain drop-shadow-2xl"
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  priority
+                />
+              </div>
+
+              {/* Grounding soft elliptical shadow */}
+              <div className="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-[80%] h-8 bg-black/80 blur-xl rounded-[100%] z-0" />
             </div>
           </div>
         </div>
@@ -63,10 +69,10 @@ export const FeaturesShowcase = () => {
                    whileInView={{ opacity: 1, y: 0 }}
                    viewport={{ once: true, margin: "-50px" }}
                    transition={{ duration: 0.5, delay: idx * 0.1 }}
-                   className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm hover:border-white/20 hover:bg-white/[0.04] transition-all duration-300 group flex flex-col items-start gap-4"
+                   className="p-6 rounded-2xl bg-white/[0.03] border border-neutral-800/30 backdrop-blur-md shadow-lg shadow-black/10 hover:border-[#C5A028]/30 hover:bg-white/[0.06] transition-all duration-300 group flex flex-col items-start gap-4"
                  >
-                    <div className="p-3 rounded-xl bg-[#0F172A] border border-white/10 group-hover:scale-110 transition-transform duration-300">
-                      <feature.icon className="w-6 h-6 text-white stroke-[1.5]" />
+                    <div className="p-3 rounded-xl bg-black/20 border border-white/5 group-hover:border-[#C5A028]/20 group-hover:scale-110 transition-transform duration-300">
+                      <feature.icon className="w-6 h-6 text-[#C5A028] stroke-[1.5]" />
                     </div>
                     <p className="font-medium text-slate-300 group-hover:text-white transition-colors">
                       {feature.title}

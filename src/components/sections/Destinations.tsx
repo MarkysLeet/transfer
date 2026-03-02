@@ -79,7 +79,7 @@ export const Destinations = () => {
               transition={{ duration: 0.3 }}
               className="absolute inset-0 flex items-start justify-center text-center px-4"
             >
-              <div className="p-8 md:p-12 rounded-3xl bg-white/[0.02] border border-white/5 backdrop-blur-md shadow-2xl max-w-3xl w-full">
+              <div className="p-8 md:p-12 rounded-3xl bg-white/[0.03] border border-neutral-800/30 backdrop-blur-md shadow-2xl shadow-black/20 max-w-3xl w-full transition-all duration-300">
                 <p className="text-lg md:text-xl leading-relaxed text-slate-300 font-light">
                   {contents[activeTab].text}
                 </p>

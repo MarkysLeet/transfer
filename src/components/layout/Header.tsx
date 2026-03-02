@@ -68,8 +68,8 @@ export const Header = () => {
         )}
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/" className="text-xl md:text-2xl font-bold tracking-widest text-white z-50 relative uppercase">
-            TURKEY VIP <span className="text-white/70">TRANSFER</span>
+          <Link href="/" className="text-xl md:text-2xl font-semibold font-inter tracking-widest text-white z-50 relative uppercase">
+            BLACK DIAMOND
           </Link>
           <div className="hidden md:flex items-center gap-6">
             <LanguageSwitcher />

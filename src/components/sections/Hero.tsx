@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { MessageCircle } from "lucide-react";
 import Image from "next/image";
@@ -7,16 +7,23 @@ import { useTranslations } from "next-intl";
 
 export const Hero = () => {
   const t = useTranslations("Hero");
+  const { scrollY } = useScroll();
+
+  // Background moves up slightly slower than the user scrolls down
+  const yBg = useTransform(scrollY, [0, 1000], [0, 300]);
+
+  // Content moves up slightly faster to create depth
+  const yContent = useTransform(scrollY, [0, 1000], [0, -150]);
 
   return (
     <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Background with Subtle Glow/Texture */}
-      <div className="absolute inset-0 z-0 bg-slate-950">
+      <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 bg-slate-950">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_100%)] mix-blend-screen" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-900" />
-      </div>
+      </motion.div>
 
-      <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center mt-16">
+      <motion.div style={{ y: yContent }} className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center mt-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -60,7 +67,7 @@ export const Hero = () => {
             {t('cta')}
           </Button>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };

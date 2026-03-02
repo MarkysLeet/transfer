@@ -51,7 +51,7 @@ export default async function RootLayout({
       >
         {/* Global Abstract Background Layer */}
         <div
-          className="fixed inset-0 z-[-2] bg-[url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-[0.07] blur-[20px] pointer-events-none"
+          className="fixed inset-0 z-[-2] bg-[url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-[0.05] blur-3xl pointer-events-none"
           aria-hidden="true"
         />
         {/* Deep Central Warm Radial Glow */}

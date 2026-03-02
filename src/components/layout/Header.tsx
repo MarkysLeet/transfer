@@ -57,6 +57,8 @@ export const Header = () => {
 
   const locales = ['en', 'ru', 'tr', 'de'];
 
+  const whatsappUrl = `https://wa.me/905550000000?text=${encodeURIComponent(t("whatsappMessage"))}`;
+
   return (
     <>
       <header
@@ -71,7 +73,7 @@ export const Header = () => {
           </Link>
           <div className="hidden md:flex items-center gap-6">
             <LanguageSwitcher />
-            <Button variant="primary" size="sm" className="flex gap-2" onClick={() => window.open('https://wa.me/905550000000', '_blank')}>
+            <Button variant="primary" size="sm" className="flex gap-2" onClick={() => window.open(whatsappUrl, '_blank')}>
               <Phone size={18} />
               <span>{t("contact")}</span>
             </Button>

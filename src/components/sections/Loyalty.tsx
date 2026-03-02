@@ -57,17 +57,17 @@ export const Loyalty = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="relative p-8 md:p-12 rounded-3xl bg-[#0F172A]/50 border border-white/5 backdrop-blur-sm group hover:border-white/20 transition-colors duration-500 overflow-hidden"
+              className="relative p-8 md:p-12 rounded-3xl bg-white/[0.03] border border-neutral-800/30 backdrop-blur-md shadow-2xl shadow-black/20 group hover:border-[#C5A028]/30 hover:bg-white/[0.04] transition-all duration-500 overflow-hidden"
             >
               {/* Internal Accent */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-white/10 via-white/30 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#C5A028]/10 via-[#C5A028]/40 to-[#C5A028]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               <div className="flex flex-col gap-6">
-                <div className="w-12 h-12 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                  <privilege.icon className="w-6 h-6 text-slate-300 group-hover:text-white transition-colors duration-300" />
+                <div className="w-12 h-12 rounded-xl bg-black/20 border border-white/5 group-hover:border-[#C5A028]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <privilege.icon className="w-6 h-6 text-[#C5A028] transition-colors duration-300" />
                 </div>
 
-                <h3 className="text-2xl font-bold text-white tracking-wide transition-colors duration-300">
+                <h3 className="text-2xl font-bold text-white tracking-wide transition-colors duration-300 group-hover:text-[#C5A028]/90">
                   {privilege.title}
                 </h3>
 

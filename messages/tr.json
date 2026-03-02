@@ -29,6 +29,7 @@
     "privilege2Desc": "Misafirleriniz için statü: Bizi tavsiye edin ve arkadaşlarınıza ilk seyahatlerinde %5 ikramda bulunun. Onların her seyahati bir sonraki bonus transferinizi yaklaştırır."
   },
   "Navigation": {
-    "contact": "İletişim"
+    "contact": "İletişim",
+    "whatsappMessage": "Merhaba, VIP transfer rezervasyonu yapmak istiyorum. Güzergah: Antalya Havalimanı - [Otel/Hedef]. Tarih: [Tarih]. Yolcu sayısı: [Kişi sayısı]"
   }
 }

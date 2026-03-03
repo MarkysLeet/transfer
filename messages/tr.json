@@ -31,5 +31,26 @@
   "Navigation": {
     "contact": "İletişim",
     "whatsappMessage": "Merhaba, VIP transfer rezervasyonu yapmak istiyorum. Güzergah: Antalya Havalimanı - [Otel/Hedef]. Tarih: [Tarih]. Yolcu sayısı: [Kişi sayısı]"
+  },
+  "BookingWidget": {
+    "from": "Nereden",
+    "to": "Nereye",
+    "date": "Tarih",
+    "time": "Saat",
+    "addDetails": "Detay ekle",
+    "roundTrip": "Gidiş-dönüş",
+    "childSeat": "Çocuk koltuğu",
+    "free": "Ücretsiz",
+    "minibar": "Mini bar (+5€)",
+    "bookButton": "Rezervasyon",
+    "waOnlyFrom": "Merhaba! Şuradan bir transfer rezervasyonu yapmak istiyorum: {from}.",
+    "waOnlyTo": "Merhaba! Şuraya bir transfer rezervasyonu yapmak istiyorum: {to}.",
+    "waBoth": "Merhaba! Şuradan şuraya bir transfer rezervasyonu yapmak istiyorum: {from} — {to}.",
+    "waDetails": "Tarih: {date}, Saat: {time}. Seçenekler: {options}."
+  },
+  "DestinationsCards": {
+    "cappadocia": "Kapadokya",
+    "pamukkale": "Pamukkale",
+    "fethiyeKemer": "Fethiye / Kemer"
   }
 }

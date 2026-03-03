@@ -4,19 +4,20 @@ import { Button } from "@/components/ui/Button";
 import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { BookingWidget } from "@/components/ui/BookingWidget";
 
 export const Hero = () => {
   const t = useTranslations("Hero");
 
   return (
-    <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[100svh] flex flex-col justify-center overflow-visible pt-32 pb-16 lg:pb-0">
       {/* Background with Subtle Glow/Texture */}
-      <div className="absolute inset-0 z-0 bg-slate-950">
+      <div className="absolute inset-0 z-0 bg-slate-950 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_100%)] mix-blend-screen" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-900" />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center mt-16">
+      <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center flex-grow flex-shrink-0 justify-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -45,20 +46,15 @@ export const Hero = () => {
           {t('subtitle')}
         </motion.p>
 
+      </div>
+
+      <div className="container mx-auto px-4 relative z-20 mt-12 lg:-mb-24">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row items-center gap-4"
         >
-          <Button
-            size="lg"
-            className="group"
-            onClick={() => window.open('https://wa.me/905550000000', '_blank')}
-          >
-            <MessageCircle className="mr-2 w-5 h-5 group-hover:scale-110 transition-transform" />
-            {t('cta')}
-          </Button>
+          <BookingWidget />
         </motion.div>
       </div>
     </section>

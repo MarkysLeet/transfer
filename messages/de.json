@@ -23,9 +23,9 @@
   },
   "Loyalty": {
     "title": "Black Diamond Club",
-    "privilege1Title": "Sadakat Bonusu",
+    "privilege1Title": "Treuebonus",
     "privilege1Desc": "Besondere Konditionen für Stammkunden: Jeder 5. Transfer mit 10% Privileg.",
-    "privilege2Title": "Arkadaşını Getir",
+    "privilege2Title": "Freunde einladen",
     "privilege2Desc": "Status für Ihre Gäste: Empfehlen Sie uns und machen Sie Freunden bei ihrer ersten Fahrt ein 5% Kompliment. Jede ihrer Fahrten bringt Ihren nächsten Bonustransfer näher."
   },
   "Navigation": {
@@ -46,11 +46,27 @@
     "waOnlyFrom": "Hallo! Ich möchte einen Transfer von: {from} buchen.",
     "waOnlyTo": "Hallo! Ich möchte einen Transfer nach: {to} buchen.",
     "waBoth": "Hallo! Ich möchte einen Transfer buchen: {from} — {to}.",
-    "waDetails": "Datum: {date}, Uhrzeit: {time}. Optionen: {options}."
+    "waDetails": "Datum: {date}, Uhrzeit: {time}. Optionen: {options}.",
+    "myLocation": "Mein Standort",
+    "locateError": "Standort konnte nicht ermittelt werden"
   },
   "DestinationsCards": {
     "cappadocia": "Kappadokien",
     "pamukkale": "Pamukkale",
-    "fethiyeKemer": "Fethiye / Kemer"
+    "fethiyeKemer": "Fethiye / Kemer",
+    "placeholderDesc": "Beschreibung folgt in Kürze...",
+    "select": "Auswählen"
+  },
+  "Cities": {
+    "antalya": "Antalya",
+    "istanbul": "Istanbul",
+    "kemer": "Kemer",
+    "belek": "Belek",
+    "alanya": "Alanya",
+    "side": "Side",
+    "fethiye": "Fethiye",
+    "bodrum": "Bodrum",
+    "marmaris": "Marmaris",
+    "cappadocia": "Kappadokien"
   }
 }

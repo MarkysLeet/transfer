@@ -1,10 +1,19 @@
 
-> vip-transfer@0.1.0 start
-> next start
+> vip-transfer@0.1.0 dev
+> next dev
 
-▲ Next.js 16.1.6
+▲ Next.js 16.1.6 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
 
 ✓ Starting...
-✓ Ready in 752ms
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+✓ Ready in 2.4s
+○ Compiling /[locale] ...
+ GET /en 200 in 10.3s (compile: 9.1s, proxy.ts: 14ms, generate-params: 1262ms, render: 1190ms)
+ GET /ru 200 in 200ms (compile: 42ms, proxy.ts: 10ms, generate-params: 28ms, render: 149ms)
+ GET /ru 200 in 325ms (compile: 33ms, proxy.ts: 10ms, generate-params: 24ms, render: 282ms)

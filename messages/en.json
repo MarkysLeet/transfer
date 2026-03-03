@@ -31,5 +31,26 @@
   "Navigation": {
     "contact": "Contact",
     "whatsappMessage": "Hello, I would like to book a VIP transfer. Route: Antalya Airport - [Your Hotel/Destination]. Date: [Date]. Passengers: [Number]"
+  },
+  "BookingWidget": {
+    "from": "From (Airport, Hotel, City)",
+    "to": "To (Airport, Hotel, City)",
+    "date": "Date",
+    "time": "Time",
+    "addDetails": "Add details",
+    "roundTrip": "Round trip",
+    "childSeat": "Child seat",
+    "free": "Free",
+    "minibar": "Mini-bar (+5€)",
+    "bookButton": "Book Transfer",
+    "waOnlyFrom": "Hello! I would like to book a transfer from: {from}.",
+    "waOnlyTo": "Hello! I would like to book a transfer to: {to}.",
+    "waBoth": "Hello! I would like to book a transfer route: {from} — {to}.",
+    "waDetails": "Date: {date}, Time: {time}. Options: {options}."
+  },
+  "DestinationsCards": {
+    "cappadocia": "Cappadocia",
+    "pamukkale": "Pamukkale",
+    "fethiyeKemer": "Fethiye / Kemer"
   }
 }

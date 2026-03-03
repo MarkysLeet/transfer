@@ -1,31 +1,89 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { MapPin, Calendar, Clock, ChevronDown, Check } from "lucide-react";
+import { Combobox } from "./Combobox";
 
 export const BookingWidget = () => {
   const t = useTranslations("BookingWidget");
+  const tCities = useTranslations("Cities");
   const [showDetails, setShowDetails] = useState(false);
 
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [coords, setCoords] = useState<{lat: number, lng: number} | null>(null);
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
   const [roundTrip, setRoundTrip] = useState(false);
   const [childSeat, setChildSeat] = useState(false);
   const [minibar, setMinibar] = useState(false);
 
+  useEffect(() => {
+    const handleSelectDestination = (e: CustomEvent<string>) => {
+      setTo(e.detail);
+    };
+    window.addEventListener('selectDestination', handleSelectDestination as EventListener);
+    return () => window.removeEventListener('selectDestination', handleSelectDestination as EventListener);
+  }, []);
+
+  const cities = [
+    { value: "antalya", label: tCities("antalya") },
+    { value: "istanbul", label: tCities("istanbul") },
+    { value: "kemer", label: tCities("kemer") },
+    { value: "belek", label: tCities("belek") },
+    { value: "alanya", label: tCities("alanya") },
+    { value: "side", label: tCities("side") },
+    { value: "fethiye", label: tCities("fethiye") },
+    { value: "bodrum", label: tCities("bodrum") },
+    { value: "marmaris", label: tCities("marmaris") },
+    { value: "cappadocia", label: tCities("cappadocia") },
+  ];
+
+  const handleGeolocation = () => {
+    if (!navigator.geolocation) {
+      alert(t("locateError"));
+      return;
+    }
+
+    setIsLoadingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCoords({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        setFrom(t("myLocation"));
+        setIsLoadingLocation(false);
+      },
+      (error) => {
+        console.error("Error getting location", error);
+        alert(t("locateError"));
+        setIsLoadingLocation(false);
+      }
+    );
+  };
+
+  const handleFromChange = (val: string) => {
+    setFrom(val);
+    if (val !== t("myLocation")) {
+      setCoords(null);
+    }
+  };
+
   const handleBook = () => {
     let message = "";
 
-    if (from && to) {
-      message = t("waBoth", { from, to });
-    } else if (from) {
-      message = t("waOnlyFrom", { from });
+    const finalFrom = coords ? `https://maps.google.com/?q=${coords.lat},${coords.lng}` : from;
+
+    if (finalFrom && to) {
+      message = t("waBoth", { from: finalFrom, to });
+    } else if (finalFrom) {
+      message = t("waOnlyFrom", { from: finalFrom });
     } else if (to) {
       message = t("waOnlyTo", { to });
     }
@@ -45,7 +103,7 @@ export const BookingWidget = () => {
       message += `\n${detailsMsg}`;
     }
 
-    const whatsappUrl = `https://wa.me/905550000000?text=${encodeURIComponent(
+    const whatsappUrl = `https://wa.me/905418462550?text=${encodeURIComponent(
       message
     )}`;
     window.open(whatsappUrl, "_blank");
@@ -55,26 +113,23 @@ export const BookingWidget = () => {
     <div className="w-full max-w-4xl mx-auto p-6 md:p-8 rounded-3xl bg-slate-900/40 backdrop-blur-lg border border-white/10 shadow-2xl">
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="relative">
-            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-            <input
-              type="text"
-              placeholder={t("from")}
-              value={from}
-              onChange={(e) => setFrom(e.target.value)}
-              className="w-full bg-transparent border-b border-white/20 pb-2 pt-4 pl-12 pr-4 text-white placeholder:text-slate-500 focus:outline-none focus:border-white/50 transition-colors"
-            />
-          </div>
-          <div className="relative">
-            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-            <input
-              type="text"
-              placeholder={t("to")}
-              value={to}
-              onChange={(e) => setTo(e.target.value)}
-              className="w-full bg-transparent border-b border-white/20 pb-2 pt-4 pl-12 pr-4 text-white placeholder:text-slate-500 focus:outline-none focus:border-white/50 transition-colors"
-            />
-          </div>
+          <Combobox
+            value={from}
+            onChange={handleFromChange}
+            placeholder={t("from")}
+            options={cities}
+            icon={<MapPin />}
+            allowGeolocation={true}
+            onGeolocationClick={handleGeolocation}
+            isLoadingLocation={isLoadingLocation}
+          />
+          <Combobox
+            value={to}
+            onChange={(val) => setTo(val)}
+            placeholder={t("to")}
+            options={cities}
+            icon={<MapPin />}
+          />
         </div>
 
         <div className="flex justify-center">

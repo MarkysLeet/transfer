@@ -46,11 +46,27 @@
     "waOnlyFrom": "Merhaba! Şuradan bir transfer rezervasyonu yapmak istiyorum: {from}.",
     "waOnlyTo": "Merhaba! Şuraya bir transfer rezervasyonu yapmak istiyorum: {to}.",
     "waBoth": "Merhaba! Şuradan şuraya bir transfer rezervasyonu yapmak istiyorum: {from} — {to}.",
-    "waDetails": "Tarih: {date}, Saat: {time}. Seçenekler: {options}."
+    "waDetails": "Tarih: {date}, Saat: {time}. Seçenekler: {options}.",
+    "myLocation": "Konumum",
+    "locateError": "Konum belirlenemedi"
   },
   "DestinationsCards": {
     "cappadocia": "Kapadokya",
     "pamukkale": "Pamukkale",
-    "fethiyeKemer": "Fethiye / Kemer"
+    "fethiyeKemer": "Fethiye / Kemer",
+    "placeholderDesc": "Açıklama yakında eklenecek...",
+    "select": "Seç"
+  },
+  "Cities": {
+    "antalya": "Antalya",
+    "istanbul": "İstanbul",
+    "kemer": "Kemer",
+    "belek": "Belek",
+    "alanya": "Alanya",
+    "side": "Side",
+    "fethiye": "Fethiye",
+    "bodrum": "Bodrum",
+    "marmaris": "Marmaris",
+    "cappadocia": "Kapadokya"
   }
 }

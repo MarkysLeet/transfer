@@ -1,7 +1,7 @@
 {
   "Hero": {
     "title": "BLACK DIAMOND GRAND TRANSFER",
-    "subtitle": "Comfort without borders. Premium business class service.",
+    "subtitle": "Limitless Comfort. Premium business class service.",
     "cta": "Book"
   },
   "Features": {
@@ -23,9 +23,9 @@
   },
   "Loyalty": {
     "title": "Black Diamond Club",
-    "privilege1Title": "Sadakat Bonusu",
+    "privilege1Title": "Loyalty Bonus",
     "privilege1Desc": "Special conditions for regular clients: every 5th transfer with a 10% privilege.",
-    "privilege2Title": "Arkadaşını Getir",
+    "privilege2Title": "Bring a Friend",
     "privilege2Desc": "Status for your guests: recommend us and give friends a 5% compliment on their first trip. Each of their trips brings your next bonus transfer closer."
   },
   "Navigation": {
@@ -46,11 +46,27 @@
     "waOnlyFrom": "Hello! I would like to book a transfer from: {from}.",
     "waOnlyTo": "Hello! I would like to book a transfer to: {to}.",
     "waBoth": "Hello! I would like to book a transfer route: {from} — {to}.",
-    "waDetails": "Date: {date}, Time: {time}. Options: {options}."
+    "waDetails": "Date: {date}, Time: {time}. Options: {options}.",
+    "myLocation": "My Location",
+    "locateError": "Could not determine location"
   },
   "DestinationsCards": {
     "cappadocia": "Cappadocia",
     "pamukkale": "Pamukkale",
-    "fethiyeKemer": "Fethiye / Kemer"
+    "fethiyeKemer": "Fethiye / Kemer",
+    "placeholderDesc": "Description coming soon...",
+    "select": "Select"
+  },
+  "Cities": {
+    "antalya": "Antalya",
+    "istanbul": "Istanbul",
+    "kemer": "Kemer",
+    "belek": "Belek",
+    "alanya": "Alanya",
+    "side": "Side",
+    "fethiye": "Fethiye",
+    "bodrum": "Bodrum",
+    "marmaris": "Marmaris",
+    "cappadocia": "Cappadocia"
   }
 }

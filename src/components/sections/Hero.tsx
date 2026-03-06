@@ -17,7 +17,7 @@ export const Hero = () => {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="https://videos.pexels.com/video-files/4434242/4434242-uhd_2560_1440_24fps.mp4" type="video/mp4" />
+          <source src="https://videos.pexels.com/video-files/19121857/19121857-uhd_2560_1440_60fps.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#FAFAFA] via-[#FAFAFA]/50 to-transparent" />
@@ -30,7 +30,7 @@ export const Hero = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-slate-200 backdrop-blur-md mb-6 shadow-sm"
         >
-          <span className="w-2 h-2 rounded-full bg-gold-400 animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-[#C5A028] animate-pulse" />
           <span className="text-sm font-medium text-slate-700 tracking-wider uppercase">Premium Service</span>
         </motion.div>
 
@@ -52,13 +52,11 @@ export const Hero = () => {
           {t('subtitle')}
         </motion.p>
 
-      </div>
-
-      <div className="container mx-auto px-4 relative z-20 mt-8 lg:-mb-24">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          className="w-full z-20"
         >
           <BookingWidget />
         </motion.div>

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { X } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, MousePointerClick } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 type CardData = { id: number; title: string; image: string; };
@@ -37,6 +37,18 @@ export const Destinations = () => {
     setSelectedCard(null);
     window.dispatchEvent(new CustomEvent('selectDestination', { detail: title }));
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const navigateCard = (direction: 'next' | 'prev') => {
+    if (!selectedCard) return;
+    const currentIndex = cards.findIndex(c => c.id === selectedCard.id);
+    if (currentIndex === -1) return;
+
+    let newIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+    if (newIndex >= cards.length) newIndex = 0;
+    if (newIndex < 0) newIndex = cards.length - 1;
+
+    setSelectedCard(cards[newIndex]);
   };
 
   return (
@@ -81,8 +93,13 @@ export const Destinations = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90" />
 
               {/* Content */}
-              <div className="absolute inset-0 flex items-end p-8">
-                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-wide transition-transform duration-500 group-hover:-translate-y-2">
+              <div className="absolute inset-0 flex flex-col justify-between p-8">
+                <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="bg-white/20 backdrop-blur-md rounded-full p-2 border border-white/30 text-white">
+                    <MousePointerClick size={20} />
+                  </div>
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold !text-white tracking-wide transition-transform duration-500 group-hover:-translate-y-2">
                   {card.title}
                 </h3>
               </div>
@@ -107,9 +124,25 @@ export const Destinations = () => {
               onClick={(e) => e.stopPropagation()}
               className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
             >
+              {/* Controls Overlay */}
+              <div className="absolute inset-x-0 top-1/3 -translate-y-1/2 flex justify-between px-4 z-20 pointer-events-none">
+                <button
+                  onClick={() => navigateCard('prev')}
+                  className="p-3 rounded-full bg-white/40 text-slate-800 hover:text-slate-900 hover:bg-white/80 transition-colors backdrop-blur-md shadow-sm pointer-events-auto"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                <button
+                  onClick={() => navigateCard('next')}
+                  className="p-3 rounded-full bg-white/40 text-slate-800 hover:text-slate-900 hover:bg-white/80 transition-colors backdrop-blur-md shadow-sm pointer-events-auto"
+                >
+                  <ChevronRight size={24} />
+                </button>
+              </div>
+
               <button
                 onClick={() => setSelectedCard(null)}
-                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/40 text-slate-800 hover:text-slate-900 hover:bg-white/80 transition-colors backdrop-blur-md shadow-sm"
+                className="absolute top-4 right-4 z-30 p-2 rounded-full bg-white/40 text-slate-800 hover:text-slate-900 hover:bg-white/80 transition-colors backdrop-blur-md shadow-sm"
               >
                 <X size={24} />
               </button>
@@ -125,7 +158,7 @@ export const Destinations = () => {
               </div>
 
               <div className="p-8 pt-0 -mt-12 relative z-10 flex-1 overflow-y-auto">
-                <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                <h3 className="text-3xl md:text-4xl font-bold !text-slate-900 mb-4">
                   {selectedCard.title}
                 </h3>
                 <p className="text-slate-600 leading-relaxed mb-8">

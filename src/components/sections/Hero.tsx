@@ -17,7 +17,7 @@ export const Hero = () => {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="https://videos.pexels.com/video-files/19121857/19121857-uhd_2560_1440_60fps.mp4" type="video/mp4" />
+          <source src="https://res.cloudinary.com/dcnwhciua/video/upload/v1772799653/19121857-hd_1920_1080_30fps_zkw81f.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#FAFAFA] via-[#FAFAFA]/50 to-transparent" />

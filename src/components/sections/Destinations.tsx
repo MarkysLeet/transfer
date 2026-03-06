@@ -117,60 +117,62 @@ export const Destinations = () => {
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/80 backdrop-blur-xl"
             onClick={() => setSelectedCard(null)}
           >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+            {/* Navigation Arrows Outside */}
+            <button
+              onClick={(e) => { e.stopPropagation(); navigateCard('prev'); }}
+              className="absolute left-4 md:left-12 z-50 text-slate-800 hover:text-slate-900 transition-colors hover:scale-110"
             >
-              {/* Controls Overlay */}
-              <div className="absolute inset-x-0 top-1/3 -translate-y-1/2 flex justify-between px-4 z-20 pointer-events-none">
-                <button
-                  onClick={() => navigateCard('prev')}
-                  className="p-3 rounded-full bg-white/40 text-slate-800 hover:text-slate-900 hover:bg-white/80 transition-colors backdrop-blur-md shadow-sm pointer-events-auto"
-                >
-                  <ChevronLeft size={24} />
-                </button>
-                <button
-                  onClick={() => navigateCard('next')}
-                  className="p-3 rounded-full bg-white/40 text-slate-800 hover:text-slate-900 hover:bg-white/80 transition-colors backdrop-blur-md shadow-sm pointer-events-auto"
-                >
-                  <ChevronRight size={24} />
-                </button>
-              </div>
+              <ChevronLeft size={48} strokeWidth={1.5} />
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); navigateCard('next'); }}
+              className="absolute right-4 md:right-12 z-50 text-slate-800 hover:text-slate-900 transition-colors hover:scale-110"
+            >
+              <ChevronRight size={48} strokeWidth={1.5} />
+            </button>
 
-              <button
-                onClick={() => setSelectedCard(null)}
-                className="absolute top-4 right-4 z-30 p-2 rounded-full bg-white/40 text-slate-800 hover:text-slate-900 hover:bg-white/80 transition-colors backdrop-blur-md shadow-sm"
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedCard.id}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
               >
-                <X size={24} />
-              </button>
+                <button
+                  onClick={() => setSelectedCard(null)}
+                  className="absolute top-4 right-4 z-30 p-2 rounded-full bg-white/40 text-slate-800 hover:text-slate-900 hover:bg-white/80 transition-colors backdrop-blur-md shadow-sm"
+                >
+                  <X size={24} />
+                </button>
 
-              <div className="relative w-full h-64 md:h-80 shrink-0">
-                <Image
-                  src={selectedCard.image}
-                  alt={selectedCard.title}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
-              </div>
-
-              <div className="p-8 pt-0 -mt-12 relative z-10 flex-1 overflow-y-auto">
-                <h3 className="text-3xl md:text-4xl font-bold !text-slate-900 mb-4">
-                  {selectedCard.title}
-                </h3>
-                <p className="text-slate-600 leading-relaxed mb-8">
-                  {tCards("placeholderDesc")}
-                </p>
-                <div className="flex justify-end">
-                  <Button size="lg" onClick={handleSelect}>
-                    {tCards("select")}
-                  </Button>
+                <div className="relative w-full h-64 md:h-80 shrink-0">
+                  <Image
+                    src={selectedCard.image}
+                    alt={selectedCard.title}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
                 </div>
-              </div>
-            </motion.div>
+
+                <div className="p-8 pt-0 -mt-12 relative z-10 flex-1 overflow-y-auto hide-scrollbar">
+                  <h3 className="text-3xl md:text-4xl font-bold !text-slate-900 mb-4">
+                    {selectedCard.title}
+                  </h3>
+                  <p className="text-slate-600 leading-relaxed mb-8">
+                    {tCards("placeholderDesc")}
+                  </p>
+                  <div className="flex justify-end">
+                    <Button size="lg" onClick={handleSelect}>
+                      {tCards("select")}
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>

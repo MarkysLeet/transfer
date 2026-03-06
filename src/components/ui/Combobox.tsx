@@ -106,7 +106,7 @@ export const Combobox = ({
           setIsOpen(true);
         }}
         onFocus={() => setIsOpen(true)}
-        className={`w-full bg-transparent border-b border-white/20 pb-2 pt-4 ${icon ? 'pl-12' : 'pl-4'} pr-12 text-white placeholder:text-slate-500 focus:outline-none focus:border-white/50 transition-colors`}
+        className={`w-full bg-transparent border-b border-slate-300 pb-2 pt-4 ${icon ? 'pl-12' : 'pl-4'} pr-12 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-500 transition-colors`}
       />
 
       {allowGeolocation && (
@@ -116,10 +116,10 @@ export const Combobox = ({
             e.stopPropagation();
             if (onGeolocationClick) onGeolocationClick();
           }}
-          className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+          className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
           title="Use my location"
         >
-          <Locate className={`w-4 h-4 ${isLoadingLocation ? 'animate-pulse text-white' : ''}`} />
+          <Locate className={`w-4 h-4 ${isLoadingLocation ? 'animate-pulse text-slate-900' : ''}`} />
         </button>
       )}
 
@@ -130,7 +130,7 @@ export const Combobox = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-50 w-full mt-2 py-2 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl max-h-60 overflow-y-auto hide-scrollbar"
+            className="absolute z-50 w-full mt-2 py-2 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-60 overflow-y-auto hide-scrollbar"
           >
             {filteredOptions.map((option) => (
               <button
@@ -139,7 +139,7 @@ export const Combobox = ({
                   onChange(option.label);
                   setIsOpen(false);
                 }}
-                className="w-full text-left px-4 py-2 text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
+                className="w-full text-left px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
               >
                 {option.label}
               </button>

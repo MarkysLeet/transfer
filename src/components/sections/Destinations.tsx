@@ -40,7 +40,7 @@ export const Destinations = () => {
   };
 
   return (
-    <section id="destinations" className="py-20 md:py-32 bg-[#0F172A] overflow-hidden">
+    <section id="destinations" className="py-20 md:py-32 bg-[#FAFAFA] overflow-hidden">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center mb-16">
           <motion.h2
@@ -48,11 +48,11 @@ export const Destinations = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-wider"
+            className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 tracking-wider"
           >
             {tDestinations("title")}
           </motion.h2>
-          <div className="h-1 bg-white/20 w-24 rounded-full mx-auto" />
+          <div className="h-1 bg-slate-200 w-24 rounded-full mx-auto" />
         </div>
 
         <div className="flex md:grid flex-nowrap md:grid-cols-3 gap-6 md:gap-8 snap-x snap-mandatory overflow-x-auto md:overflow-visible pb-8 md:pb-0 hide-scrollbar">
@@ -64,7 +64,7 @@ export const Destinations = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               onClick={() => setSelectedCard(card)}
-              className="relative rounded-3xl overflow-hidden aspect-[4/5] min-w-[280px] snap-center group cursor-pointer"
+              className="relative rounded-3xl overflow-hidden aspect-[3/4] min-w-[280px] snap-center group cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-500 bg-white"
             >
               {/* Background Image */}
               <div className="absolute inset-0">
@@ -72,17 +72,17 @@ export const Destinations = () => {
                   src={card.image}
                   alt={card.title}
                   fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
 
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
+              {/* Gradient Overlay - Only at the bottom for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90" />
 
               {/* Content */}
               <div className="absolute inset-0 flex items-end p-8">
-                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-wide">
+                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-wide transition-transform duration-500 group-hover:-translate-y-2">
                   {card.title}
                 </h3>
               </div>
@@ -97,7 +97,7 @@ export const Destinations = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xl"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/80 backdrop-blur-xl"
             onClick={() => setSelectedCard(null)}
           >
             <motion.div
@@ -105,11 +105,11 @@ export const Destinations = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl bg-slate-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+              className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
             >
               <button
                 onClick={() => setSelectedCard(null)}
-                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/40 text-white/80 hover:text-white hover:bg-black/60 transition-colors backdrop-blur-md"
+                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/40 text-slate-800 hover:text-slate-900 hover:bg-white/80 transition-colors backdrop-blur-md shadow-sm"
               >
                 <X size={24} />
               </button>
@@ -121,14 +121,14 @@ export const Destinations = () => {
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
               </div>
 
               <div className="p-8 pt-0 -mt-12 relative z-10 flex-1 overflow-y-auto">
-                <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                   {selectedCard.title}
                 </h3>
-                <p className="text-slate-300 leading-relaxed mb-8">
+                <p className="text-slate-600 leading-relaxed mb-8">
                   {tCards("placeholderDesc")}
                 </p>
                 <div className="flex justify-end">

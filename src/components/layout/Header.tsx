@@ -63,13 +63,13 @@ export const Header = () => {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent",
-          scrolled ? "bg-[#0F172A]/80 backdrop-blur-md border-white/10 py-4" : "bg-transparent py-6"
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
+          scrolled ? "bg-white/80 backdrop-blur-md border-slate-200 py-4" : "bg-transparent border-transparent py-6"
         )}
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/" className="text-xl md:text-2xl font-bold tracking-widest text-white z-50 relative uppercase">
-            BLACK DIAMOND <span className="text-white/70">TRANSFER</span>
+          <Link href="/" className="text-xl md:text-2xl font-bold tracking-widest text-slate-900 z-50 relative uppercase">
+            BLACK DIAMOND <span className="font-light text-slate-900/70">TRANSFER</span>
           </Link>
           <div className="hidden md:flex items-center gap-6">
             <LanguageSwitcher />
@@ -80,7 +80,7 @@ export const Header = () => {
           </div>
           <button
             onClick={toggleMenu}
-            className="md:hidden text-white z-50 relative p-2 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-md"
+            className="md:hidden text-slate-900 z-50 relative p-2 focus:outline-none focus:ring-2 focus:ring-slate-400 rounded-md"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -95,7 +95,7 @@ export const Header = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-[#0F172A]/95 backdrop-blur-xl flex flex-col justify-center items-center overflow-hidden"
+            className="fixed inset-0 z-40 bg-white/95 backdrop-blur-xl flex flex-col justify-center items-center overflow-hidden"
           >
              <nav className="flex flex-col items-center gap-8 mb-16">
               {links.map((link, idx) => (
@@ -108,7 +108,7 @@ export const Header = () => {
                   <Link
                     href={link.href}
                     onClick={closeMenu}
-                    className="text-3xl font-semibold text-white hover:text-white/70 transition-colors tracking-wider"
+                    className="text-3xl font-semibold text-slate-900 hover:text-slate-600 transition-colors tracking-wider"
                   >
                     {link.label}
                   </Link>
@@ -127,7 +127,7 @@ export const Header = () => {
                   key={l}
                   onClick={() => switchLocale(l)}
                   className={`text-xl uppercase tracking-widest transition-colors ${
-                    l === locale ? "text-white font-bold border-b-2 border-white pb-1" : "text-slate-400 hover:text-white"
+                    l === locale ? "text-slate-900 font-bold border-b-2 border-slate-900 pb-1" : "text-slate-500 hover:text-slate-900"
                   }`}
                 >
                   {l}

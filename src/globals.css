@@ -18,12 +18,12 @@
 
 /* Base styles */
 body {
-  @apply font-sans bg-[#0F172A] text-slate-100 antialiased;
+  @apply font-sans bg-[#FAFAFA] text-slate-900 antialiased;
   position: relative;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @apply font-sans font-semibold tracking-wider text-slate-100;
+  @apply font-sans font-semibold tracking-wider text-slate-900;
 }
 
 @keyframes slow-zoom {

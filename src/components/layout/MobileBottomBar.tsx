@@ -8,11 +8,11 @@ export const MobileBottomBar = () => {
   const whatsappUrl = `https://wa.me/905418462550?text=${encodeURIComponent(t("whatsappMessage"))}`;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-[#0F172A]/95 backdrop-blur-lg border-t border-white/10 md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white/95 backdrop-blur-lg border-t border-slate-200 md:hidden">
       <Button
         variant="primary"
         size="lg"
-        className="w-full shadow-lg shadow-black/20 py-4 text-lg font-bold"
+        className="w-full shadow-lg shadow-black/10 py-4 text-lg font-bold"
         onClick={() => window.open(whatsappUrl, '_blank')}
       >
         <MessageCircle className="mr-2" size={20} />

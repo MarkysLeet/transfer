@@ -110,7 +110,7 @@ export const BookingWidget = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 md:p-8 rounded-3xl bg-slate-900/40 backdrop-blur-lg border border-white/10 shadow-2xl">
+    <div className="w-full max-w-4xl mx-auto p-6 md:p-8 rounded-3xl bg-white/70 backdrop-blur-xl border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.05)]">
       <div className="flex flex-col gap-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Combobox
@@ -135,7 +135,7 @@ export const BookingWidget = () => {
         <div className="flex justify-center">
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
+            className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition-colors"
           >
             <span>{t("addDetails")}</span>
             <motion.div
@@ -156,7 +156,7 @@ export const BookingWidget = () => {
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="overflow-hidden"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-white/10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-200">
                 <div className="relative">
                   <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <input
@@ -164,7 +164,7 @@ export const BookingWidget = () => {
                     placeholder={t("date")}
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full bg-transparent border-b border-white/20 pb-2 pt-4 pl-12 pr-4 text-white placeholder:text-slate-500 focus:outline-none focus:border-white/50 transition-colors [color-scheme:dark]"
+                    className="w-full bg-transparent border-b border-slate-300 pb-2 pt-4 pl-12 pr-4 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-500 transition-colors [color-scheme:light]"
                   />
                 </div>
                 <div className="relative">
@@ -174,7 +174,7 @@ export const BookingWidget = () => {
                     placeholder={t("time")}
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
-                    className="w-full bg-transparent border-b border-white/20 pb-2 pt-4 pl-12 pr-4 text-white placeholder:text-slate-500 focus:outline-none focus:border-white/50 transition-colors [color-scheme:dark]"
+                    className="w-full bg-transparent border-b border-slate-300 pb-2 pt-4 pl-12 pr-4 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-500 transition-colors [color-scheme:light]"
                   />
                 </div>
               </div>
@@ -229,18 +229,18 @@ const Checkbox = ({
     <div
       className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${
         checked
-          ? "bg-white border-white text-slate-900"
-          : "border-slate-500 group-hover:border-white text-transparent"
+          ? "bg-slate-900 border-slate-900 text-white"
+          : "border-slate-300 group-hover:border-slate-500 text-transparent"
       }`}
     >
       <Check strokeWidth={3} className="w-3.5 h-3.5" />
     </div>
     <div className="flex items-baseline gap-1.5">
-      <span className="text-sm text-slate-300 group-hover:text-white transition-colors">
+      <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">
         {label}
       </span>
       {subtitle && (
-        <span className="text-xs text-slate-500">{subtitle}</span>
+        <span className="text-xs text-slate-400">{subtitle}</span>
       )}
     </div>
   </button>

@@ -66,7 +66,7 @@ export const Showcase = () => {
                   className="flex items-center gap-4"
                 >
                   <div className="w-8 h-8 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center flex-shrink-0">
-                    <Check size={16} className="text-[#C5A028]" />
+                    <Check size={16} className="text-[#9A7B4F]" />
                   </div>
                   <span className="text-slate-700 text-lg">{feature}</span>
                 </motion.div>

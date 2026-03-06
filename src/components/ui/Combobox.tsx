@@ -106,7 +106,7 @@ export const Combobox = ({
           setIsOpen(true);
         }}
         onFocus={() => setIsOpen(true)}
-        className={`w-full bg-transparent border-b border-slate-300 pb-2 pt-4 ${icon ? 'pl-12' : 'pl-4'} pr-12 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-500 transition-colors`}
+        className={`w-full bg-white/70 focus:bg-white border border-white/60 focus:border-white focus:shadow-md rounded-2xl py-3.5 ${icon ? 'pl-12' : 'pl-5'} pr-12 text-slate-900 placeholder:text-slate-500 focus:outline-none transition-all duration-300`}
       />
 
       {allowGeolocation && (

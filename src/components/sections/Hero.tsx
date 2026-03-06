@@ -30,7 +30,7 @@ export const Hero = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-slate-200 backdrop-blur-md mb-6 shadow-sm"
         >
-          <span className="w-2 h-2 rounded-full bg-[#C5A028] animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-[#9A7B4F] animate-pulse" />
           <span className="text-sm font-medium text-slate-700 tracking-wider uppercase">Premium Service</span>
         </motion.div>
 

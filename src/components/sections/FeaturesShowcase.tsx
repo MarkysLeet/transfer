@@ -59,7 +59,7 @@ export const FeaturesShowcase = () => {
             </button>
           </div>
 
-          <div className="relative w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[4/3] flex items-center justify-center bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="relative w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[4/3] flex items-center justify-center">
             <AnimatePresence mode="wait">
               {view === "exterior" ? (
                 <motion.div
@@ -68,10 +68,10 @@ export const FeaturesShowcase = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4 }}
-                  className="absolute inset-0 flex items-center justify-center p-8"
+                  className="absolute inset-0 flex items-center justify-center p-4 md:p-8"
                 >
                   {/* Halo glow behind the car */}
-                  <div className="absolute w-[80%] h-[60%] bg-[#C5A028]/5 blur-[80px] rounded-full" />
+                  <div className="absolute w-[80%] h-[60%] bg-[#9A7B4F]/10 blur-[80px] rounded-full" />
                   <div className="relative w-full h-full z-10 flex items-center justify-center">
                     <Image
                       src="https://res.cloudinary.com/dcnwhciua/image/upload/v1772476361/Mercedes_V-Class_Mercedes-Benz_Viano_Mercedes-Benz_Vito_Mercedes-Benz_S-Class_Minivan_PNG-removebg-preview_jmtgkz.png"
@@ -90,38 +90,40 @@ export const FeaturesShowcase = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4 }}
-                  className="absolute inset-0"
+                  className="absolute inset-0 flex items-center justify-center"
                 >
-                  <Image
-                    src={interiorImages[interiorIndex]}
-                    alt={`Mercedes Vito Interior ${interiorIndex + 1}`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                  {/* Gallery Controls */}
-                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 z-20">
+                  <div className="relative w-[85%] h-[85%] rounded-3xl overflow-hidden shadow-2xl shadow-black/10 border border-white/60 bg-white">
+                    <Image
+                      src={interiorImages[interiorIndex]}
+                      alt={`Mercedes Vito Interior ${interiorIndex + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
+                  </div>
+                  {/* Gallery Controls outside the card */}
+                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between z-20 px-2 md:px-0">
                     <button
                       onClick={prevInterior}
-                      className="p-2 rounded-full bg-white/80 text-slate-800 hover:bg-white hover:text-slate-900 shadow-md backdrop-blur-sm transition-all"
+                      className="p-3 rounded-full bg-white shadow-lg text-slate-800 hover:bg-slate-50 hover:text-slate-900 border border-slate-100 transition-all"
                     >
                       <ChevronLeft size={24} />
                     </button>
                     <button
                       onClick={nextInterior}
-                      className="p-2 rounded-full bg-white/80 text-slate-800 hover:bg-white hover:text-slate-900 shadow-md backdrop-blur-sm transition-all"
+                      className="p-3 rounded-full bg-white shadow-lg text-slate-800 hover:bg-slate-50 hover:text-slate-900 border border-slate-100 transition-all"
                     >
                       <ChevronRight size={24} />
                     </button>
                   </div>
-                  {/* Gallery Dots */}
-                  <div className="absolute bottom-4 inset-x-0 flex justify-center gap-2 z-20">
+                  {/* Gallery Dots below the card */}
+                  <div className="absolute bottom-0 inset-x-0 flex justify-center gap-2 z-20">
                     {interiorImages.map((_, idx) => (
                       <button
                         key={idx}
                         onClick={() => setInteriorIndex(idx)}
-                        className={`w-2 h-2 rounded-full transition-all ${
-                          idx === interiorIndex ? "bg-white w-4" : "bg-white/50 hover:bg-white/80"
+                        className={`w-2.5 h-2.5 rounded-full transition-all ${
+                          idx === interiorIndex ? "bg-slate-800 w-6" : "bg-slate-300 hover:bg-slate-400"
                         }`}
                       />
                     ))}
@@ -157,10 +159,10 @@ export const FeaturesShowcase = () => {
                    whileInView={{ opacity: 1, y: 0 }}
                    viewport={{ once: true }}
                    transition={{ duration: 0.5, delay: idx * 0.1 }}
-                   className="p-6 rounded-2xl bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-[#C5A028]/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group flex flex-col items-start gap-4"
+                   className="p-6 rounded-2xl bg-white border border-slate-100 shadow-xl shadow-black/5 hover:border-[#9A7B4F]/30 hover:shadow-2xl hover:shadow-[#9A7B4F]/10 transition-all duration-300 group flex flex-col items-start gap-4"
                  >
-                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 group-hover:border-[#C5A028]/20 group-hover:scale-110 transition-transform duration-300">
-                      <feature.icon className="w-6 h-6 text-[#C5A028] stroke-[1.5]" />
+                    <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 group-hover:border-[#9A7B4F]/20 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                      <feature.icon className="w-6 h-6 text-[#9A7B4F] stroke-[1.5]" />
                     </div>
                     <p className="font-medium text-slate-700 group-hover:text-slate-900 transition-colors">
                       {feature.title}

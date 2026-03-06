@@ -34,7 +34,7 @@ export const Loyalty = () => {
             transition={{ duration: 0.8 }}
             className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white border border-slate-100 mb-8 shadow-md"
           >
-            <Gem className="w-8 h-8 text-[#C5A028]" />
+            <Gem className="w-8 h-8 text-[#9A7B4F]" />
           </motion.div>
 
           <motion.h2
@@ -57,17 +57,17 @@ export const Loyalty = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="relative p-8 md:p-12 rounded-3xl bg-white border border-slate-200 shadow-xl shadow-slate-200/50 group hover:border-[#C5A028]/30 hover:shadow-2xl transition-all duration-500 overflow-hidden"
+              className="relative p-8 md:p-12 rounded-3xl bg-white border border-slate-100 shadow-xl shadow-black/5 group hover:border-[#9A7B4F]/30 hover:shadow-2xl hover:shadow-[#9A7B4F]/10 transition-all duration-500 overflow-hidden"
             >
               {/* Internal Accent */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#C5A028]/10 via-[#C5A028]/40 to-[#C5A028]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#9A7B4F]/10 via-[#9A7B4F]/40 to-[#9A7B4F]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               <div className="flex flex-col gap-6">
-                <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 group-hover:border-[#C5A028]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-sm">
-                  <privilege.icon className="w-6 h-6 text-[#C5A028] transition-colors duration-300" />
+                <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 group-hover:border-[#9A7B4F]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-sm">
+                  <privilege.icon className="w-6 h-6 text-[#9A7B4F] transition-colors duration-300" />
                 </div>
 
-                <h3 className="text-2xl font-bold text-slate-900 tracking-wide transition-colors duration-300 group-hover:text-[#C5A028]/90">
+                <h3 className="text-2xl font-bold text-slate-900 tracking-wide transition-colors duration-300 group-hover:text-[#9A7B4F]/90">
                   {privilege.title}
                 </h3>
 

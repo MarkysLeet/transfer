@@ -47,19 +47,11 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={clsx(inter.variable)}>
       <body
-        className="antialiased bg-[#0F172A] text-slate-50 selection:bg-gold-500 selection:text-white relative min-h-screen"
+        className="antialiased bg-[#FAFAFA] text-slate-900 selection:bg-bronze-500 selection:text-white relative min-h-screen"
       >
-        {/* Global Abstract Background Layer */}
+        {/* Global Soft Background */}
         <div
-          className="fixed inset-0 z-[-2] bg-[url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-[0.07] blur-[20px] pointer-events-none"
-          aria-hidden="true"
-        />
-        {/* Deep Central Warm Radial Glow */}
-        <div
-          className="fixed inset-0 z-[-1] pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle at 50% 50%, rgba(77, 61, 18, 0.4) 0%, rgba(15, 23, 42, 0.95) 70%, rgba(15, 23, 42, 1) 100%)'
-          }}
+          className="fixed inset-0 z-[-1] pointer-events-none bg-[#FAFAFA]"
           aria-hidden="true"
         />
 

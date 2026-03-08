@@ -24,27 +24,27 @@ export const Hero = () => {
 
       <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center flex-grow flex-shrink-0 justify-center">
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 1, type: "spring", stiffness: 40 }}
           className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-[1.1] text-white !text-white tracking-wider"
         >
           {t('title')}
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+          transition={{ duration: 1, delay: 0.2, type: "spring", stiffness: 40 }}
           className="text-lg md:text-xl text-white mb-8 max-w-2xl mx-auto font-light leading-relaxed"
         >
           {t('subtitle')}
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          transition={{ duration: 1.2, delay: 0.4, type: "spring", stiffness: 50, damping: 20 }}
           className="w-full z-20"
         >
           <BookingWidget />

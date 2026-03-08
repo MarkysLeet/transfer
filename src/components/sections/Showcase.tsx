@@ -37,8 +37,8 @@ export const Showcase = () => {
           {/* Text Side */}
           <div className="w-full lg:w-1/2 lg:py-20">
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-slate-900 leading-[1.1] tracking-wider uppercase"
@@ -46,8 +46,8 @@ export const Showcase = () => {
               Mercedes Benz <br className="hidden md:block"/> Vito
             </motion.h2>
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.1 }}
               className="text-slate-600 text-lg md:text-xl mb-12 leading-relaxed font-light"
@@ -59,10 +59,10 @@ export const Showcase = () => {
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 * index }}
+                  transition={{ duration: 0.8, delay: 0.1 * index, type: "spring", stiffness: 50 }}
                   className="flex items-center gap-4"
                 >
                   <div className="w-8 h-8 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center flex-shrink-0">

@@ -122,7 +122,7 @@ export const Destinations = () => {
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 tracking-wider"
@@ -136,10 +136,10 @@ export const Destinations = () => {
           {cards.map((card, index) => (
             <motion.div
               key={card.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
+              transition={{ duration: 0.8, delay: index * 0.15, type: "spring", stiffness: 50 }}
               onClick={() => setSelectedCard(card)}
               className="relative rounded-3xl overflow-hidden min-w-[280px] md:min-w-0 flex-1 md:flex-[1] md:hover:flex-[1.5] snap-center group cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-700 ease-in-out bg-white"
             >

@@ -157,7 +157,7 @@ export const BookingWidget = () => {
 
       {/* Book Button (Outside Widget) */}
       <div className="flex md:flex-col justify-end">
-        <Button onClick={handleBook} variant="outline" size="sm" className="w-full md:w-auto h-auto min-h-[44px] md:h-full px-6 py-2 rounded-full font-medium transition-transform shadow-none bg-transparent backdrop-blur-none border-white/50 text-white hover:bg-white/10 flex items-center justify-center gap-2">
+        <Button onClick={handleBook} variant="outline" size="sm" className="w-full md:w-auto mt-4 md:mt-0 px-4 py-2 rounded-full font-medium transition-transform shadow-none bg-transparent backdrop-blur-none border-white/50 text-white hover:bg-white/10 flex items-center justify-center gap-2 self-end">
           {t("bookButton")}
         </Button>
       </div>

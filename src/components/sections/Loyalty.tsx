@@ -39,7 +39,7 @@ export const Loyalty = () => {
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-slate-900 tracking-wider"
@@ -53,10 +53,10 @@ export const Loyalty = () => {
           {privileges.map((privilege, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -100 : 100 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
+              transition={{ duration: 0.8, delay: index * 0.15, type: "spring", stiffness: 50 }}
               className="relative p-8 md:p-12 rounded-3xl bg-white border border-slate-100 shadow-xl shadow-black/5 group hover:border-[#9A7B4F]/30 hover:shadow-2xl hover:shadow-[#9A7B4F]/10 transition-all duration-500 overflow-hidden"
             >
               {/* Internal Accent */}

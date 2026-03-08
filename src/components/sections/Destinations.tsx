@@ -185,13 +185,13 @@ export const Destinations = () => {
             {/* Desktop Outside Nav Arrows */}
             <button
               onClick={(e) => { e.stopPropagation(); navigateCard('prev'); }}
-              className="hidden md:flex absolute left-8 top-1/2 -translate-y-1/2 z-[60] p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors backdrop-blur-md border border-white/20"
+              className="hidden md:flex absolute md:left-[calc(50%-28rem)] xl:left-[calc(50%-32rem)] top-1/2 -translate-y-1/2 z-[60] p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors backdrop-blur-md border border-white/20"
             >
               <ChevronLeft size={48} strokeWidth={1.5} />
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); navigateCard('next'); }}
-              className="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 z-[60] p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors backdrop-blur-md border border-white/20"
+              className="hidden md:flex absolute md:right-[calc(50%-28rem)] xl:right-[calc(50%-32rem)] top-1/2 -translate-y-1/2 z-[60] p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors backdrop-blur-md border border-white/20"
             >
               <ChevronRight size={48} strokeWidth={1.5} />
             </button>

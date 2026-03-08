@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { Phone, Menu, X } from "lucide-react";
+import { Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { usePathname, useRouter } from "@/i18n/routing";
@@ -42,9 +42,6 @@ export const Header = () => {
     };
   }, [isMobileMenuOpen]);
 
-  const toggleMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
 
   const closeMenu = () => {
     setIsMobileMenuOpen(false);
@@ -68,12 +65,26 @@ export const Header = () => {
         )}
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/" className="text-xl md:text-2xl font-bold tracking-widest text-slate-900 z-50 relative uppercase">
-            BLACK DIAMOND <span className="font-light text-slate-900/70">TRANSFER</span>
+          <Link href="/" className={cn(
+            "text-xl md:text-2xl font-bold tracking-widest z-50 relative uppercase transition-colors duration-300",
+            scrolled ? "text-slate-900" : "text-white"
+          )}>
+            BLACK DIAMOND <span className={cn(
+              "font-light transition-colors duration-300",
+              scrolled ? "text-slate-900/70" : "text-white/70"
+            )}>TRANSFER</span>
           </Link>
           <div className="flex items-center gap-6">
-            <LanguageSwitcher />
-            <Button variant="primary" size="sm" className="flex gap-2" onClick={() => window.open(whatsappUrl, '_blank')}>
+            <div className={cn(
+              "transition-colors duration-300",
+              scrolled ? "text-slate-900" : "text-white"
+            )}>
+              <LanguageSwitcher />
+            </div>
+            <Button variant={scrolled ? "primary" : "outline"} size="sm" className={cn(
+              "flex gap-2 transition-colors duration-300",
+              !scrolled && "border-white/50 text-white hover:bg-white/10"
+            )} onClick={() => window.open(whatsappUrl, '_blank')}>
               <Phone size={18} />
               <span>{t("contact")}</span>
             </Button>

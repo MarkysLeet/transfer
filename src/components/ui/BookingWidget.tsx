@@ -106,63 +106,60 @@ export const BookingWidget = () => {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto p-6 md:p-8 rounded-3xl bg-white/50 backdrop-blur-3xl border border-white/60 shadow-2xl shadow-black/5">
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center">
-          <div className="flex-1">
-            <Combobox
-              value={from}
-              onChange={handleFromChange}
-              placeholder={t("from")}
-              options={cities}
-              icon={<MapPin />}
-              allowGeolocation={true}
-              onGeolocationClick={handleGeolocation}
-              isLoadingLocation={isLoadingLocation}
+    <div className="w-full max-w-5xl mx-auto flex flex-col md:flex-row gap-4 md:items-stretch">
+      {/* Main Glass Widget Container */}
+      <div className="flex-1 p-6 md:p-8 rounded-3xl bg-white/50 backdrop-blur-3xl border border-white/60 shadow-2xl shadow-black/5">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center">
+            <div className="flex-1">
+              <Combobox
+                value={from}
+                onChange={handleFromChange}
+                placeholder={t("from")}
+                options={cities}
+                icon={<MapPin />}
+                allowGeolocation={true}
+                onGeolocationClick={handleGeolocation}
+                isLoadingLocation={isLoadingLocation}
+              />
+            </div>
+            <div className="flex-1">
+              <Combobox
+                value={to}
+                onChange={(val) => setTo(val)}
+                placeholder={t("to")}
+                options={cities}
+                icon={<MapPin />}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-4 md:gap-6 pt-2">
+            <Checkbox
+              label={t("roundTrip")}
+              checked={roundTrip}
+              onChange={() => setRoundTrip(!roundTrip)}
+            />
+            <Checkbox
+              label={t("childSeat")}
+              subtitle={`(${t("free")})`}
+              checked={childSeat}
+              onChange={() => setChildSeat(!childSeat)}
+            />
+            <Checkbox
+              label={t("minibar")}
+              checked={minibar}
+              onChange={() => setMinibar(!minibar)}
             />
           </div>
-          <div className="flex-1">
-            <Combobox
-              value={to}
-              onChange={(val) => setTo(val)}
-              placeholder={t("to")}
-              options={cities}
-              icon={<MapPin />}
-            />
-          </div>
-          {/* Desktop Button */}
-          <div className="hidden md:block">
-            <Button onClick={handleBook} size="lg" className="px-12 h-full py-3.5">
-              {t("bookButton")}
-            </Button>
-          </div>
         </div>
+      </div>
 
-        <div className="flex flex-wrap gap-4 md:gap-6 pt-2">
-          <Checkbox
-            label={t("roundTrip")}
-            checked={roundTrip}
-            onChange={() => setRoundTrip(!roundTrip)}
-          />
-          <Checkbox
-            label={t("childSeat")}
-            subtitle={`(${t("free")})`}
-            checked={childSeat}
-            onChange={() => setChildSeat(!childSeat)}
-          />
-          <Checkbox
-            label={t("minibar")}
-            checked={minibar}
-            onChange={() => setMinibar(!minibar)}
-          />
-        </div>
-
-        {/* Mobile Button */}
-        <div className="md:hidden mt-2">
-          <Button onClick={handleBook} size="lg" className="w-full">
-            {t("bookButton")}
-          </Button>
-        </div>
+      {/* Book Button (Outside Widget) */}
+      <div className="flex md:flex-col justify-end">
+        <Button onClick={handleBook} size="lg" className="w-full md:w-auto px-12 h-14 md:h-full rounded-2xl md:rounded-3xl text-lg font-medium shadow-2xl shadow-black/5 hover:scale-[1.02] transition-transform">
+          {t("bookButton")}
+        </Button>
       </div>
     </div>
   );

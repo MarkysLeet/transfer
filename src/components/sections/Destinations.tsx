@@ -73,29 +73,48 @@ export const Destinations = () => {
     setCurrentImageIndex(newIndex);
   };
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
+  const [touchStartImage, setTouchStartImage] = useState<number | null>(null);
+  const [touchEndImage, setTouchEndImage] = useState<number | null>(null);
+
+  const handleImageTouchStart = (e: React.TouchEvent) => {
+    e.stopPropagation();
+    setTouchStartImage(e.targetTouches[0].clientX);
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+  const handleImageTouchMove = (e: React.TouchEvent) => {
+    e.stopPropagation();
+    setTouchEndImage(e.targetTouches[0].clientX);
   };
 
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe) navigateImage('next');
-    if (isRightSwipe) navigateImage('prev');
-
-    setTouchStart(null);
-    setTouchEnd(null);
+  const handleImageTouchEnd = (e: React.TouchEvent) => {
+    e.stopPropagation();
+    if (!touchStartImage || !touchEndImage) return;
+    const distance = touchStartImage - touchEndImage;
+    if (distance > 50) navigateImage('next');
+    if (distance < -50) navigateImage('prev');
+    setTouchStartImage(null);
+    setTouchEndImage(null);
   };
 
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [touchStartCard, setTouchStartCard] = useState<number | null>(null);
+  const [touchEndCard, setTouchEndCard] = useState<number | null>(null);
+
+  const handleCardTouchStart = (e: React.TouchEvent) => {
+    setTouchStartCard(e.targetTouches[0].clientX);
+  };
+
+  const handleCardTouchMove = (e: React.TouchEvent) => {
+    setTouchEndCard(e.targetTouches[0].clientX);
+  };
+
+  const handleCardTouchEnd = () => {
+    if (!touchStartCard || !touchEndCard) return;
+    const distance = touchStartCard - touchEndCard;
+    if (distance > 50) navigateCard('next');
+    if (distance < -50) navigateCard('prev');
+    setTouchStartCard(null);
+    setTouchEndCard(null);
+  };
 
   return (
     <section id="destinations" className="py-20 md:py-32 bg-[#FAFAFA] overflow-hidden">
@@ -160,18 +179,35 @@ export const Destinations = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/90 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 bg-black/80 backdrop-blur-md"
             onClick={() => setSelectedCard(null)}
           >
+            {/* Desktop Outside Nav Arrows */}
+            <button
+              onClick={(e) => { e.stopPropagation(); navigateCard('prev'); }}
+              className="hidden md:flex absolute left-8 top-1/2 -translate-y-1/2 z-[60] p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors backdrop-blur-md border border-white/20"
+            >
+              <ChevronLeft size={48} strokeWidth={1.5} />
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); navigateCard('next'); }}
+              className="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 z-[60] p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors backdrop-blur-md border border-white/20"
+            >
+              <ChevronRight size={48} strokeWidth={1.5} />
+            </button>
+
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedCard.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.95, x: 20 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                exit={{ opacity: 0, scale: 0.95, x: -20 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-3xl bg-white border border-slate-200 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col max-h-[95vh] md:max-h-[90vh]"
+                onTouchStart={handleCardTouchStart}
+                onTouchMove={handleCardTouchMove}
+                onTouchEnd={handleCardTouchEnd}
+                className="relative w-full max-w-3xl bg-white border border-slate-200 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col max-h-[90vh] md:max-h-[90vh]"
               >
                 {/* Close Button */}
                 <button
@@ -184,9 +220,9 @@ export const Destinations = () => {
                 {/* Gallery Section */}
                 <div
                   className="relative w-full h-72 md:h-[400px] shrink-0 overflow-hidden bg-slate-100"
-                  onTouchStart={handleTouchStart}
-                  onTouchMove={handleTouchMove}
-                  onTouchEnd={handleTouchEnd}
+                  onTouchStart={handleImageTouchStart}
+                  onTouchMove={handleImageTouchMove}
+                  onTouchEnd={handleImageTouchEnd}
                 >
                   <AnimatePresence initial={false} mode="wait">
                     <motion.div
@@ -241,23 +277,7 @@ export const Destinations = () => {
 
                 {/* Content Section */}
                 <div className="p-6 md:p-10 pt-4 md:pt-6 relative z-10 flex-1 overflow-y-auto hide-scrollbar flex flex-col">
-                  {/* Global Card Navigation Arrows - Desktop Only */}
-                  <div className="hidden md:flex absolute top-10 right-10 gap-2">
-                     <button
-                        onClick={(e) => { e.stopPropagation(); navigateCard('prev'); }}
-                        className="p-2 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
-                      >
-                        <ChevronLeft size={24} />
-                      </button>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); navigateCard('next'); }}
-                        className="p-2 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
-                      >
-                        <ChevronRight size={24} />
-                      </button>
-                  </div>
-
-                  <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 pr-24">
+                  <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
                     {selectedCard.title}
                   </h3>
                   <div className="text-slate-600 leading-relaxed mb-8 flex-1 text-base md:text-lg">
@@ -272,6 +292,26 @@ export const Destinations = () => {
                 </div>
               </motion.div>
             </AnimatePresence>
+
+            {/* Mobile Navigation Dots (Cards Count) */}
+            <div className="mt-6 flex gap-2 md:hidden">
+              {cards.map((card) => {
+                const isActive = selectedCard.id === card.id;
+                return (
+                  <button
+                    key={card.id}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedCard(card);
+                      setCurrentImageIndex(0);
+                    }}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      isActive ? 'w-6 bg-white' : 'w-2 bg-white/50'
+                    }`}
+                  />
+                );
+              })}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

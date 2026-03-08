@@ -5,8 +5,6 @@ import { useTranslations } from "next-intl";
 
 export const MobileBottomBar = () => {
   const t = useTranslations("Navigation");
-  const tDestinations = useTranslations("Destinations");
-  const tLoyalty = useTranslations("Loyalty");
   const whatsappUrl = `https://wa.me/905418462550?text=${encodeURIComponent(t("whatsappMessage"))}`;
 
   const [activeTab, setActiveTab] = useState("home");

@@ -25,6 +25,8 @@ export const Footer = () => {
         </div>
         <div className="mt-8 pt-8 border-t border-slate-200 text-center text-slate-400 text-xs tracking-wider">
           © {new Date().getFullYear()} BLACK DIAMOND TRANSFER. All rights reserved.
+          <br className="mt-2" />
+          <a href="https://www.grozan.studio" target="_blank" rel="noopener noreferrer" className="hover:text-[#1e3a8a] transition-colors mt-2 inline-block">Design & Development by Grozan Studio</a>
         </div>
       </div>
     </footer>

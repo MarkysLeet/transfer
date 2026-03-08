@@ -51,10 +51,12 @@
     "locateError": "Konum belirlenemedi"
   },
   "DestinationsCards": {
+    "antalya": "Antalya",
     "cappadocia": "Kapadokya",
     "pamukkale": "Pamukkale",
-    "fethiyeKemer": "Fethiye / Kemer",
-    "placeholderDesc": "Açıklama yakında eklenecek...",
+    "antalyaDesc": "Türk Rivierası'nın kalbi. Kıyıların en iyi tatil otellerine, tarihi merkezlerine ve masmavi plajlarına giderken kusursuz konforun tadını çıkarın.",
+    "cappadociaDesc": "Masalsı bir yolculuk. Dünya dışı manzaraların ve yüzlerce süzülen sıcak hava balonunun diyarına premium bir transfer rezervasyonu yapın.",
+    "pamukkaleDesc": "Kar beyazı bir doğa harikası. Ünlü termal kaynaklara ve antik kalıntılara konforlu bir yolculuk.",
     "select": "Seç"
   },
   "Cities": {

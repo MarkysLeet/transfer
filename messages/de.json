@@ -51,10 +51,12 @@
     "locateError": "Standort konnte nicht ermittelt werden"
   },
   "DestinationsCards": {
+    "antalya": "Antalya",
     "cappadocia": "Kappadokien",
     "pamukkale": "Pamukkale",
-    "fethiyeKemer": "Fethiye / Kemer",
-    "placeholderDesc": "Beschreibung folgt in Kürze...",
+    "antalyaDesc": "Das Herz der Türkischen Riviera. Genießen Sie auf dem Weg zu den besten Resorthotels der Küste, den historischen Zentren und den azurblauen Stränden tadellosen Komfort.",
+    "cappadociaDesc": "Eine Reise ins Märchenland. Buchen Sie einen Premium-Transfer in das Land der außerirdischen Landschaften und Hunderte schwebender Heißluftballons.",
+    "pamukkaleDesc": "Ein schneeweißes Naturwunder. Eine komfortable Fahrt zu den berühmten Thermalquellen und antiken Ruinen.",
     "select": "Auswählen"
   },
   "Cities": {

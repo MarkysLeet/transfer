@@ -1,21 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
-import { MapPin, Calendar, Clock, ChevronDown, Check } from "lucide-react";
+import { MapPin, Check } from "lucide-react";
 import { Combobox } from "./Combobox";
 
 export const BookingWidget = () => {
   const t = useTranslations("BookingWidget");
   const tCities = useTranslations("Cities");
-  const [showDetails, setShowDetails] = useState(false);
 
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
   const [coords, setCoords] = useState<{lat: number, lng: number} | null>(null);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
@@ -93,11 +89,11 @@ export const BookingWidget = () => {
     if (childSeat) options.push(t("childSeat"));
     if (minibar) options.push(t("minibar"));
 
-    if (date || time || options.length > 0) {
-      const optionsStr = options.length > 0 ? options.join(", ") : "-";
+    if (options.length > 0) {
+      const optionsStr = options.join(", ");
       const detailsMsg = t("waDetails", {
-        date: date || "-",
-        time: time || "-",
+        date: "-",
+        time: "-",
         options: optionsStr,
       });
       message += `\n${detailsMsg}`;
@@ -110,99 +106,60 @@ export const BookingWidget = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 md:p-8 rounded-3xl bg-white/50 backdrop-blur-3xl border border-white/60 shadow-2xl shadow-black/5">
+    <div className="w-full max-w-5xl mx-auto p-6 md:p-8 rounded-3xl bg-white/50 backdrop-blur-3xl border border-white/60 shadow-2xl shadow-black/5">
       <div className="flex flex-col gap-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Combobox
-            value={from}
-            onChange={handleFromChange}
-            placeholder={t("from")}
-            options={cities}
-            icon={<MapPin />}
-            allowGeolocation={true}
-            onGeolocationClick={handleGeolocation}
-            isLoadingLocation={isLoadingLocation}
+        <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center">
+          <div className="flex-1">
+            <Combobox
+              value={from}
+              onChange={handleFromChange}
+              placeholder={t("from")}
+              options={cities}
+              icon={<MapPin />}
+              allowGeolocation={true}
+              onGeolocationClick={handleGeolocation}
+              isLoadingLocation={isLoadingLocation}
+            />
+          </div>
+          <div className="flex-1">
+            <Combobox
+              value={to}
+              onChange={(val) => setTo(val)}
+              placeholder={t("to")}
+              options={cities}
+              icon={<MapPin />}
+            />
+          </div>
+          {/* Desktop Button */}
+          <div className="hidden md:block">
+            <Button onClick={handleBook} size="lg" className="px-12 h-full py-3.5">
+              {t("bookButton")}
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-4 md:gap-6 pt-2">
+          <Checkbox
+            label={t("roundTrip")}
+            checked={roundTrip}
+            onChange={() => setRoundTrip(!roundTrip)}
           />
-          <Combobox
-            value={to}
-            onChange={(val) => setTo(val)}
-            placeholder={t("to")}
-            options={cities}
-            icon={<MapPin />}
+          <Checkbox
+            label={t("childSeat")}
+            subtitle={`(${t("free")})`}
+            checked={childSeat}
+            onChange={() => setChildSeat(!childSeat)}
+          />
+          <Checkbox
+            label={t("minibar")}
+            checked={minibar}
+            onChange={() => setMinibar(!minibar)}
           />
         </div>
 
-        <div className="flex justify-center">
-          <button
-            onClick={() => setShowDetails(!showDetails)}
-            className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition-colors"
-          >
-            <span>{t("addDetails")}</span>
-            <motion.div
-              animate={{ rotate: showDetails ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <ChevronDown className="w-4 h-4" />
-            </motion.div>
-          </button>
-        </div>
-
-        <AnimatePresence>
-          {showDetails && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t border-white/40">
-                <div className="relative">
-                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                  <input
-                    type="date"
-                    placeholder={t("date")}
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    className="w-full bg-white/70 focus:bg-white border border-white/60 focus:border-white focus:shadow-md rounded-2xl py-3.5 pl-12 pr-4 text-slate-900 placeholder:text-slate-500 focus:outline-none transition-all duration-300 [color-scheme:light]"
-                  />
-                </div>
-                <div className="relative">
-                  <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                  <input
-                    type="time"
-                    placeholder={t("time")}
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    className="w-full bg-white/70 focus:bg-white border border-white/60 focus:border-white focus:shadow-md rounded-2xl py-3.5 pl-12 pr-4 text-slate-900 placeholder:text-slate-500 focus:outline-none transition-all duration-300 [color-scheme:light]"
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-6 mt-6">
-                <Checkbox
-                  label={t("roundTrip")}
-                  checked={roundTrip}
-                  onChange={() => setRoundTrip(!roundTrip)}
-                />
-                <Checkbox
-                  label={t("childSeat")}
-                  subtitle={`(${t("free")})`}
-                  checked={childSeat}
-                  onChange={() => setChildSeat(!childSeat)}
-                />
-                <Checkbox
-                  label={t("minibar")}
-                  checked={minibar}
-                  onChange={() => setMinibar(!minibar)}
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <div className="flex justify-center mt-6">
-          <Button onClick={handleBook} size="lg" className="w-full md:w-auto px-12">
+        {/* Mobile Button */}
+        <div className="md:hidden mt-2">
+          <Button onClick={handleBook} size="lg" className="w-full">
             {t("bookButton")}
           </Button>
         </div>

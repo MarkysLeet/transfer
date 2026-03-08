@@ -6,28 +6,41 @@ import Image from "next/image";
 import { X, ChevronLeft, ChevronRight, MousePointerClick } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
-type CardData = { id: number; title: string; image: string; };
+type CardData = { id: number; key: string; title: string; images: string[]; };
 
 export const Destinations = () => {
   const tDestinations = useTranslations("Destinations");
   const tCards = useTranslations("DestinationsCards");
   const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const cards: CardData[] = [
     {
       id: 1,
-      title: tCards("cappadocia"),
-      image: "https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?q=80&w=800&auto=format&fit=crop", // Moody Cappadocia
+      key: "antalya",
+      title: tCards("antalya"),
+      images: [
+        "https://images.unsplash.com/photo-1589030343991-69ea1433b941?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1586202476532-6804a9af3e3c?q=80&w=800&auto=format&fit=crop"
+      ],
     },
     {
       id: 2,
-      title: tCards("pamukkale"),
-      image: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=800&auto=format&fit=crop", // Pamukkale sunset
+      key: "cappadocia",
+      title: tCards("cappadocia"),
+      images: [
+        "https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1527635676239-2ce1b1eeb36e?q=80&w=800&auto=format&fit=crop"
+      ],
     },
     {
       id: 3,
-      title: tCards("fethiyeKemer"),
-      image: "https://images.unsplash.com/photo-1538332576228-eb5b4c4de6f5?q=80&w=800&auto=format&fit=crop", // Fethiye dark coast
+      key: "pamukkale",
+      title: tCards("pamukkale"),
+      images: [
+        "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1580193183574-8b63e803c739?q=80&w=800&auto=format&fit=crop"
+      ],
     },
   ];
 
@@ -49,7 +62,40 @@ export const Destinations = () => {
     if (newIndex < 0) newIndex = cards.length - 1;
 
     setSelectedCard(cards[newIndex]);
+    setCurrentImageIndex(0);
   };
+
+  const navigateImage = (direction: 'next' | 'prev') => {
+    if (!selectedCard) return;
+    let newIndex = direction === 'next' ? currentImageIndex + 1 : currentImageIndex - 1;
+    if (newIndex >= selectedCard.images.length) newIndex = 0;
+    if (newIndex < 0) newIndex = selectedCard.images.length - 1;
+    setCurrentImageIndex(newIndex);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) navigateImage('next');
+    if (isRightSwipe) navigateImage('prev');
+
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   return (
     <section id="destinations" className="py-20 md:py-32 bg-[#FAFAFA] overflow-hidden">
@@ -67,7 +113,7 @@ export const Destinations = () => {
           <div className="h-1 bg-slate-200 w-24 rounded-full mx-auto" />
         </div>
 
-        <div className="flex md:grid flex-nowrap md:grid-cols-3 gap-6 md:gap-8 snap-x snap-mandatory overflow-x-auto md:overflow-visible pb-8 md:pb-0 hide-scrollbar">
+        <div className="flex flex-nowrap md:flex-row gap-6 md:gap-4 snap-x snap-mandatory overflow-x-auto md:overflow-visible pb-8 md:pb-0 hide-scrollbar h-[500px]">
           {cards.map((card, index) => (
             <motion.div
               key={card.id}
@@ -76,21 +122,21 @@ export const Destinations = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               onClick={() => setSelectedCard(card)}
-              className="relative rounded-3xl overflow-hidden aspect-[3/4] min-w-[280px] snap-center group cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-500 bg-white"
+              className="relative rounded-3xl overflow-hidden min-w-[280px] md:min-w-0 flex-1 md:flex-[1] md:hover:flex-[1.5] snap-center group cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-700 ease-in-out bg-white"
             >
               {/* Background Image */}
               <div className="absolute inset-0">
                 <Image
-                  src={card.image}
+                  src={card.images[0]}
                   alt={card.title}
                   fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                  className="object-cover"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
 
               {/* Gradient Overlay - Only at the bottom for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80" />
 
               {/* Content */}
               <div className="absolute inset-0 flex flex-col justify-between p-8">
@@ -114,59 +160,112 @@ export const Destinations = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/80 backdrop-blur-xl"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/90 backdrop-blur-md"
             onClick={() => setSelectedCard(null)}
           >
-            {/* Navigation Arrows Outside */}
-            <button
-              onClick={(e) => { e.stopPropagation(); navigateCard('prev'); }}
-              className="absolute left-4 md:left-12 z-50 text-slate-800 hover:text-slate-900 transition-colors hover:scale-110"
-            >
-              <ChevronLeft size={48} strokeWidth={1.5} />
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); navigateCard('next'); }}
-              className="absolute right-4 md:right-12 z-50 text-slate-800 hover:text-slate-900 transition-colors hover:scale-110"
-            >
-              <ChevronRight size={48} strokeWidth={1.5} />
-            </button>
-
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedCard.id}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+                className="relative w-full max-w-3xl bg-white border border-slate-200 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col max-h-[95vh] md:max-h-[90vh]"
               >
+                {/* Close Button */}
                 <button
                   onClick={() => setSelectedCard(null)}
-                  className="absolute top-4 right-4 z-30 p-2 rounded-full bg-white/40 text-slate-800 hover:text-slate-900 hover:bg-white/80 transition-colors backdrop-blur-md shadow-sm"
+                  className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-black/20 text-white hover:bg-black/40 transition-colors backdrop-blur-md"
                 >
                   <X size={24} />
                 </button>
 
-                <div className="relative w-full h-64 md:h-80 shrink-0">
-                  <Image
-                    src={selectedCard.image}
-                    alt={selectedCard.title}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
+                {/* Gallery Section */}
+                <div
+                  className="relative w-full h-72 md:h-[400px] shrink-0 overflow-hidden bg-slate-100"
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                >
+                  <AnimatePresence initial={false} mode="wait">
+                    <motion.div
+                      key={currentImageIndex}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute inset-0"
+                    >
+                      <Image
+                        src={selectedCard.images[currentImageIndex]}
+                        alt={`${selectedCard.title} - ${currentImageIndex + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 800px"
+                        priority
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-black/20" />
+
+                  {/* Desktop Gallery Arrows */}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); navigateImage('prev'); }}
+                    className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-40 p-2 rounded-full bg-white/30 text-white hover:bg-white/50 hover:text-slate-900 transition-all backdrop-blur-md"
+                  >
+                    <ChevronLeft size={32} strokeWidth={2} />
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); navigateImage('next'); }}
+                    className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-40 p-2 rounded-full bg-white/30 text-white hover:bg-white/50 hover:text-slate-900 transition-all backdrop-blur-md"
+                  >
+                    <ChevronRight size={32} strokeWidth={2} />
+                  </button>
+
+                  {/* Mobile Pagination Dots */}
+                  <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-40 md:hidden">
+                    {selectedCard.images.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentImageIndex(idx)}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          currentImageIndex === idx ? 'bg-white w-4' : 'bg-white/50'
+                        }`}
+                        aria-label={`Go to slide ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
                 </div>
 
-                <div className="p-8 pt-0 -mt-12 relative z-10 flex-1 overflow-y-auto hide-scrollbar">
-                  <h3 className="text-3xl md:text-4xl font-bold !text-slate-900 mb-4">
+                {/* Content Section */}
+                <div className="p-6 md:p-10 pt-4 md:pt-6 relative z-10 flex-1 overflow-y-auto hide-scrollbar flex flex-col">
+                  {/* Global Card Navigation Arrows - Desktop Only */}
+                  <div className="hidden md:flex absolute top-10 right-10 gap-2">
+                     <button
+                        onClick={(e) => { e.stopPropagation(); navigateCard('prev'); }}
+                        className="p-2 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
+                      >
+                        <ChevronLeft size={24} />
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); navigateCard('next'); }}
+                        className="p-2 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
+                      >
+                        <ChevronRight size={24} />
+                      </button>
+                  </div>
+
+                  <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 pr-24">
                     {selectedCard.title}
                   </h3>
-                  <p className="text-slate-600 leading-relaxed mb-8">
-                    {tCards("placeholderDesc")}
-                  </p>
-                  <div className="flex justify-end">
-                    <Button size="lg" onClick={handleSelect}>
+                  <div className="text-slate-600 leading-relaxed mb-8 flex-1 text-base md:text-lg">
+                     {tCards(`${selectedCard.key}Desc`)}
+                  </div>
+
+                  <div className="flex justify-end mt-auto pt-4 border-t border-slate-100">
+                    <Button size="lg" onClick={handleSelect} className="w-full md:w-auto px-10">
                       {tCards("select")}
                     </Button>
                   </div>

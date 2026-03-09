@@ -90,7 +90,7 @@ export const Combobox = ({
   }, [value, options]);
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div className="relative h-14" ref={containerRef}>
       {icon && (
         <div className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400">
           {icon}
@@ -106,7 +106,7 @@ export const Combobox = ({
           setIsOpen(true);
         }}
         onFocus={() => setIsOpen(true)}
-        className={`w-full bg-white/70 focus:bg-white border border-white/60 focus:border-white focus:shadow-md rounded-2xl py-3.5 ${icon ? 'pl-12' : 'pl-5'} pr-12 text-slate-900 placeholder:text-slate-500 focus:outline-none transition-all duration-300`}
+        className={`w-full h-full bg-white/70 focus:bg-white border border-white/60 focus:border-white focus:shadow-md rounded-xl ${icon ? 'pl-12' : 'pl-5'} pr-12 text-sm text-slate-900 placeholder:text-slate-500 focus:outline-none transition-all duration-300`}
       />
 
       {allowGeolocation && (
@@ -130,7 +130,7 @@ export const Combobox = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-50 w-full mt-2 py-2 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-60 overflow-y-auto hide-scrollbar"
+            className="absolute z-50 w-full mt-2 py-2 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-60 overflow-y-auto hide-scrollbar"
           >
             {filteredOptions.map((option) => (
               <button
@@ -139,7 +139,7 @@ export const Combobox = ({
                   onChange(option.label);
                   setIsOpen(false);
                 }}
-                className="w-full text-left px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
+                className="w-full text-left px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
               >
                 {option.label}
               </button>

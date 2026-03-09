@@ -114,8 +114,8 @@ export const BookingWidget = () => {
       {/* Container with Inputs (Glass) & Button (Outside) */}
       <div className="flex flex-col md:flex-row gap-4 items-stretch">
         {/* Main Glass Widget Container with Inputs */}
-        <div className="flex-1 flex flex-col md:flex-row gap-4 p-6 md:p-8 rounded-3xl bg-[#F4EFEB]/60 backdrop-blur-xl border border-white/60 shadow-2xl shadow-black/5 items-center">
-          <div className="flex-1 w-full">
+        <div className="flex-1 flex flex-col md:flex-row gap-4 p-4 md:p-5 rounded-xl bg-[#F4EFEB]/60 backdrop-blur-xl border border-white/60 shadow-2xl shadow-black/5 items-center">
+          <div className="flex-1 w-full h-14">
             <Combobox
               value={from}
               onChange={handleFromChange}
@@ -127,7 +127,7 @@ export const BookingWidget = () => {
               isLoadingLocation={isLoadingLocation}
             />
           </div>
-          <div className="flex-1 w-full">
+          <div className="flex-1 w-full h-14">
             <Combobox
               value={to}
               onChange={(val) => setTo(val)}
@@ -139,11 +139,11 @@ export const BookingWidget = () => {
         </div>
 
         {/* Button Outside Glass Container */}
-        <div className="w-full md:w-auto flex items-stretch min-h-[52px]">
+        <div className="w-full md:w-auto flex items-stretch">
           <Button
             onClick={handleBook}
             variant="primary"
-            className="w-full md:w-auto h-full px-8 py-6 md:py-0 rounded-3xl flex items-center justify-center gap-2 text-lg shadow-xl"
+            className="w-full md:w-auto h-14 px-10 rounded-xl flex items-center justify-center gap-2 text-base shadow-lg hover:shadow-xl hover:opacity-90 transition-all duration-300"
           >
             {t("bookButton")}
           </Button>
@@ -193,7 +193,7 @@ const Checkbox = ({
     return (
       <button
         onClick={onChange}
-        className={`flex items-center gap-2 group focus:outline-none px-6 py-2.5 rounded-full border transition-all duration-300 backdrop-blur-xl ${
+        className={`flex items-center gap-2 group focus:outline-none px-6 py-2.5 rounded-xl border transition-all duration-300 backdrop-blur-xl ${
           checked
             ? "bg-accent border-accent text-button-text"
             : "bg-white/10 border-white/30 text-button-text hover:bg-white/20 hover:border-white/40"

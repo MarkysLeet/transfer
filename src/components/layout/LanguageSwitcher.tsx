@@ -4,7 +4,13 @@ import { useLocale } from "next-intl";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-export function LanguageSwitcher() {
+import { cn } from "@/lib/utils";
+
+interface LanguageSwitcherProps {
+  isScrolled?: boolean;
+}
+
+export function LanguageSwitcher({ isScrolled = true }: LanguageSwitcherProps) {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
@@ -21,7 +27,10 @@ export function LanguageSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors uppercase tracking-widest px-2 py-1"
+        className={cn(
+          "flex items-center gap-1 text-sm font-medium transition-colors duration-300 uppercase tracking-widest px-2 py-1",
+          isScrolled ? "text-[#2F4157] hover:text-[#2F4157]/80" : "text-[#E2DED3] hover:text-white"
+        )}
       >
         {locale}
         <ChevronDown size={14} className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />

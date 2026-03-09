@@ -19,7 +19,7 @@ export const Hero = () => {
         >
           <source src="https://res.cloudinary.com/dcnwhciua/video/upload/v1772799653/19121857-hd_1920_1080_30fps_zkw81f.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] transform-gpu will-change-transform" />
       </div>
 
       <motion.div

@@ -30,7 +30,10 @@
   },
   "Navigation": {
     "contact": "Kontakt",
-    "whatsappMessage": "Hallo, ich möchte einen VIP-Transfer buchen. Strecke: Flughafen Antalya - [Hotel/Zielort]. Datum: [Datum]. Personen: [Anzahl]"
+    "whatsappMessage": "Hallo, ich möchte einen VIP-Transfer buchen. Strecke: Flughafen Antalya - [Hotel/Zielort]. Datum: [Datum]. Personen: [Anzahl]",
+    "home": "Startseite",
+    "routes": "Routen",
+    "club": "Club"
   },
   "BookingWidget": {
     "from": "Von",

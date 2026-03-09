@@ -58,7 +58,7 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <SmoothScroll>
             <Header />
-            <main className="min-h-screen relative z-0">{children}</main>
+            <main className="min-h-screen relative z-0 overflow-x-hidden max-w-[100vw]">{children}</main>
             <Footer />
             <MobileBottomBar />
           </SmoothScroll>

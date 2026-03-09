@@ -90,9 +90,12 @@ export const Combobox = ({
   }, [value, options]);
 
   return (
-    <div className="relative h-14" ref={containerRef}>
+    <div
+      className="relative h-14 bg-white/20 backdrop-blur-md border border-white/30 shadow-lg rounded-xl transition-all duration-300 focus-within:bg-white/40 focus-within:border-white/50"
+      ref={containerRef}
+    >
       {icon && (
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#E2DED3]">
           {icon}
         </div>
       )}
@@ -106,7 +109,7 @@ export const Combobox = ({
           setIsOpen(true);
         }}
         onFocus={() => setIsOpen(true)}
-        className={`w-full h-full bg-white/20 backdrop-blur-md border border-white/30 focus:bg-white/40 focus:border-white/50 shadow-lg rounded-xl ${icon ? 'pl-12' : 'pl-5'} pr-12 text-sm text-slate-900 placeholder:text-slate-800 focus:outline-none transition-all duration-300`}
+        className={`w-full h-full bg-transparent ${icon ? 'pl-12' : 'pl-5'} pr-12 text-sm text-[#E2DED3] placeholder:text-[#E2DED3]/70 focus:outline-none`}
       />
 
       {allowGeolocation && (
@@ -116,10 +119,10 @@ export const Combobox = ({
             e.stopPropagation();
             if (onGeolocationClick) onGeolocationClick();
           }}
-          className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+          className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-[#E2DED3]/80 hover:text-[#E2DED3] hover:bg-white/10 transition-colors"
           title="Use my location"
         >
-          <Locate className={`w-4 h-4 ${isLoadingLocation ? 'animate-pulse text-slate-900' : ''}`} />
+          <Locate className={`w-4 h-4 ${isLoadingLocation ? 'animate-pulse text-[#E2DED3]' : ''}`} />
         </button>
       )}
 

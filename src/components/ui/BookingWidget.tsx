@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
-import { MapPin, Calendar, Clock, ChevronDown, Check } from "lucide-react";
+import { MapPin, Calendar, Clock, ChevronDown, Check, Plus } from "lucide-react";
 import { Combobox } from "./Combobox";
 
 export const BookingWidget = () => {
@@ -193,17 +193,43 @@ const Checkbox = ({
         onClick={onChange}
         className={`flex items-center gap-2 group focus:outline-none px-6 py-2.5 rounded-xl border transition-all duration-300 backdrop-blur-xl ${
           checked
-            ? "bg-accent border-accent text-button-text"
-            : "bg-white/10 border-white/30 text-button-text hover:bg-white/20 hover:border-white/40"
+            ? "bg-[#2F4157] border-[#2F4157] text-[#E2DED3]"
+            : "bg-white/10 border-white/30 text-[#E2DED3] hover:bg-white/20 hover:border-white/40"
         }`}
       >
-        {checked && <Check strokeWidth={3} className="w-4 h-4 text-button-text" />}
+        <div className="relative w-4 h-4 flex items-center justify-center">
+          <AnimatePresence mode="popLayout" initial={false}>
+            {checked ? (
+              <motion.div
+                key="check"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.2 }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <Check strokeWidth={3} className="w-4 h-4 text-[#E2DED3]" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="plus"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.2 }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <Plus strokeWidth={3} className="w-4 h-4 text-[#E2DED3]" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
         <div className="flex items-baseline gap-1.5">
           <span className="text-sm font-medium">
             {label}
           </span>
           {subtitle && (
-            <span className={`text-xs ${checked ? 'text-button-text/80' : 'text-button-text/70'}`}>
+            <span className={`text-xs ${checked ? 'text-[#E2DED3]/80' : 'text-[#E2DED3]/70'}`}>
               {subtitle}
             </span>
           )}

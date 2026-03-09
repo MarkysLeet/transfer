@@ -64,15 +64,15 @@ export const Header = () => {
       <header
         className={cn(
           "hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
-          scrolled ? "bg-white/80 backdrop-blur-md border-slate-200 py-4" : "bg-transparent border-transparent py-6"
+          scrolled ? "bg-[#F4EFEB] shadow-md border-slate-200 py-4" : "bg-transparent border-transparent py-6"
         )}
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link href="/" className="text-xl md:text-2xl font-bold tracking-widest text-slate-900 z-50 relative uppercase">
-            BLACK DIAMOND <span className="font-light text-slate-900/70">TRANSFER</span>
+          <Link href="/" className={cn("text-xl md:text-2xl font-bold tracking-widest z-50 relative uppercase transition-colors duration-300", scrolled ? "text-[#2F4157]" : "text-[#E2DED3]")}>
+            BLACK DIAMOND <span className={cn("font-light transition-colors duration-300", scrolled ? "text-[#2F4157]/70" : "text-[#E2DED3]/70")}>TRANSFER</span>
           </Link>
           <div className="flex items-center gap-6">
-            <LanguageSwitcher />
+            <LanguageSwitcher isScrolled={scrolled} />
             <Button variant="primary" size="sm" className="flex gap-2" onClick={() => window.open(whatsappUrl, '_blank')}>
               <Phone size={18} />
               <span>{t("contact")}</span>

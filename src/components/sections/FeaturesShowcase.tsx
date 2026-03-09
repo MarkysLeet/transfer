@@ -265,7 +265,29 @@ export const FeaturesShowcase = () => {
                  >
                     {feature.isUpsell && (
                       <div className="absolute top-4 right-4 text-[#5D8093] transition-colors group-hover:text-[#2F4157]">
-                        {feature.active ? <Check size={20} className="text-[#2F4157]" /> : <Plus size={20} />}
+                        <AnimatePresence mode="wait">
+                          {feature.active ? (
+                            <motion.div
+                              key="check"
+                              initial={{ opacity: 0, scale: 0.5, rotate: -90 }}
+                              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                              exit={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                              transition={{ duration: 0.3 }}
+                            >
+                              <Check size={20} className="text-[#2F4157]" />
+                            </motion.div>
+                          ) : (
+                            <motion.div
+                              key="plus"
+                              initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                              exit={{ opacity: 0, scale: 0.5, rotate: -90 }}
+                              transition={{ duration: 0.3 }}
+                            >
+                              <Plus size={20} className="group-hover:text-[#2F4157]" />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     )}
                     <div className={`p-3 rounded-xl border transition-transform duration-300 shadow-sm

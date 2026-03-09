@@ -115,7 +115,7 @@ export const Destinations = () => {
         </div>
 
         {/* Embla Cover Flow Carousel */}
-        <div className="relative max-w-5xl mx-auto overflow-hidden">
+        <div className="relative max-w-5xl mx-auto overflow-hidden py-12">
           <div className="overflow-visible" ref={emblaRef}>
             <div className="flex touch-pan-y -ml-4">
               {cards.map((card, index) => {

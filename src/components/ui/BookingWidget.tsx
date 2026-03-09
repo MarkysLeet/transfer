@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { MapPin, Calendar, Clock, ChevronDown, Check, Plus } from "lucide-react";
 import { Combobox } from "./Combobox";
+import { useBookingStore } from "@/store/useBookingStore";
 
 export const BookingWidget = () => {
   const t = useTranslations("BookingWidget");
@@ -19,9 +20,7 @@ export const BookingWidget = () => {
   const [coords, setCoords] = useState<{lat: number, lng: number} | null>(null);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
-  const [roundTrip, setRoundTrip] = useState(false);
-  const [childSeat, setChildSeat] = useState(false);
-  const [minibar, setMinibar] = useState(false);
+  const { roundTrip, childSeat, minibar, toggleChildSeat, toggleMinibar, setRoundTrip } = useBookingStore();
 
   useEffect(() => {
     const handleSelectDestination = (e: CustomEvent<string>) => {
@@ -160,13 +159,13 @@ export const BookingWidget = () => {
           label={t("childSeat")}
           subtitle={"(" + t("free") + ")"}
           checked={childSeat}
-          onChange={() => setChildSeat(!childSeat)}
+          onChange={() => toggleChildSeat()}
           outside
         />
         <Checkbox
           label={t("minibar")}
           checked={minibar}
-          onChange={() => setMinibar(!minibar)}
+          onChange={() => toggleMinibar()}
           outside
         />
       </div>

@@ -111,34 +111,39 @@ export const BookingWidget = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-6">
-      {/* Main Glass Widget Container with Inputs & Button */}
-      <div className="flex flex-col md:flex-row gap-4 p-6 md:p-8 rounded-3xl bg-[#F4EFEB]/60 backdrop-blur-xl border border-white/60 shadow-2xl shadow-black/5 items-center">
-        <div className="flex-1 w-full">
-          <Combobox
-            value={from}
-            onChange={handleFromChange}
-            placeholder={t("from")}
-            options={cities}
-            icon={<MapPin />}
-            allowGeolocation={true}
-            onGeolocationClick={handleGeolocation}
-            isLoadingLocation={isLoadingLocation}
-          />
+      {/* Container with Inputs (Glass) & Button (Outside) */}
+      <div className="flex flex-col md:flex-row gap-4 items-stretch">
+        {/* Main Glass Widget Container with Inputs */}
+        <div className="flex-1 flex flex-col md:flex-row gap-4 p-6 md:p-8 rounded-3xl bg-[#F4EFEB]/60 backdrop-blur-xl border border-white/60 shadow-2xl shadow-black/5 items-center">
+          <div className="flex-1 w-full">
+            <Combobox
+              value={from}
+              onChange={handleFromChange}
+              placeholder={t("from")}
+              options={cities}
+              icon={<MapPin />}
+              allowGeolocation={true}
+              onGeolocationClick={handleGeolocation}
+              isLoadingLocation={isLoadingLocation}
+            />
+          </div>
+          <div className="flex-1 w-full">
+            <Combobox
+              value={to}
+              onChange={(val) => setTo(val)}
+              placeholder={t("to")}
+              options={cities}
+              icon={<MapPin />}
+            />
+          </div>
         </div>
-        <div className="flex-1 w-full">
-          <Combobox
-            value={to}
-            onChange={(val) => setTo(val)}
-            placeholder={t("to")}
-            options={cities}
-            icon={<MapPin />}
-          />
-        </div>
-        <div className="w-full md:w-auto self-stretch flex items-stretch min-h-[52px]">
+
+        {/* Button Outside Glass Container */}
+        <div className="w-full md:w-auto flex items-stretch min-h-[52px]">
           <Button
             onClick={handleBook}
             variant="primary"
-            className="w-full md:w-auto h-full px-8 rounded-2xl md:rounded-2xl flex items-center justify-center gap-2"
+            className="w-full md:w-auto h-full px-8 py-6 md:py-0 rounded-3xl flex items-center justify-center gap-2 text-lg shadow-xl"
           >
             {t("bookButton")}
           </Button>
@@ -183,27 +188,54 @@ const Checkbox = ({
   checked: boolean;
   onChange: () => void;
   outside?: boolean;
-}) => (
-  <button
-    onClick={onChange}
-    className={`flex items-center gap-3 group focus:outline-none ${outside ? 'bg-transparent px-5 py-2.5 rounded-2xl border border-[#5D8093] hover:bg-[#5D8093]/10 transition-colors' : ''}`}
-  >
-    <div
-      className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${
-        checked
-          ? "bg-accent border-accent text-button-text"
-          : "border-[#5D8093] text-transparent"
-      }`}
+}) => {
+  if (outside) {
+    return (
+      <button
+        onClick={onChange}
+        className={`flex items-center gap-2 group focus:outline-none px-6 py-2.5 rounded-full border transition-all duration-300 backdrop-blur-xl ${
+          checked
+            ? "bg-accent border-accent text-button-text"
+            : "bg-white/10 border-white/30 text-button-text hover:bg-white/20 hover:border-white/40"
+        }`}
+      >
+        {checked && <Check strokeWidth={3} className="w-4 h-4 text-button-text" />}
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-sm font-medium">
+            {label}
+          </span>
+          {subtitle && (
+            <span className={`text-xs ${checked ? 'text-button-text/80' : 'text-button-text/70'}`}>
+              {subtitle}
+            </span>
+          )}
+        </div>
+      </button>
+    );
+  }
+
+  return (
+    <button
+      onClick={onChange}
+      className="flex items-center gap-3 group focus:outline-none"
     >
-      <Check strokeWidth={3} className="w-3.5 h-3.5" />
-    </div>
-    <div className="flex items-baseline gap-1.5">
-      <span className={`text-sm transition-colors ${outside ? 'text-button-text' : 'text-slate-700 group-hover:text-slate-900'}`}>
-        {label}
-      </span>
-      {subtitle && (
-        <span className={`text-xs ${outside ? 'text-button-text/70' : 'text-slate-400'}`}>{subtitle}</span>
-      )}
-    </div>
-  </button>
-);
+      <div
+        className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${
+          checked
+            ? "bg-accent border-accent text-button-text"
+            : "border-[#5D8093] text-transparent"
+        }`}
+      >
+        <Check strokeWidth={3} className="w-3.5 h-3.5" />
+      </div>
+      <div className="flex items-baseline gap-1.5">
+        <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">
+          {label}
+        </span>
+        {subtitle && (
+          <span className="text-xs text-slate-400">{subtitle}</span>
+        )}
+      </div>
+    </button>
+  );
+};

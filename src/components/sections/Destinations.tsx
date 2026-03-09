@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight, MousePointerClick } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import useEmblaCarousel from "embla-carousel-react";
 
 type CardData = { id: number; title: string; image: string; gallery: string[] };
 
@@ -13,6 +14,28 @@ export const Destinations = () => {
   const tCards = useTranslations("DestinationsCards");
   const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setGalleryIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi, setGalleryIndex]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
+  useEffect(() => {
+    if (emblaApi) {
+      emblaApi.scrollTo(0, true);
+    }
+  }, [selectedCard, emblaApi]);
 
   const cards: CardData[] = [
     {
@@ -176,41 +199,27 @@ export const Destinations = () => {
                 </button>
 
                 <div className="relative w-full h-64 md:h-80 shrink-0 overflow-hidden group">
-                  <AnimatePresence initial={false}>
-                    <motion.div
-                      key={galleryIndex}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      drag="x"
-                      dragConstraints={{ left: 0, right: 0 }}
-                      dragElastic={0.2}
-                      onDragEnd={(e, { offset, velocity }) => {
-                        const swipe = Math.abs(offset.x) * velocity.x;
-                        if (swipe < -100) {
-                          navigateGallery('next');
-                        } else if (swipe > 100) {
-                          navigateGallery('prev');
-                        }
-                      }}
-                      className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
-                    >
-                      <Image
-                        src={selectedCard.gallery[galleryIndex]}
-                        alt={`${selectedCard.title} - Image ${galleryIndex + 1}`}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 800px"
-                      />
-                    </motion.div>
-                  </AnimatePresence>
+                  <div className="absolute inset-0 w-full h-full" ref={emblaRef}>
+                    <div className="flex w-full h-full touch-pan-y">
+                      {selectedCard.gallery.map((imgSrc, idx) => (
+                        <div key={idx} className="relative flex-[0_0_100%] min-w-0 h-full">
+                          <Image
+                            src={imgSrc}
+                            alt={`${selectedCard.title} - Image ${idx + 1}`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 800px"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
                   {/* Gallery Navigation Desktop */}
-                  <button onClick={() => navigateGallery('prev')} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white hover:bg-black/40 transition-colors backdrop-blur-sm hidden md:block opacity-0 group-hover:opacity-100">
+                  <button onClick={() => emblaApi?.scrollPrev()} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white hover:bg-black/40 transition-colors backdrop-blur-sm hidden md:block opacity-0 group-hover:opacity-100">
                     <ChevronLeft size={24} />
                   </button>
-                  <button onClick={() => navigateGallery('next')} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white hover:bg-black/40 transition-colors backdrop-blur-sm hidden md:block opacity-0 group-hover:opacity-100">
+                  <button onClick={() => emblaApi?.scrollNext()} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white hover:bg-black/40 transition-colors backdrop-blur-sm hidden md:block opacity-0 group-hover:opacity-100">
                     <ChevronRight size={24} />
                   </button>
 
@@ -223,7 +232,7 @@ export const Destinations = () => {
                     {selectedCard.gallery.map((_, idx) => (
                       <button
                         key={idx}
-                        onClick={() => setGalleryIndex(idx)}
+                        onClick={() => emblaApi?.scrollTo(idx)}
                         className={`w-2 h-2 rounded-full transition-all duration-300 ${
                           idx === galleryIndex ? 'bg-accent w-4' : 'bg-slate-300'
                         }`}

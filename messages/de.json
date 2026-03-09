@@ -5,6 +5,8 @@
     "cta": "Buchen"
   },
   "Features": {
+    "exterior": "Exterieur",
+    "interior": "Interieur",
     "wifi": "Ultraschnelles 5G Wi-Fi",
     "climate": "Erweiterte Klimaregelung",
     "childSeat": "Kostenloser Kindersitz (ISOFIX)",

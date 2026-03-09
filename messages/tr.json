@@ -5,6 +5,8 @@
     "cta": "Rezervasyon"
   },
   "Features": {
+    "exterior": "Dış Görünüm",
+    "interior": "İç Mekan",
     "wifi": "Ultra hızlı 5G Wi-Fi",
     "climate": "Gelişmiş İklim Kontrolü",
     "childSeat": "Ücretsiz çocuk koltuğu (ISOFIX)",

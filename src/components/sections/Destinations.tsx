@@ -117,14 +117,28 @@ export const Destinations = () => {
           <div className="h-1 bg-slate-200 w-24 rounded-full mx-auto" />
         </div>
 
-        <div className="flex md:grid flex-nowrap md:grid-cols-3 gap-6 md:gap-8 snap-x snap-mandatory overflow-x-auto md:overflow-visible pb-8 md:pb-0 hide-scrollbar">
-          {cards.map((card, index) => (
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1,
+              },
+            },
+          }}
+          className="flex md:grid flex-nowrap md:grid-cols-3 gap-6 md:gap-8 snap-x snap-mandatory overflow-x-auto md:overflow-visible pb-8 md:pb-0 hide-scrollbar"
+        >
+          {cards.map((card) => (
             <motion.div
               key={card.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+              }}
               onClick={() => setSelectedCard(card)}
               className="relative rounded-3xl overflow-hidden aspect-[3/4] min-w-[280px] snap-center group cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-500 bg-white"
             >
@@ -155,7 +169,7 @@ export const Destinations = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       <AnimatePresence>

@@ -22,35 +22,51 @@ export const Hero = () => {
         <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center flex-grow flex-shrink-0 justify-center">
-
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.1,
+              delayChildren: 0.1,
+            },
+          },
+        }}
+        className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center flex-grow flex-shrink-0 justify-center"
+      >
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+          variants={{
+            hidden: { opacity: 0, y: 30 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+          }}
           className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-[1.1] !text-[#E2DED3] tracking-wider"
         >
-          {t('title')}
+          {t("title")}
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          variants={{
+            hidden: { opacity: 0, y: 30 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+          }}
           className="text-lg md:text-xl !text-[#E2DED3]/90 mb-8 max-w-2xl mx-auto font-light leading-relaxed"
         >
-          {t('subtitle')}
+          {t("subtitle")}
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          variants={{
+            hidden: { opacity: 0, y: 30 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+          }}
           className="w-full z-20"
         >
           <BookingWidget />
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };

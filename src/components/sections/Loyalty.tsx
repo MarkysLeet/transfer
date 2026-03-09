@@ -49,14 +49,28 @@ export const Loyalty = () => {
           <div className="h-[2px] bg-gradient-to-r from-transparent via-slate-300 to-transparent w-48 mx-auto" />
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1,
+              },
+            },
+          }}
+          className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto"
+        >
           {privileges.map((privilege, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+              }}
               className="relative p-8 md:p-12 rounded-3xl bg-white border border-slate-100 shadow-xl shadow-black/5 group hover:border-[#9A7B4F]/30 hover:shadow-2xl hover:shadow-[#9A7B4F]/10 transition-all duration-500 overflow-hidden"
             >
               {/* Internal Accent */}
@@ -77,7 +91,7 @@ export const Loyalty = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

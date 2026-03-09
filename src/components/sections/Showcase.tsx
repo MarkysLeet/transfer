@@ -19,7 +19,13 @@ export const Showcase = () => {
         <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-20">
 
           {/* Image Side */}
-          <div className="w-full lg:w-1/2 relative h-[350px] md:h-[450px] lg:h-auto lg:sticky lg:top-32 flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="w-full lg:w-1/2 relative h-[350px] md:h-[450px] lg:h-auto lg:sticky lg:top-32 flex items-center justify-center"
+          >
              {/* Decorative Elements */}
             <div className="absolute inset-0 bg-slate-200/50 blur-3xl rounded-full scale-110" />
 
@@ -32,24 +38,38 @@ export const Showcase = () => {
                 className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
               />
             </div>
-          </div>
+          </motion.div>
 
           {/* Text Side */}
-          <div className="w-full lg:w-1/2 lg:py-20">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.1,
+                },
+              },
+            }}
+            className="w-full lg:w-1/2 lg:py-20"
+          >
             <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              variants={{
+                hidden: { opacity: 0, x: 50 },
+                visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut" } },
+              }}
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-slate-900 leading-[1.1] tracking-wider uppercase"
             >
               Mercedes Benz <br className="hidden md:block"/> Vito
             </motion.h2>
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.1 }}
+              variants={{
+                hidden: { opacity: 0, x: 50 },
+                visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut" } },
+              }}
               className="text-slate-600 text-lg md:text-xl mb-12 leading-relaxed font-light"
             >
               Ваш личный кабинет на колесах. Идеальное сочетание стиля, комфорта и безопасности для деловых поездок и семейного отдыха.
@@ -59,10 +79,10 @@ export const Showcase = () => {
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 * index }}
+                  variants={{
+                    hidden: { opacity: 0, x: 50 },
+                    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
+                  }}
                   className="flex items-center gap-4"
                 >
                   <div className="w-8 h-8 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center flex-shrink-0">
@@ -72,7 +92,7 @@ export const Showcase = () => {
                 </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

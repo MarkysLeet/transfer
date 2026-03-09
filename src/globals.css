@@ -1,29 +1,48 @@
 @import "tailwindcss";
 
 @theme {
-  --color-gold-50: #FCF9F0;
-  --color-gold-100: #F7EFCF;
-  --color-gold-200: #F0DE9E;
-  --color-gold-300: #E8CD6D;
-  --color-gold-400: #D4AF37; /* Primary Gold */
-  --color-gold-500: #B8962E;
-  --color-gold-600: #9C7E26;
-  --color-gold-700: #80661E;
-  --color-gold-800: #665218;
-  --color-gold-900: #4D3D12;
-  --color-gold-950: #292009;
+  --color-background: #F4EFEB;
+  --color-text-primary: #5D8093;
+  --color-accent: #2F4157;
+  --color-button-text: #E2DED3;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 /* Base styles */
 body {
-  @apply font-sans bg-[#FAFAFA] text-slate-900 antialiased;
+  @apply font-sans bg-background text-text-primary antialiased;
   position: relative;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @apply font-sans font-semibold tracking-wider text-slate-900;
+  @apply font-sans font-semibold tracking-wider text-accent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 4px;
+  border: 2px solid var(--color-background); /* Gives a nice padded look */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-primary);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) var(--color-background);
 }
 
 @keyframes slow-zoom {

@@ -63,7 +63,7 @@ export const Header = () => {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
+          "hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
           scrolled ? "bg-white/80 backdrop-blur-md border-slate-200 py-4" : "bg-transparent border-transparent py-6"
         )}
       >
@@ -71,20 +71,13 @@ export const Header = () => {
           <Link href="/" className="text-xl md:text-2xl font-bold tracking-widest text-slate-900 z-50 relative uppercase">
             BLACK DIAMOND <span className="font-light text-slate-900/70">TRANSFER</span>
           </Link>
-          <div className="hidden md:flex items-center gap-6">
+          <div className="flex items-center gap-6">
             <LanguageSwitcher />
             <Button variant="primary" size="sm" className="flex gap-2" onClick={() => window.open(whatsappUrl, '_blank')}>
               <Phone size={18} />
               <span>{t("contact")}</span>
             </Button>
           </div>
-          <button
-            onClick={toggleMenu}
-            className="md:hidden text-slate-900 z-50 relative p-2 focus:outline-none focus:ring-2 focus:ring-slate-400 rounded-md"
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
         </div>
       </header>
 

@@ -29,7 +29,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-[1.1] text-button-text tracking-wider"
+          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-[1.1] !text-button-text tracking-wider"
         >
           {t('title')}
         </motion.h1>
@@ -38,7 +38,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="text-lg md:text-xl text-button-text/90 mb-8 max-w-2xl mx-auto font-light leading-relaxed"
+          className="text-lg md:text-xl !text-button-text/90 mb-8 max-w-2xl mx-auto font-light leading-relaxed"
         >
           {t('subtitle')}
         </motion.p>

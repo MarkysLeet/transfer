@@ -94,7 +94,7 @@ export const FeaturesShowcase = () => {
 
 
   return (
-    <section id="features" className="relative bg-[#FAFAFA] text-slate-900 py-16 md:py-24">
+    <section id="features" className="relative bg-[#FAFAFA] text-slate-900 py-16 md:py-24 overflow-hidden">
       <div className="flex flex-col lg:flex-row max-w-[1400px] mx-auto w-full gap-12 lg:gap-20 px-4 md:px-8">
 
         {/* Left Side: Image Gallery */}

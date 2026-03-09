@@ -112,7 +112,7 @@ export const BookingWidget = () => {
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-6">
       {/* Main Glass Widget Container with Inputs & Button */}
-      <div className="flex flex-col md:flex-row gap-4 p-6 md:p-8 rounded-3xl bg-white/50 backdrop-blur-3xl border border-white/60 shadow-2xl shadow-black/5 items-center">
+      <div className="flex flex-col md:flex-row gap-4 p-6 md:p-8 rounded-3xl bg-[#F4EFEB]/60 backdrop-blur-xl border border-white/60 shadow-2xl shadow-black/5 items-center">
         <div className="flex-1 w-full">
           <Combobox
             value={from}
@@ -137,8 +137,8 @@ export const BookingWidget = () => {
         <div className="w-full md:w-auto self-stretch flex items-stretch min-h-[52px]">
           <Button
             onClick={handleBook}
-            variant="outline"
-            className="w-full md:w-auto h-full px-8 rounded-2xl md:rounded-2xl font-medium transition-transform shadow-none bg-white/20 backdrop-blur-sm border-white/50 text-white hover:bg-white/30 flex items-center justify-center gap-2"
+            variant="primary"
+            className="w-full md:w-auto h-full px-8 rounded-2xl md:rounded-2xl flex items-center justify-center gap-2"
           >
             {t("bookButton")}
           </Button>
@@ -186,23 +186,23 @@ const Checkbox = ({
 }) => (
   <button
     onClick={onChange}
-    className={`flex items-center gap-3 group focus:outline-none ${outside ? 'bg-black/40 backdrop-blur-xl px-5 py-2.5 rounded-2xl border border-white/20 shadow-lg hover:bg-black/50 transition-colors' : ''}`}
+    className={`flex items-center gap-3 group focus:outline-none ${outside ? 'bg-transparent px-5 py-2.5 rounded-2xl border border-[#5D8093] hover:bg-[#5D8093]/10 transition-colors' : ''}`}
   >
     <div
       className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${
         checked
-          ? "bg-white border-white text-slate-900"
-          : "border-white/50 group-hover:border-white text-transparent"
+          ? "bg-accent border-accent text-button-text"
+          : "border-[#5D8093] text-transparent"
       }`}
     >
       <Check strokeWidth={3} className="w-3.5 h-3.5" />
     </div>
     <div className="flex items-baseline gap-1.5">
-      <span className={`text-sm transition-colors ${outside ? 'text-white' : 'text-slate-700 group-hover:text-slate-900'}`}>
+      <span className={`text-sm transition-colors ${outside ? 'text-button-text' : 'text-slate-700 group-hover:text-slate-900'}`}>
         {label}
       </span>
       {subtitle && (
-        <span className={`text-xs ${outside ? 'text-white/70' : 'text-slate-400'}`}>{subtitle}</span>
+        <span className={`text-xs ${outside ? 'text-button-text/70' : 'text-slate-400'}`}>{subtitle}</span>
       )}
     </div>
   </button>

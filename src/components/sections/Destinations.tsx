@@ -178,9 +178,11 @@ export const Destinations = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/80 backdrop-blur-xl"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedCard(null)}
           >
+            <div className="absolute inset-0 bg-white/80 backdrop-blur-xl pointer-events-none" />
+            <div className="relative z-10 flex items-center justify-center w-full h-full">
             {/* Navigation Arrows Outside */}
             <button
               onClick={(e) => { e.stopPropagation(); navigateCard('prev'); }}
@@ -269,6 +271,7 @@ export const Destinations = () => {
                 </div>
               </motion.div>
             </AnimatePresence>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

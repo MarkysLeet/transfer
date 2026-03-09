@@ -88,9 +88,11 @@ export const Header = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-white/95 backdrop-blur-xl flex flex-col justify-center items-center overflow-hidden"
+            className="fixed inset-0 z-40"
           >
-             <nav className="flex flex-col items-center gap-8 mb-16">
+            <div className="absolute inset-0 bg-white/95 backdrop-blur-xl" />
+            <div className="relative z-10 flex flex-col justify-center items-center h-full overflow-hidden">
+               <nav className="flex flex-col items-center gap-8 mb-16">
               {links.map((link, idx) => (
                 <motion.div
                   key={link.label}
@@ -127,6 +129,7 @@ export const Header = () => {
                 </button>
               ))}
             </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

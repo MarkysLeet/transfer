@@ -134,20 +134,22 @@ export const Combobox = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-[100] w-full mt-2 py-2 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-60 overflow-y-auto hide-scrollbar"
+            className="absolute z-[100] w-full mt-2"
           >
-            {filteredOptions.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => {
-                  onChange(option.label);
-                  setIsOpen(false);
-                }}
-                className="w-full text-left px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-              >
-                {option.label}
-              </button>
-            ))}
+            <div className="relative bg-white/95 backdrop-blur-xl border border-slate-200 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-60 overflow-y-auto hide-scrollbar py-2">
+              {filteredOptions.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => {
+                    onChange(option.label);
+                    setIsOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

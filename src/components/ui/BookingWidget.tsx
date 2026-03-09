@@ -112,7 +112,7 @@ export const BookingWidget = () => {
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-6 relative z-50">
       {/* Container with Inputs (Glass) & Button (Outside) */}
-      <div className="flex flex-col md:flex-row gap-4 items-stretch">
+      <div className="flex flex-col md:flex-row gap-4 items-stretch relative z-50">
         {/* Main Glass Widget Container with Inputs */}
         <div className="flex-1 w-full h-14">
           <Combobox
@@ -149,7 +149,7 @@ export const BookingWidget = () => {
       </div>
 
       {/* Checkboxes Outside */}
-      <div className="flex flex-wrap gap-4 md:gap-8 justify-center items-center">
+      <div className="flex flex-wrap gap-4 md:gap-8 justify-center items-center relative z-40">
         <Checkbox
           label={t("roundTrip")}
           checked={roundTrip}

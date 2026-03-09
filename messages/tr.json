@@ -21,10 +21,30 @@
     "tabTours": "Tarihi Turlar",
     "airportsDesc": "İstanbul — tüm havalimanları, Antalya — 7/24 VIP Karşılama",
     "resortsDesc": "Belek, Side, Alanya, Kemer, Lara, Kundu, Manavgat, Avsallar, Mahmutlar, Tekirova, Çamyuva, Göynük",
-    "toursDesc": "Demre, Mira, Kaş, Kalkan, Patara, Olympos, Adrasan, Finike, Pamukkale"
+    "toursDesc": "Demre, Mira, Kaş, Kalkan, Patara, Olympos, Adrasan, Finike, Pamukkale",
+    "Cards": {
+      "cappadocia": "Kapadokya",
+      "pamukkale": "Pamukkale",
+      "fethiyeKemer": "Fethiye / Kemer",
+      "placeholderDesc": "Açıklama yakında eklenecek...",
+      "select": "Seç",
+      "bookTransfer": "Transfer Rezervasyonu:",
+      "cappadociaDesc": "Premium transferimizle Kapadokya'nın büyüsünü yaşayın. Antalya'dan yolculuk yaklaşık 7-8 saat sürmektedir. Eşsiz peri bacalarının, antik mağara evlerinin ve sıcak hava balonlarının tadını çıkarın.",
+      "pamukkaleDesc": "'Pamuk Kalesi'ne konforla seyahat edin. Antalya'dan VIP transfer yaklaşık 3.5 saat sürer. Termal havuzlarda rahatlayın ve antik Hierapolis kalıntılarını mutlak lüks içinde keşfedin.",
+      "fethiye": "Fethiye",
+      "fethiyeDesc": "Antalya'dan Fethiye'ye 3 saatlik manzaralı yolculuğun tadını çıkarın. Turkuaz kıyıları, Ölüdeniz plajı ve Kelebekler Vadisi ile ünlüdür. Yenilenmiş olarak varın ve keşfetmeye hazır olun.",
+      "istanbul": "İstanbul",
+      "istanbulDesc": "Kıtaların buluştuğu şehre premium bir yolculuk. Özel kara yolu transferimiz, eşsiz konfor ve kişiselleştirilmiş hizmet ile özel bir deneyim sunar.",
+      "alanya": "Alanya",
+      "alanyaDesc": "Antalya'dan Alanya'ya 2 saatlik VIP transfer sırasında rahatlayın. Geniş plajları, tarihi kalesi ve canlı atmosferiyle bilinir. Tatilinize Mercedes Vito'muza adım attığınız an başlayın.",
+      "bodrum": "Bodrum",
+      "bodrumDesc": "Ege'nin incisine 5 saatlik lüks bir sürüş. Premium tatil köyünüze veya yat kiralama noktanıza tamamen stressiz ulaşmak için iş sınıfı konforunda seyahat edin.",
+      "kemer": "Kemer",
+      "kemerDesc": "Antalya'dan sadece 1 saatlik VIP yolculuk. Kemer, Toros Dağları'nın eteklerinde çarpıcı çakıl taşlı plajlar sunar. İklim kontrollü, ultra konforlu transferimizin keyfini çıkarın."
+    }
   },
   "Loyalty": {
-    "title": "Black Diamond Club",
+    "title": "Tavsiye Sistemi",
     "privilege1Title": "Sadakat Bonusu",
     "privilege1Desc": "Düzenli müşteriler için özel şartlar: Her 5. transferde %10 ayrıcalık.",
     "privilege2Title": "Arkadaşını Getir",
@@ -35,7 +55,7 @@
     "whatsappMessage": "Merhaba, VIP transfer rezervasyonu yapmak istiyorum. Güzergah: Antalya Havalimanı - [Otel/Hedef]. Tarih: [Tarih]. Yolcu sayısı: [Kişi sayısı]",
     "home": "Ana Sayfa",
     "routes": "Rotalar",
-    "club": "Kulüp"
+    "club": "Tavsiye Sistemi"
   },
   "BookingWidget": {
     "from": "Nereden",
@@ -51,16 +71,9 @@
     "waOnlyFrom": "Merhaba! Şuradan bir transfer rezervasyonu yapmak istiyorum: {from}.",
     "waOnlyTo": "Merhaba! Şuraya bir transfer rezervasyonu yapmak istiyorum: {to}.",
     "waBoth": "Merhaba! Şuradan şuraya bir transfer rezervasyonu yapmak istiyorum: {from} — {to}.",
-    "waDetails": "Tarih: {date}, Saat: {time}. Seçenekler: {options}.",
+    "waDetails": "Seçenekler: {options}",
     "myLocation": "Konumum",
     "locateError": "Konum belirlenemedi"
-  },
-  "DestinationsCards": {
-    "cappadocia": "Kapadokya",
-    "pamukkale": "Pamukkale",
-    "fethiyeKemer": "Fethiye / Kemer",
-    "placeholderDesc": "Açıklama yakında eklenecek...",
-    "select": "Seç"
   },
   "Cities": {
     "antalya": "Antalya",

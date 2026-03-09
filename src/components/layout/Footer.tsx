@@ -18,13 +18,23 @@ export const Footer = () => {
           </div>
 
           <div className="flex gap-6">
-            <Link href="#" className="text-slate-500 hover:text-[#9A7B4F] transition-colors"><Instagram size={20} /></Link>
-            <Link href="#" className="text-slate-500 hover:text-[#9A7B4F] transition-colors"><Facebook size={20} /></Link>
-            <Link href="#" className="text-slate-500 hover:text-[#9A7B4F] transition-colors"><Twitter size={20} /></Link>
+            <Link href="#" className="text-slate-500 hover:text-[#2F4157] transition-colors"><Instagram size={20} /></Link>
+            <Link href="#" className="text-slate-500 hover:text-[#2F4157] transition-colors"><Facebook size={20} /></Link>
+            <Link href="#" className="text-slate-500 hover:text-[#2F4157] transition-colors"><Twitter size={20} /></Link>
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t border-slate-200 text-center text-slate-400 text-xs tracking-wider">
-          © {new Date().getFullYear()} BLACK DIAMOND TRANSFER. All rights reserved.
+        <div className="mt-8 pt-8 border-t border-slate-200 text-center text-slate-400 text-xs tracking-wider flex flex-col md:flex-row justify-between items-center gap-4">
+          <p>© {new Date().getFullYear()} BLACK DIAMOND TRANSFER. All rights reserved.</p>
+          <p>
+            <a
+              href="https://www.grozan.studio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#2F4157] hover:underline transition-all duration-300"
+            >
+              Design & Development by Grozan Studio
+            </a>
+          </p>
         </div>
       </div>
     </footer>

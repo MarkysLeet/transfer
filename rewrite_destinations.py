@@ -1,4 +1,4 @@
-
+content = """
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
@@ -35,19 +35,10 @@ export const Destinations = () => {
 
   useEffect(() => {
     if (!emblaApi) return;
-
-    // Only call setState if the value actually changed to prevent cascading renders
-    const updateSelect = () => {
-      setSelectedIndex((current) => {
-        const next = emblaApi.selectedScrollSnap();
-        return current === next ? current : next;
-      });
-    };
-
-    updateSelect();
-    emblaApi.on("select", updateSelect);
-    emblaApi.on("reInit", updateSelect);
-  }, [emblaApi]);
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+  }, [emblaApi, onSelect]);
 
   const cards: DestinationCard[] = [
     {
@@ -244,3 +235,6 @@ export const Destinations = () => {
     </section>
   );
 };
+"""
+with open("src/components/sections/Destinations.tsx", "w", encoding="utf-8") as f:
+    f.write(content)

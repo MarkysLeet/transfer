@@ -79,8 +79,8 @@ export const Features = () => {
               <div className="absolute inset-0 bg-gradient-to-b from-slate-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative z-10 text-center md:text-left">
                 <div className="w-16 h-16 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-6 mx-auto md:mx-0 group-hover:scale-110 transition-transform duration-500 shadow-sm relative">
-                  <div className="absolute inset-0 bg-[#9A7B4F]/5 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <feature.icon className="w-8 h-8 text-[#9A7B4F] relative z-10" />
+                  <div className="absolute inset-0 bg-[#2F4157]/5 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <feature.icon className="w-8 h-8 text-[#2F4157] relative z-10" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-slate-900 tracking-wide transition-colors duration-300">
                   {feature.title}

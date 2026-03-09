@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Wifi, Wind, Baby, Coffee, CreditCard, ShieldCheck, ChevronLeft, ChevronRight, X, Check } from "lucide-react";
+import { Wifi, Wind, Baby, Coffee, CreditCard, ShieldCheck, ChevronLeft, ChevronRight, X, Check, Plus } from "lucide-react";
 import { useBookingStore } from "@/store/useBookingStore";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -142,7 +142,7 @@ export const FeaturesShowcase = () => {
                   className="absolute inset-0 flex items-center justify-center p-4 md:p-8"
                 >
                   {/* Halo glow behind the car */}
-                  <div className="absolute w-[80%] h-[60%] bg-[#9A7B4F]/10 blur-[80px] rounded-full" />
+                  <div className="absolute w-[80%] h-[60%] bg-[#2F4157]/10 blur-[80px] rounded-full" />
                   <div className="relative w-full h-full z-10 flex items-center justify-center">
                     <Image
                       src="https://res.cloudinary.com/dcnwhciua/image/upload/v1772476361/Mercedes_V-Class_Mercedes-Benz_Viano_Mercedes-Benz_Vito_Mercedes-Benz_S-Class_Minivan_PNG-removebg-preview_jmtgkz.png"
@@ -263,6 +263,11 @@ export const FeaturesShowcase = () => {
                      }
                    `}
                  >
+                    {feature.isUpsell && (
+                      <div className="absolute top-4 right-4 text-[#5D8093] transition-colors group-hover:text-[#2F4157]">
+                        {feature.active ? <Check size={20} className="text-[#2F4157]" /> : <Plus size={20} />}
+                      </div>
+                    )}
                     <div className={`p-3 rounded-xl border transition-transform duration-300 shadow-sm
                       ${feature.isUpsell && feature.active
                         ? "bg-[#2F4157] border-[#2F4157] scale-110"
@@ -272,10 +277,10 @@ export const FeaturesShowcase = () => {
                       {feature.isUpsell && feature.active ? (
                         <Check className="w-6 h-6 text-[#E2DED3] stroke-[2]" />
                       ) : (
-                        <feature.icon className={`w-6 h-6 stroke-[1.5] ${feature.isUpsell ? "text-[#5D8093]" : "text-[#9A7B4F]"}`} />
+                        <feature.icon className={`w-6 h-6 stroke-[1.5] ${feature.isUpsell ? "text-[#5D8093]" : "text-[#2F4157]"}`} />
                       )}
                     </div>
-                    <p className={`font-medium transition-colors ${feature.isUpsell && feature.active ? "text-[#2F4157] font-semibold" : "text-slate-700 group-hover:text-slate-900"}`}>
+                    <p className={`font-medium pr-6 transition-colors ${feature.isUpsell && feature.active ? "text-[#2F4157] font-semibold" : "text-slate-700 group-hover:text-slate-900"}`}>
                       {feature.title}
                     </p>
                  </motion.button>

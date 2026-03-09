@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Locate } from "lucide-react";
 
@@ -58,16 +59,51 @@ export const Combobox = ({
 }: ComboboxProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
+
+  const updateDropdownPosition = useCallback(() => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      updateDropdownPosition();
+      window.addEventListener("scroll", updateDropdownPosition, { passive: true });
+      window.addEventListener("resize", updateDropdownPosition);
+    }
+
+    return () => {
+      window.removeEventListener("scroll", updateDropdownPosition);
+      window.removeEventListener("resize", updateDropdownPosition);
+    };
+  }, [isOpen, updateDropdownPosition]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        // Also check if click is inside the portal dropdown
+        const dropdownElement = document.getElementById("combobox-dropdown-portal");
+        if (dropdownElement && dropdownElement.contains(event.target as Node)) {
+           return;
+        }
         setIsOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
   }, []);
 
   const filteredOptions = useMemo(() => {
@@ -91,7 +127,7 @@ export const Combobox = ({
 
   return (
     <div
-      className="relative h-14 bg-white/20 backdrop-blur-md border border-white/30 shadow-lg rounded-xl transition-all duration-300 focus-within:bg-white/40 focus-within:border-white/50"
+      className="relative h-14 bg-white/20 backdrop-blur-md transform-gpu will-change-transform border border-white/30 shadow-lg rounded-xl transition-all duration-300 focus-within:bg-white/40 focus-within:border-white/50"
       ref={containerRef}
     >
       {icon && (
@@ -126,33 +162,43 @@ export const Combobox = ({
         </button>
       )}
 
-      <AnimatePresence>
-        {isOpen && filteredOptions.length > 0 && (
-          <motion.div
-            data-lenis-prevent="true"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute z-[100] w-full mt-2"
-          >
-            <div className="relative bg-white/95 backdrop-blur-xl border border-slate-200 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-60 overflow-y-auto hide-scrollbar py-2">
-              {filteredOptions.map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => {
-                    onChange(option.label);
-                    setIsOpen(false);
-                  }}
-                  className="w-full text-left px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {mounted && createPortal(
+        <AnimatePresence>
+          {isOpen && filteredOptions.length > 0 && (
+            <motion.div
+              id="combobox-dropdown-portal"
+              data-lenis-prevent="true"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              style={{
+                position: 'absolute',
+                top: `${dropdownPosition.top + 8}px`, // 8px for mt-2 equivalent
+                left: `${dropdownPosition.left}px`,
+                width: `${dropdownPosition.width}px`,
+                zIndex: 9999,
+              }}
+            >
+              <div className="relative bg-white/95 backdrop-blur-xl transform-gpu will-change-transform border border-slate-200 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-60 overflow-y-auto hide-scrollbar py-2">
+                {filteredOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    onClick={() => {
+                      onChange(option.label);
+                      setIsOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 };

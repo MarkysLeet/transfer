@@ -159,7 +159,7 @@ export const Destinations = () => {
               {/* Content */}
               <div className="absolute inset-0 flex flex-col justify-between p-8">
                 <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="bg-white/20 backdrop-blur-md rounded-full p-2 border border-white/30 text-white">
+                  <div className="bg-white/20 backdrop-blur-md transform-gpu will-change-transform rounded-full p-2 border border-white/30 text-white">
                     <MousePointerClick size={20} />
                   </div>
                 </div>
@@ -181,7 +181,7 @@ export const Destinations = () => {
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedCard(null)}
           >
-            <div className="absolute inset-0 bg-white/80 backdrop-blur-xl pointer-events-none" />
+            <div className="absolute inset-0 bg-white/80 backdrop-blur-xl transform-gpu will-change-transform pointer-events-none" />
             <div className="relative z-10 flex items-center justify-center w-full h-full">
             {/* Navigation Arrows Outside */}
             <button
@@ -209,7 +209,7 @@ export const Destinations = () => {
               >
                 <button
                   onClick={() => { setSelectedCard(null); setGalleryIndex(0); }}
-                  className="absolute top-4 right-4 z-30 p-2 rounded-full bg-white/40 text-slate-800 hover:text-slate-900 hover:bg-white/80 transition-colors backdrop-blur-md shadow-sm"
+                  className="absolute top-4 right-4 z-30 p-2 rounded-full bg-white/40 text-slate-800 hover:text-slate-900 hover:bg-white/80 transition-colors backdrop-blur-md transform-gpu will-change-transform shadow-sm"
                 >
                   <X size={24} />
                 </button>
@@ -232,10 +232,10 @@ export const Destinations = () => {
                   </div>
 
                   {/* Gallery Navigation Desktop */}
-                  <button onClick={() => emblaApi?.scrollPrev()} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white hover:bg-black/40 transition-colors backdrop-blur-sm hidden md:block opacity-0 group-hover:opacity-100">
+                  <button onClick={() => emblaApi?.scrollPrev()} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white hover:bg-black/40 transition-colors backdrop-blur-sm transform-gpu will-change-transform hidden md:block opacity-0 group-hover:opacity-100">
                     <ChevronLeft size={24} />
                   </button>
-                  <button onClick={() => emblaApi?.scrollNext()} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white hover:bg-black/40 transition-colors backdrop-blur-sm hidden md:block opacity-0 group-hover:opacity-100">
+                  <button onClick={() => emblaApi?.scrollNext()} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 text-white hover:bg-black/40 transition-colors backdrop-blur-sm transform-gpu will-change-transform hidden md:block opacity-0 group-hover:opacity-100">
                     <ChevronRight size={24} />
                   </button>
 

@@ -149,7 +149,7 @@ export const BookingWidget = () => {
       </div>
 
       {/* Checkboxes Outside */}
-      <div className="flex flex-wrap gap-4 md:gap-8 justify-center items-center relative z-40">
+      <div className="flex flex-wrap gap-2 md:gap-8 justify-center items-center relative z-40">
         <Checkbox
           label={t("roundTrip")}
           checked={roundTrip}
@@ -191,13 +191,13 @@ const Checkbox = ({
     return (
       <button
         onClick={onChange}
-        className={`flex items-center gap-2 group focus:outline-none px-6 py-2.5 rounded-xl border transition-all duration-300 backdrop-blur-xl ${
+        className={`flex items-center gap-1.5 md:gap-2 group focus:outline-none px-3 py-1.5 md:px-6 md:py-2.5 rounded-xl border transition-all duration-300 backdrop-blur-xl transform-gpu will-change-transform ${
           checked
             ? "bg-[#2F4157] border-[#2F4157] text-[#E2DED3]"
             : "bg-white/10 border-white/30 text-[#E2DED3] hover:bg-white/20 hover:border-white/40"
         }`}
       >
-        <div className="relative w-4 h-4 flex items-center justify-center">
+        <div className="relative w-3 h-3 md:w-4 md:h-4 flex items-center justify-center">
           <AnimatePresence mode="popLayout" initial={false}>
             {checked ? (
               <motion.div
@@ -208,7 +208,7 @@ const Checkbox = ({
                 transition={{ duration: 0.2 }}
                 className="absolute inset-0 flex items-center justify-center"
               >
-                <Check strokeWidth={3} className="w-4 h-4 text-[#E2DED3]" />
+                <Check strokeWidth={3} className="w-3 h-3 md:w-4 md:h-4 text-[#E2DED3]" />
               </motion.div>
             ) : (
               <motion.div
@@ -219,17 +219,17 @@ const Checkbox = ({
                 transition={{ duration: 0.2 }}
                 className="absolute inset-0 flex items-center justify-center"
               >
-                <Plus strokeWidth={3} className="w-4 h-4 text-[#E2DED3]" />
+                <Plus strokeWidth={3} className="w-3 h-3 md:w-4 md:h-4 text-[#E2DED3]" />
               </motion.div>
             )}
           </AnimatePresence>
         </div>
-        <div className="flex items-baseline gap-1.5">
-          <span className="text-sm font-medium">
+        <div className="flex items-baseline gap-1 md:gap-1.5">
+          <span className="text-xs md:text-sm font-medium">
             {label}
           </span>
           {subtitle && (
-            <span className={`text-xs ${checked ? 'text-[#E2DED3]/80' : 'text-[#E2DED3]/70'}`}>
+            <span className={`text-[10px] md:text-xs ${checked ? 'text-[#E2DED3]/80' : 'text-[#E2DED3]/70'}`}>
               {subtitle}
             </span>
           )}

@@ -263,9 +263,9 @@ export const Destinations = () => {
                   <p className="text-slate-600 leading-relaxed mb-8">
                     {tCards("placeholderDesc")}
                   </p>
-                  <div className="flex justify-end">
-                    <Button size="lg" onClick={handleSelect}>
-                      {tCards("select")}
+                  <div className="flex justify-end mt-4">
+                    <Button size="lg" onClick={handleSelect} className="px-8 text-lg w-full md:w-auto">
+                      {tCards("bookTransfer")} {selectedCard.title}
                     </Button>
                   </div>
                 </div>

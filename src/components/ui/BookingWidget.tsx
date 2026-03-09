@@ -110,9 +110,10 @@ export const BookingWidget = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 md:p-8 rounded-3xl bg-white/50 backdrop-blur-3xl border border-white/60 shadow-2xl shadow-black/5">
-      <div className="flex flex-col gap-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="w-full max-w-5xl mx-auto flex flex-col gap-6">
+      {/* Main Glass Widget Container with Inputs & Button */}
+      <div className="flex flex-col md:flex-row gap-4 p-6 md:p-8 rounded-3xl bg-white/50 backdrop-blur-3xl border border-white/60 shadow-2xl shadow-black/5 items-center">
+        <div className="flex-1 w-full">
           <Combobox
             value={from}
             onChange={handleFromChange}
@@ -123,6 +124,8 @@ export const BookingWidget = () => {
             onGeolocationClick={handleGeolocation}
             isLoadingLocation={isLoadingLocation}
           />
+        </div>
+        <div className="flex-1 w-full">
           <Combobox
             value={to}
             onChange={(val) => setTo(val)}
@@ -131,81 +134,38 @@ export const BookingWidget = () => {
             icon={<MapPin />}
           />
         </div>
-
-        <div className="flex justify-center">
-          <button
-            onClick={() => setShowDetails(!showDetails)}
-            className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition-colors"
+        <div className="w-full md:w-auto self-stretch flex items-stretch min-h-[52px]">
+          <Button
+            onClick={handleBook}
+            variant="outline"
+            className="w-full md:w-auto h-full px-8 rounded-2xl md:rounded-2xl font-medium transition-transform shadow-none bg-white/20 backdrop-blur-sm border-white/50 text-white hover:bg-white/30 flex items-center justify-center gap-2"
           >
-            <span>{t("addDetails")}</span>
-            <motion.div
-              animate={{ rotate: showDetails ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <ChevronDown className="w-4 h-4" />
-            </motion.div>
-          </button>
-        </div>
-
-        <AnimatePresence>
-          {showDetails && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t border-white/40">
-                <div className="relative">
-                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                  <input
-                    type="date"
-                    placeholder={t("date")}
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    className="w-full bg-white/70 focus:bg-white border border-white/60 focus:border-white focus:shadow-md rounded-2xl py-3.5 pl-12 pr-4 text-slate-900 placeholder:text-slate-500 focus:outline-none transition-all duration-300 [color-scheme:light]"
-                  />
-                </div>
-                <div className="relative">
-                  <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                  <input
-                    type="time"
-                    placeholder={t("time")}
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    className="w-full bg-white/70 focus:bg-white border border-white/60 focus:border-white focus:shadow-md rounded-2xl py-3.5 pl-12 pr-4 text-slate-900 placeholder:text-slate-500 focus:outline-none transition-all duration-300 [color-scheme:light]"
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-6 mt-6">
-                <Checkbox
-                  label={t("roundTrip")}
-                  checked={roundTrip}
-                  onChange={() => setRoundTrip(!roundTrip)}
-                />
-                <Checkbox
-                  label={t("childSeat")}
-                  subtitle={`(${t("free")})`}
-                  checked={childSeat}
-                  onChange={() => setChildSeat(!childSeat)}
-                />
-                <Checkbox
-                  label={t("minibar")}
-                  checked={minibar}
-                  onChange={() => setMinibar(!minibar)}
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <div className="flex justify-center mt-6">
-          <Button onClick={handleBook} size="lg" className="w-full md:w-auto px-12">
             {t("bookButton")}
           </Button>
         </div>
+      </div>
+
+      {/* Checkboxes Outside */}
+      <div className="flex flex-wrap gap-4 md:gap-8 justify-center items-center">
+        <Checkbox
+          label={t("roundTrip")}
+          checked={roundTrip}
+          onChange={() => setRoundTrip(!roundTrip)}
+          outside
+        />
+        <Checkbox
+          label={t("childSeat")}
+          subtitle={"(" + t("free") + ")"}
+          checked={childSeat}
+          onChange={() => setChildSeat(!childSeat)}
+          outside
+        />
+        <Checkbox
+          label={t("minibar")}
+          checked={minibar}
+          onChange={() => setMinibar(!minibar)}
+          outside
+        />
       </div>
     </div>
   );
@@ -216,31 +176,33 @@ const Checkbox = ({
   subtitle,
   checked,
   onChange,
+  outside = false
 }: {
   label: string;
   subtitle?: string;
   checked: boolean;
   onChange: () => void;
+  outside?: boolean;
 }) => (
   <button
     onClick={onChange}
-    className="flex items-center gap-3 group focus:outline-none"
+    className={`flex items-center gap-3 group focus:outline-none ${outside ? 'bg-black/40 backdrop-blur-xl px-5 py-2.5 rounded-2xl border border-white/20 shadow-lg hover:bg-black/50 transition-colors' : ''}`}
   >
     <div
       className={`w-5 h-5 rounded flex items-center justify-center border transition-colors ${
         checked
-          ? "bg-slate-900 border-slate-900 text-white"
-          : "border-slate-300 group-hover:border-slate-500 text-transparent"
+          ? "bg-white border-white text-slate-900"
+          : "border-white/50 group-hover:border-white text-transparent"
       }`}
     >
       <Check strokeWidth={3} className="w-3.5 h-3.5" />
     </div>
     <div className="flex items-baseline gap-1.5">
-      <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">
+      <span className={`text-sm transition-colors ${outside ? 'text-white' : 'text-slate-700 group-hover:text-slate-900'}`}>
         {label}
       </span>
       {subtitle && (
-        <span className="text-xs text-slate-400">{subtitle}</span>
+        <span className={`text-xs ${outside ? 'text-white/70' : 'text-slate-400'}`}>{subtitle}</span>
       )}
     </div>
   </button>

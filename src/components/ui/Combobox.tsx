@@ -106,7 +106,7 @@ export const Combobox = ({
           setIsOpen(true);
         }}
         onFocus={() => setIsOpen(true)}
-        className={`w-full h-full bg-white/70 focus:bg-white border border-white/60 focus:border-white focus:shadow-md rounded-xl ${icon ? 'pl-12' : 'pl-5'} pr-12 text-sm text-slate-900 placeholder:text-slate-500 focus:outline-none transition-all duration-300`}
+        className={`w-full h-full bg-white/20 backdrop-blur-md border border-white/30 focus:bg-white/40 focus:border-white/50 shadow-lg rounded-xl ${icon ? 'pl-12' : 'pl-5'} pr-12 text-sm text-slate-900 placeholder:text-slate-800 focus:outline-none transition-all duration-300`}
       />
 
       {allowGeolocation && (
@@ -126,11 +126,12 @@ export const Combobox = ({
       <AnimatePresence>
         {isOpen && filteredOptions.length > 0 && (
           <motion.div
+            data-lenis-prevent="true"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-50 w-full mt-2 py-2 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-60 overflow-y-auto hide-scrollbar"
+            className="absolute z-[100] w-full mt-2 py-2 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-60 overflow-y-auto hide-scrollbar"
           >
             {filteredOptions.map((option) => (
               <button

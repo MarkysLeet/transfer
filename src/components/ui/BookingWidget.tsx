@@ -110,32 +110,30 @@ export const BookingWidget = () => {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto flex flex-col gap-6">
+    <div className="w-full max-w-5xl mx-auto flex flex-col gap-6 relative z-50">
       {/* Container with Inputs (Glass) & Button (Outside) */}
       <div className="flex flex-col md:flex-row gap-4 items-stretch">
         {/* Main Glass Widget Container with Inputs */}
-        <div className="flex-1 flex flex-col md:flex-row gap-4 p-4 md:p-5 rounded-xl bg-[#F4EFEB]/60 backdrop-blur-xl border border-white/60 shadow-2xl shadow-black/5 items-center">
-          <div className="flex-1 w-full h-14">
-            <Combobox
-              value={from}
-              onChange={handleFromChange}
-              placeholder={t("from")}
-              options={cities}
-              icon={<MapPin />}
-              allowGeolocation={true}
-              onGeolocationClick={handleGeolocation}
-              isLoadingLocation={isLoadingLocation}
-            />
-          </div>
-          <div className="flex-1 w-full h-14">
-            <Combobox
-              value={to}
-              onChange={(val) => setTo(val)}
-              placeholder={t("to")}
-              options={cities}
-              icon={<MapPin />}
-            />
-          </div>
+        <div className="flex-1 w-full h-14">
+          <Combobox
+            value={from}
+            onChange={handleFromChange}
+            placeholder={t("from")}
+            options={cities}
+            icon={<MapPin />}
+            allowGeolocation={true}
+            onGeolocationClick={handleGeolocation}
+            isLoadingLocation={isLoadingLocation}
+          />
+        </div>
+        <div className="flex-1 w-full h-14">
+          <Combobox
+            value={to}
+            onChange={(val) => setTo(val)}
+            placeholder={t("to")}
+            options={cities}
+            icon={<MapPin />}
+          />
         </div>
 
         {/* Button Outside Glass Container */}

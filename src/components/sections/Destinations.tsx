@@ -58,12 +58,12 @@ export const Destinations = () => {
     {
       id: "pamukkale",
       title: tCards("pamukkale"),
-      image: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=800&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1633282042122-fa4bb3646ce8?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       id: "fethiye",
       title: tCards("fethiye"),
-      image: "https://images.unsplash.com/photo-1538332576228-eb5b4c4de6f5?q=80&w=800&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1698304685474-51e00e5bb4c2?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       id: "istanbul",
@@ -73,17 +73,17 @@ export const Destinations = () => {
     {
       id: "alanya",
       title: tCards("alanya"),
-      image: "https://images.unsplash.com/photo-1579758629938-03607ccdbaba?q=80&w=800&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1736547316493-18e917fc4fdd?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       id: "bodrum",
       title: tCards("bodrum"),
-      image: "https://images.unsplash.com/photo-1542050212-9c16ebcb41fa?q=80&w=800&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1684858504602-677ac40eadfd?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       id: "kemer",
       title: tCards("kemer"),
-      image: "https://images.unsplash.com/photo-1587595431973-160d0d94add1?q=80&w=800&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1668537901164-964d87c96976?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     }
   ];
 
@@ -124,11 +124,17 @@ export const Destinations = () => {
                   <div
                     key={card.id}
                     className="flex-[0_0_80%] md:flex-[0_0_40%] min-w-0 pl-4 relative"
-                    onClick={() => emblaApi?.scrollTo(index)}
+                    onClick={() => {
+                      if (isActive) {
+                        setSelectedCard(card);
+                      } else {
+                        emblaApi?.scrollTo(index);
+                      }
+                    }}
                   >
                     <div
                       className={`relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer shadow-lg transition-all duration-500 ease-out bg-white transform-gpu
-                        ${isActive ? "scale-105 opacity-100 z-20 shadow-2xl" : "scale-90 opacity-70 z-10"}
+                        ${isActive ? "scale-105 opacity-100 z-20 shadow-2xl hover:scale-110" : "scale-90 opacity-70 z-10"}
                       `}
                     >
                       <div className="absolute inset-0">
@@ -136,11 +142,11 @@ export const Destinations = () => {
                           src={card.image}
                           alt={card.title}
                           fill
-                          className="object-cover"
+                          className="object-cover transition-transform duration-700 hover:scale-105"
                           sizes="(max-width: 768px) 100vw, 33vw"
                         />
                       </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-80" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-80 transition-opacity duration-500 hover:opacity-90" />
                       <div className="absolute inset-0 flex flex-col justify-between p-8">
                         <div className="flex justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                            {/* Empty or can add an icon */}
@@ -149,14 +155,6 @@ export const Destinations = () => {
                             <h3 className="text-2xl md:text-3xl font-bold !text-white tracking-wide">
                               {card.title}
                             </h3>
-                            {isActive && (
-                                <button
-                                  onClick={(e) => { e.stopPropagation(); setSelectedCard(card); }}
-                                  className="bg-white/20 backdrop-blur-md rounded-full p-2 border border-white/30 text-white hover:bg-white/40 transition-colors"
-                                >
-                                  <MousePointerClick size={20} />
-                                </button>
-                            )}
                         </div>
                       </div>
                     </div>

@@ -55,19 +55,3 @@ html.lenis, html.lenis body {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
-
-
-/* Custom Scrollbar - Dark Blue */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: #1e3a8a; /* Dark Blue */
-  border-radius: 5px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #1e40af;
-}

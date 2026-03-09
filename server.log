@@ -1,10 +1,12 @@
 
 > vip-transfer@0.1.0 start
-> next start -p 3001
+> next start
 
 ▲ Next.js 16.1.6
-- Local:         http://localhost:3001
-- Network:       http://192.168.0.2:3001
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
 
 ✓ Starting...
-✓ Ready in 771ms
+✓ Ready in 1378ms
+⨯ upstream image response failed for https://images.unsplash.com/photo-1565134267718-4c28f7d98305?q=80&w=800&auto=format&fit=crop 404
+Killed

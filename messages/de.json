@@ -21,10 +21,30 @@
     "tabTours": "Historische Touren",
     "airportsDesc": "Istanbul — alle Flughäfen, Antalya — 24/7 VIP-Treffen",
     "resortsDesc": "Belek, Side, Alanya, Kemer, Lara, Kundu, Manavgat, Avsallar, Mahmutlar, Tekirova, Çamyuva, Göynük",
-    "toursDesc": "Demre, Mira, Kaş, Kalkan, Patara, Olympos, Adrasan, Finike, Pamukkale"
+    "toursDesc": "Demre, Mira, Kaş, Kalkan, Patara, Olympos, Adrasan, Finike, Pamukkale",
+    "Cards": {
+      "cappadocia": "Kappadokien",
+      "pamukkale": "Pamukkale",
+      "fethiyeKemer": "Fethiye / Kemer",
+      "placeholderDesc": "Beschreibung folgt in Kürze...",
+      "select": "Auswählen",
+      "bookTransfer": "Transfer buchen nach",
+      "cappadociaDesc": "Erleben Sie die Magie Kappadokiens mit unserem Premium-Transfer. Die Fahrzeit von Antalya beträgt ca. 7-8 Stunden. Bewundern Sie die einzigartigen Feenkamine und Höhlenwohnungen.",
+      "pamukkaleDesc": "Reisen Sie komfortabel zur 'Baumwollburg'. Der VIP-Transfer von Antalya dauert etwa 3,5 Stunden. Entspannen Sie in den Thermalbecken und erkunden Sie die antiken Ruinen von Hierapolis in absolutem Luxus.",
+      "fethiye": "Fethiye",
+      "fethiyeDesc": "Genießen Sie eine malerische 3-stündige Fahrt von Antalya nach Fethiye. Berühmt für seine unberührte türkisfarbene Küste, den Strand von Ölüdeniz und das Schmetterlingstal. Kommen Sie erfrischt an.",
+      "istanbul": "Istanbul",
+      "istanbulDesc": "Eine Premium-Reise in die Stadt, in der sich Kontinente treffen. Unser luxuriöser Überlandtransfer bietet ein exklusives Roadtrip-Erlebnis mit unübertroffenem Komfort und persönlichem Service.",
+      "alanya": "Alanya",
+      "alanyaDesc": "Entspannen Sie sich während eines 2-stündigen VIP-Transfers von Antalya nach Alanya. Bekannt für seine weiten Strände und die historische Burg. Beginnen Sie Ihren Urlaub in unserem Mercedes Vito.",
+      "bodrum": "Bodrum",
+      "bodrumDesc": "Eine luxuriöse 5-stündige Fahrt zur Perle der Ägäis. Reisen Sie in Business-Class-Komfort nach Bodrum, perfekt, um Ihr Premium-Resort oder Ihren Yachtcharter völlig stressfrei zu erreichen.",
+      "kemer": "Kemer",
+      "kemerDesc": "Nur eine 1-stündige VIP-Fahrt von Antalya entfernt. Kemer bietet atemberaubende Kiesstrände vor der Kulisse des Taurusgebirges. Genießen Sie unseren klimatisierten, ultra-komfortablen Transfer."
+    }
   },
   "Loyalty": {
-    "title": "Black Diamond Club",
+    "title": "Empfehlungsprogramm",
     "privilege1Title": "Treuebonus",
     "privilege1Desc": "Besondere Konditionen für Stammkunden: Jeder 5. Transfer mit 10% Privileg.",
     "privilege2Title": "Freunde einladen",
@@ -35,7 +55,7 @@
     "whatsappMessage": "Hallo, ich möchte einen VIP-Transfer buchen. Strecke: Flughafen Antalya - [Hotel/Zielort]. Datum: [Datum]. Personen: [Anzahl]",
     "home": "Startseite",
     "routes": "Routen",
-    "club": "Club"
+    "club": "Empfehlungsprogramm"
   },
   "BookingWidget": {
     "from": "Von",
@@ -51,16 +71,9 @@
     "waOnlyFrom": "Hallo! Ich möchte einen Transfer von: {from} buchen.",
     "waOnlyTo": "Hallo! Ich möchte einen Transfer nach: {to} buchen.",
     "waBoth": "Hallo! Ich möchte einen Transfer buchen: {from} — {to}.",
-    "waDetails": "Datum: {date}, Uhrzeit: {time}. Optionen: {options}.",
+    "waDetails": "Optionen: {options}",
     "myLocation": "Mein Standort",
     "locateError": "Standort konnte nicht ermittelt werden"
-  },
-  "DestinationsCards": {
-    "cappadocia": "Kappadokien",
-    "pamukkale": "Pamukkale",
-    "fethiyeKemer": "Fethiye / Kemer",
-    "placeholderDesc": "Beschreibung folgt in Kürze...",
-    "select": "Auswählen"
   },
   "Cities": {
     "antalya": "Antalya",

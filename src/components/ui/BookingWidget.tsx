@@ -4,19 +4,16 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
-import { MapPin, Calendar, Clock, ChevronDown, Check, Plus } from "lucide-react";
+import { MapPin, Check, Plus } from "lucide-react";
 import { Combobox } from "./Combobox";
 import { useBookingStore } from "@/store/useBookingStore";
 
 export const BookingWidget = () => {
   const t = useTranslations("BookingWidget");
   const tCities = useTranslations("Cities");
-  const [showDetails, setShowDetails] = useState(false);
 
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
   const [coords, setCoords] = useState<{lat: number, lng: number} | null>(null);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
@@ -92,11 +89,9 @@ export const BookingWidget = () => {
     if (childSeat) options.push(t("childSeat"));
     if (minibar) options.push(t("minibar"));
 
-    if (date || time || options.length > 0) {
-      const optionsStr = options.length > 0 ? options.join(", ") : "-";
+    if (options.length > 0) {
+      const optionsStr = options.join(", ");
       const detailsMsg = t("waDetails", {
-        date: date || "-",
-        time: time || "-",
         options: optionsStr,
       });
       message += `\n${detailsMsg}`;

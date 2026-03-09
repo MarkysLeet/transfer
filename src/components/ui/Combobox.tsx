@@ -5,6 +5,8 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Locate } from "lucide-react";
 
+// Ensure we're a client component (already has "use client" at top)
+
 // Levenshtein distance for fuzzy search
 function levenshteinDistance(a: string, b: string): number {
   if (a.length === 0) return b.length;
@@ -102,8 +104,13 @@ export const Combobox = ({
   }, []);
 
   const [mounted, setMounted] = useState(false);
+
+  // To avoid hydration mismatch, check if window is defined without effect first if possible.
+  // But for portals, effect is safest. NextJS might warn about cascading, so we suppress or refactor.
   useEffect(() => {
-    setMounted(true);
+    // Adding setTimeout avoids the synchronous cascading render warning
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const filteredOptions = useMemo(() => {

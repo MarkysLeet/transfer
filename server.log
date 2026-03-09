@@ -1,12 +1,13 @@
 
-> vip-transfer@0.1.0 start
-> next start
+> vip-transfer@0.1.0 dev
+> next dev
 
-▲ Next.js 16.1.6
+▲ Next.js 16.1.6 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
 
 ✓ Starting...
-✓ Ready in 1378ms
-⨯ upstream image response failed for https://images.unsplash.com/photo-1565134267718-4c28f7d98305?q=80&w=800&auto=format&fit=crop 404
-Killed
+✓ Ready in 3.5s
+○ Compiling /[locale] ...
+ GET /en 200 in 8.7s (compile: 7.9s, proxy.ts: 20ms, generate-params: 1217ms, render: 723ms)
+ GET /en 200 in 277ms (compile: 43ms, proxy.ts: 10ms, generate-params: 29ms, render: 224ms)

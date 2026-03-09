@@ -256,7 +256,7 @@ export const FeaturesShowcase = () => {
                      visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
                    }}
                    onClick={() => feature.isUpsell && feature.toggle && feature.toggle()}
-                   className={`p-6 rounded-2xl bg-white border shadow-xl shadow-black/5 transition-all duration-300 group flex flex-col items-start gap-4 text-left w-full
+                   className={`relative p-6 rounded-2xl bg-white border shadow-xl shadow-black/5 transition-all duration-300 group flex flex-col items-start gap-4 text-left w-full
                      ${feature.isUpsell
                         ? (feature.active ? "border-[#2F4157] bg-[#F4EFEB]/20" : "border-slate-100 hover:border-slate-300 hover:bg-slate-50 cursor-pointer")
                         : "border-slate-100 hover:border-slate-200 cursor-default"
@@ -264,27 +264,27 @@ export const FeaturesShowcase = () => {
                    `}
                  >
                     {feature.isUpsell && (
-                      <div className="absolute top-4 right-4 text-[#5D8093] transition-colors group-hover:text-[#2F4157]">
+                      <div className="absolute top-4 right-4 text-[#2F4157] transition-colors">
                         <AnimatePresence mode="wait">
                           {feature.active ? (
                             <motion.div
                               key="check"
-                              initial={{ opacity: 0, scale: 0.5, rotate: -90 }}
-                              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                              exit={{ opacity: 0, scale: 0.5, rotate: 90 }}
-                              transition={{ duration: 0.3 }}
+                              initial={{ opacity: 0, scale: 0.5 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0, scale: 0.5 }}
+                              transition={{ duration: 0.3, ease: "easeInOut" }}
                             >
                               <Check size={20} className="text-[#2F4157]" />
                             </motion.div>
                           ) : (
                             <motion.div
                               key="plus"
-                              initial={{ opacity: 0, scale: 0.5, rotate: 90 }}
-                              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                              exit={{ opacity: 0, scale: 0.5, rotate: -90 }}
-                              transition={{ duration: 0.3 }}
+                              initial={{ opacity: 0, scale: 0.5 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0, scale: 0.5 }}
+                              transition={{ duration: 0.3, ease: "easeInOut" }}
                             >
-                              <Plus size={20} className="group-hover:text-[#2F4157]" />
+                              <Plus size={20} className="text-[#2F4157]" />
                             </motion.div>
                           )}
                         </AnimatePresence>

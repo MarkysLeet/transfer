@@ -116,7 +116,14 @@ export const Destinations = () => {
 
         {/* Embla Cover Flow Carousel */}
         <div className="relative max-w-5xl mx-auto overflow-hidden py-12">
-          <div className="overflow-visible" ref={emblaRef}>
+          <div
+            className="overflow-visible"
+            ref={emblaRef}
+            style={{
+              maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)'
+            }}
+          >
             <div className="flex touch-pan-y -ml-4">
               {cards.map((card, index) => {
                 const isActive = index === selectedIndex;

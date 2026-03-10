@@ -134,7 +134,7 @@ export const Combobox = ({
 
   return (
     <div
-      className="relative h-14 bg-[#F4EFEB] rounded-xl transition-all duration-300 shadow-[inset_4px_4px_8px_rgba(0,0,0,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.8)] focus-within:shadow-[inset_6px_6px_10px_rgba(0,0,0,0.15),inset_-6px_-6px_10px_rgba(255,255,255,0.9)]"
+      className="relative h-14 bg-white rounded-xl transition-all duration-300 shadow-sm border border-slate-200 focus-within:shadow-md focus-within:border-slate-300 focus-within:-translate-y-0.5"
       ref={containerRef}
     >
       {icon && (
@@ -187,7 +187,7 @@ export const Combobox = ({
                 zIndex: 9999,
               }}
             >
-              <div className="relative bg-[#F4EFEB] rounded-xl shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)] max-h-60 overflow-y-auto hide-scrollbar py-2">
+              <div className="relative bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto hide-scrollbar py-2">
                 {filteredOptions.map((option) => (
                   <button
                     key={option.value}

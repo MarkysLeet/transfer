@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { BookingWidget } from "@/components/ui/BookingWidget";
+import { Star } from "lucide-react";
 
 export const Hero = () => {
   const t = useTranslations("Hero");
@@ -65,6 +66,26 @@ export const Hero = () => {
           className="w-full z-20"
         >
           <BookingWidget />
+        </motion.div>
+
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut", delay: 0.3 } },
+          }}
+          className="mt-8 flex flex-col items-center justify-center gap-2"
+        >
+          <div className="flex items-center gap-1">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Star
+                key={star}
+                className="w-4 h-4 fill-[#E2DED3] text-[#E2DED3]"
+              />
+            ))}
+          </div>
+          <span className="text-sm text-[#E2DED3]/80 font-light tracking-wide">
+            {t("trustBadge")}
+          </span>
         </motion.div>
       </motion.div>
     </section>

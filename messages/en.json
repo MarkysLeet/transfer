@@ -2,7 +2,7 @@
   "Hero": {
     "title": "BLACK DIAMOND GRAND TRANSFER",
     "subtitle": "Limitless Comfort. Premium business class service.",
-    "cta": "Book"
+    "cta": "Get a quote"
   },
   "Features": {
     "exterior": "Exterior",
@@ -28,7 +28,7 @@
       "fethiyeKemer": "Fethiye / Kemer",
       "placeholderDesc": "Description coming soon...",
       "select": "Select",
-      "bookTransfer": "Book Transfer to",
+      "bookTransfer": "Check price for",
       "cappadociaDesc": "Experience the magic of Cappadocia with our premium transfer. Journey time from Antalya is approximately 7-8 hours. Marvel at the unique fairy chimneys, ancient cave dwellings, and start your morning with a breathtaking hot air balloon ride.",
       "pamukkaleDesc": "Travel in comfort to the 'Cotton Castle'. The VIP transfer from Antalya takes around 3.5 hours. Relax in the thermal pools and explore the ancient ruins of Hierapolis in absolute luxury.",
       "fethiye": "Fethiye",
@@ -67,7 +67,7 @@
     "childSeat": "Child seat",
     "free": "Free",
     "minibar": "Mini-bar (+5€)",
-    "bookButton": "Book Transfer",
+    "bookButton": "Check price",
     "waOnlyFrom": "Hello! I would like to book a transfer from: {from}.",
     "waOnlyTo": "Hello! I would like to book a transfer to: {to}.",
     "waBoth": "Hello! I would like to book a transfer route: {from} — {to}.",
@@ -89,5 +89,34 @@
   },
   "Footer": {
     "description": "Premium transfer services for your utmost comfort and safety."
+  },
+  "HowItWorks": {
+    "title": "How We Work",
+    "step1Title": "Quick Request",
+    "step1Desc": "Clarifying details and price",
+    "step2Title": "Meeting",
+    "step2Desc": "Driver with a name sign at the airport",
+    "step3Title": "The Journey",
+    "step3Desc": "Comfort and safety to your door"
+  },
+  "Reviews": {
+    "title": "Reviews",
+    "review1Name": "Alex S.",
+    "review1Text": "Excellent service. Met us right on time, the car was perfectly clean. Arrived at our hotel in Belek smoothly without delays.",
+    "review2Name": "Marina V.",
+    "review2Text": "Very polite driver. The child seat was pre-installed as requested. The journey was exceptionally comfortable.",
+    "review3Name": "Dmitry K.",
+    "review3Text": "Not my first time booking with them. Flawless level of service every time. A true business-class experience on wheels."
+  },
+  "FAQ": {
+    "title": "FAQ",
+    "q1": "What if my flight is delayed?",
+    "a1": "We track your flight for free and will wait for you.",
+    "q2": "How will I find the driver?",
+    "a2": "We will meet you with a name sign at the terminal exit.",
+    "q3": "Do you have child seats?",
+    "a3": "Yes, we provide them for free (ISOFIX), just indicate it when requesting.",
+    "q4": "How does payment work?",
+    "a4": "You can pay for the trip in cash or by card directly in the car. Fixed price with no hidden fees."
   }
 }

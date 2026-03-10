@@ -2,7 +2,7 @@
   "Hero": {
     "title": "BLACK DIAMOND GRAND TRANSFER",
     "subtitle": "Grenzenloser Komfort. Premium Business Class Service.",
-    "cta": "Buchen"
+    "cta": "Preis berechnen"
   },
   "Features": {
     "exterior": "Exterieur",
@@ -28,7 +28,7 @@
       "fethiyeKemer": "Fethiye / Kemer",
       "placeholderDesc": "Beschreibung folgt in Kürze...",
       "select": "Auswählen",
-      "bookTransfer": "Transfer buchen nach",
+      "bookTransfer": "Route berechnen nach",
       "cappadociaDesc": "Erleben Sie die Magie Kappadokiens mit unserem Premium-Transfer. Die Fahrzeit von Antalya beträgt ca. 7-8 Stunden. Bewundern Sie die einzigartigen Feenkamine und Höhlenwohnungen.",
       "pamukkaleDesc": "Reisen Sie komfortabel zur 'Baumwollburg'. Der VIP-Transfer von Antalya dauert etwa 3,5 Stunden. Entspannen Sie in den Thermalbecken und erkunden Sie die antiken Ruinen von Hierapolis in absolutem Luxus.",
       "fethiye": "Fethiye",
@@ -67,7 +67,7 @@
     "childSeat": "Kindersitz",
     "free": "Kostenlos",
     "minibar": "Minibar (+5€)",
-    "bookButton": "Buchen",
+    "bookButton": "Preis berechnen",
     "waOnlyFrom": "Hallo! Ich möchte einen Transfer von: {from} buchen.",
     "waOnlyTo": "Hallo! Ich möchte einen Transfer nach: {to} buchen.",
     "waBoth": "Hallo! Ich möchte einen Transfer buchen: {from} — {to}.",
@@ -89,5 +89,34 @@
   },
   "Footer": {
     "description": "Premium-Transferservice für maximalen Komfort und Sicherheit."
+  },
+  "HowItWorks": {
+    "title": "Wie wir arbeiten",
+    "step1Title": "Schnelle Anfrage",
+    "step1Desc": "Klärung von Details und Preis",
+    "step2Title": "Treffen",
+    "step2Desc": "Fahrer mit Namensschild am Flughafen",
+    "step3Title": "Die Fahrt",
+    "step3Desc": "Komfort und Sicherheit bis zur Tür"
+  },
+  "Reviews": {
+    "title": "Bewertungen",
+    "review1Name": "Alex S.",
+    "review1Text": "Ausgezeichneter Service. Wir wurden pünktlich abgeholt, das Auto war perfekt sauber. Reibungslose Fahrt zum Hotel in Belek.",
+    "review2Name": "Marina V.",
+    "review2Text": "Sehr höflicher Fahrer. Der Kindersitz war wie gewünscht vorinstalliert. Die Reise war außergewöhnlich komfortabel.",
+    "review3Name": "Dmitry K.",
+    "review3Text": "Nicht mein erstes Mal bei ihnen. Jedes Mal ein makelloser Service. Ein echtes Business-Class-Erlebnis auf Rädern."
+  },
+  "FAQ": {
+    "title": "Häufige Fragen",
+    "q1": "Was passiert, wenn mein Flug Verspätung hat?",
+    "a1": "Wir verfolgen Ihren Flug kostenlos und warten auf Sie.",
+    "q2": "Wie finde ich den Fahrer?",
+    "a2": "Wir erwarten Sie mit einem Namensschild am Ausgang des Terminals.",
+    "q3": "Haben Sie Kindersitze?",
+    "a3": "Ja, wir stellen diese kostenlos zur Verfügung (ISOFIX). Bitte geben Sie dies einfach bei der Anfrage an.",
+    "q4": "Wie funktioniert die Bezahlung?",
+    "a4": "Sie können die Fahrt direkt im Auto bar oder mit Karte bezahlen. Festpreis ohne versteckte Gebühren."
   }
 }

@@ -2,7 +2,7 @@
   "Hero": {
     "title": "BLACK DIAMOND GRAND TRANSFER",
     "subtitle": "Sınır Tanımayan Konfor. Premium Business Class Hizmeti.",
-    "cta": "Rezervasyon"
+    "cta": "Fiyat al"
   },
   "Features": {
     "exterior": "Dış Görünüm",
@@ -28,7 +28,7 @@
       "fethiyeKemer": "Fethiye / Kemer",
       "placeholderDesc": "Açıklama yakında eklenecek...",
       "select": "Seç",
-      "bookTransfer": "Transfer Rezervasyonu:",
+      "bookTransfer": "Rotayı hesapla:",
       "cappadociaDesc": "Premium transferimizle Kapadokya'nın büyüsünü yaşayın. Antalya'dan yolculuk yaklaşık 7-8 saat sürmektedir. Eşsiz peri bacalarının, antik mağara evlerinin ve sıcak hava balonlarının tadını çıkarın.",
       "pamukkaleDesc": "'Pamuk Kalesi'ne konforla seyahat edin. Antalya'dan VIP transfer yaklaşık 3.5 saat sürer. Termal havuzlarda rahatlayın ve antik Hierapolis kalıntılarını mutlak lüks içinde keşfedin.",
       "fethiye": "Fethiye",
@@ -67,7 +67,7 @@
     "childSeat": "Çocuk koltuğu",
     "free": "Ücretsiz",
     "minibar": "Mini bar (+5€)",
-    "bookButton": "Rezervasyon",
+    "bookButton": "Fiyat al",
     "waOnlyFrom": "Merhaba! Şuradan bir transfer rezervasyonu yapmak istiyorum: {from}.",
     "waOnlyTo": "Merhaba! Şuraya bir transfer rezervasyonu yapmak istiyorum: {to}.",
     "waBoth": "Merhaba! Şuradan şuraya bir transfer rezervasyonu yapmak istiyorum: {from} — {to}.",
@@ -89,5 +89,34 @@
   },
   "Footer": {
     "description": "Maksimum konfor ve güvenlik için premium transfer hizmeti."
+  },
+  "HowItWorks": {
+    "title": "Nasıl Çalışıyoruz",
+    "step1Title": "Hızlı Talep",
+    "step1Desc": "Detayların ve fiyatın belirlenmesi",
+    "step2Title": "Karşılama",
+    "step2Desc": "Havalimanında isim yazılı tabela ile karşılama",
+    "step3Title": "Yolculuk",
+    "step3Desc": "Kapınıza kadar konfor ve güvenlik"
+  },
+  "Reviews": {
+    "title": "Yorumlar",
+    "review1Name": "Alex S.",
+    "review1Text": "Mükemmel hizmet. Zamanında karşılandık, araç tertemizdi. Belek'teki otelimize gecikme olmadan ulaştık.",
+    "review2Name": "Marina V.",
+    "review2Text": "Çok kibar bir şoför. Çocuk koltuğu istediğimiz gibi önceden takılmıştı. Yolculuk son derece konforluydu.",
+    "review3Name": "Dmitry K.",
+    "review3Text": "İlk kez kullanmıyorum. Her zaman kusursuz hizmet seviyesi. Gerçek bir tekerlekli business-class."
+  },
+  "FAQ": {
+    "title": "Sıkça Sorulan Sorular",
+    "q1": "Uçağım rötar yaparsa ne olur?",
+    "a1": "Uçuşunuzu ücretsiz takip ediyor ve sizi bekliyoruz.",
+    "q2": "Şoförü nasıl bulacağım?",
+    "a2": "Sizi terminal çıkışında isim tabelasıyla karşılıyoruz.",
+    "q3": "Çocuk koltuğu var mı?",
+    "a3": "Evet, ücretsiz olarak sağlıyoruz (ISOFIX), talep sırasında belirtmeniz yeterlidir.",
+    "q4": "Ödeme nasıl gerçekleşiyor?",
+    "a4": "Yolculuğunuzun ödemesini nakit veya kartla doğrudan araçta yapabilirsiniz. Gizli ücretler olmadan sabit fiyat."
   }
 }

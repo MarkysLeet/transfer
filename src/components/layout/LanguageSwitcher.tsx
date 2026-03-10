@@ -39,7 +39,7 @@ export function LanguageSwitcher({ isScrolled = true }: LanguageSwitcherProps) {
       {isOpen && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
-          <div className="absolute top-full right-0 mt-2 py-2 w-24 bg-white border border-slate-200 rounded-xl shadow-xl backdrop-blur-md transform-gpu will-change-transform z-20 flex flex-col">
+          <div className="absolute top-full right-0 mt-2 py-2 w-24 bg-white shadow-lg border border-slate-200 rounded-xl z-20 flex flex-col">
             {locales.map((l) => (
               <button
                 key={l}

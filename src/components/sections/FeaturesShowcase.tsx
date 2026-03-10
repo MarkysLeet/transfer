@@ -320,17 +320,17 @@ export const FeaturesShowcase = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm touch-none"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#F4EFEB] touch-none"
           >
             <button
               onClick={closeLightbox}
-              className="absolute top-6 right-6 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-50"
+              className="absolute top-6 right-6 p-2 rounded-full bg-white shadow-md hover:bg-slate-50 text-slate-800 transition-colors z-50"
             >
               <X size={28} />
             </button>
 
             <div className="w-full max-w-6xl mx-auto h-[80vh] relative flex items-center">
-              <div className="overflow-hidden w-full h-full" ref={lightboxEmblaRef}>
+              <div className="overflow-hidden w-full h-full rounded-3xl shadow-xl bg-white/5" ref={lightboxEmblaRef}>
                 <div className="flex h-full items-center touch-pan-y">
                   {interiorImages.map((src, idx) => (
                     <div key={idx} className="flex-[0_0_100%] min-w-0 relative h-full flex items-center justify-center p-4">
@@ -351,13 +351,13 @@ export const FeaturesShowcase = () => {
               {/* Lightbox Navigation */}
               <button
                 onClick={(e) => { e.stopPropagation(); prevLightbox(); }}
-                className="absolute left-4 md:left-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-50"
+                className="absolute left-4 md:left-8 p-3 rounded-full bg-white shadow-md hover:bg-slate-50 border border-slate-100 text-slate-800 transition-colors z-50"
               >
                 <ChevronLeft size={32} />
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); nextLightbox(); }}
-                className="absolute right-4 md:right-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-50"
+                className="absolute right-4 md:right-8 p-3 rounded-full bg-white shadow-md hover:bg-slate-50 border border-slate-100 text-slate-800 transition-colors z-50"
               >
                 <ChevronRight size={32} />
               </button>
@@ -368,8 +368,8 @@ export const FeaturesShowcase = () => {
                   <button
                     key={idx}
                     onClick={() => lightboxEmblaApi?.scrollTo(idx)}
-                    className={`w-2.5 h-2.5 rounded-full transition-all ${
-                      idx === lightboxIndex ? "bg-white w-6" : "bg-white/30 hover:bg-white/50"
+                    className={`h-2.5 rounded-full transition-all shadow-sm ${
+                      idx === lightboxIndex ? "bg-slate-800 w-6" : "bg-slate-300 w-2.5 hover:bg-slate-400"
                     }`}
                   />
                 ))}

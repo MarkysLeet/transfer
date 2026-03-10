@@ -185,10 +185,10 @@ const Checkbox = ({
     return (
       <button
         onClick={onChange}
-        className={`flex items-center gap-1.5 md:gap-2 group focus:outline-none px-3 py-1.5 md:px-6 md:py-2.5 rounded-xl border transition-all duration-300 backdrop-blur-xl transform-gpu will-change-transform ${
+        className={`flex items-center gap-1.5 md:gap-2 group focus:outline-none px-3 py-1.5 md:px-6 md:py-2.5 rounded-xl transition-all duration-300 ${
           checked
-            ? "bg-[#2F4157] border-[#2F4157] text-[#E2DED3]"
-            : "bg-white/10 border-white/30 text-[#E2DED3] hover:bg-white/20 hover:border-white/40"
+            ? "bg-[#2F4157] text-[#E2DED3] shadow-[inset_4px_4px_8px_rgba(0,0,0,0.4),inset_-4px_-4px_8px_rgba(255,255,255,0.1)]"
+            : "bg-[#F4EFEB] text-[#2F4157] shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)] hover:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.1),inset_-2px_-2px_4px_rgba(255,255,255,0.8)]"
         }`}
       >
         <div className="relative w-3 h-3 md:w-4 md:h-4 flex items-center justify-center">
@@ -213,7 +213,7 @@ const Checkbox = ({
                 transition={{ duration: 0.2 }}
                 className="absolute inset-0 flex items-center justify-center"
               >
-                <Plus strokeWidth={3} className="w-3 h-3 md:w-4 md:h-4 text-[#E2DED3]" />
+                <Plus strokeWidth={3} className="w-3 h-3 md:w-4 md:h-4 text-[#2F4157]" />
               </motion.div>
             )}
           </AnimatePresence>
@@ -223,7 +223,7 @@ const Checkbox = ({
             {label}
           </span>
           {subtitle && (
-            <span className={`text-[10px] md:text-xs ${checked ? 'text-[#E2DED3]/80' : 'text-[#E2DED3]/70'}`}>
+            <span className={`text-[10px] md:text-xs ${checked ? 'text-[#E2DED3]/80' : 'text-[#2F4157]/70'}`}>
               {subtitle}
             </span>
           )}

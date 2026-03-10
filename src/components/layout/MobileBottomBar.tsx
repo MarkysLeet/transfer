@@ -79,7 +79,7 @@ export const MobileBottomBar = () => {
               onClick={() => setIsLangSheetOpen(false)}
               className="fixed inset-0 z-50 md:hidden"
             >
-              <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transform-gpu will-change-transform" />
+              <div className="absolute inset-0 bg-black/60" />
             </motion.div>
             <motion.div
               initial={{ y: "100%" }}

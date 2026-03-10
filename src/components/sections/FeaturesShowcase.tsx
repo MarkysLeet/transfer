@@ -320,17 +320,17 @@ export const FeaturesShowcase = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm touch-none"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-[#F4EFEB] touch-none"
           >
             <button
               onClick={closeLightbox}
-              className="absolute top-6 right-6 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-50"
+              className="absolute top-6 right-6 p-2 rounded-full bg-[#F4EFEB] shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)] hover:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.1),inset_-2px_-2px_4px_rgba(255,255,255,0.8)] text-slate-800 transition-colors z-50"
             >
               <X size={28} />
             </button>
 
             <div className="w-full max-w-6xl mx-auto h-[80vh] relative flex items-center">
-              <div className="overflow-hidden w-full h-full" ref={lightboxEmblaRef}>
+              <div className="overflow-hidden w-full h-full rounded-3xl shadow-[inset_8px_8px_16px_rgba(0,0,0,0.1),inset_-8px_-8px_16px_rgba(255,255,255,0.8)]" ref={lightboxEmblaRef}>
                 <div className="flex h-full items-center touch-pan-y">
                   {interiorImages.map((src, idx) => (
                     <div key={idx} className="flex-[0_0_100%] min-w-0 relative h-full flex items-center justify-center p-4">
@@ -351,13 +351,13 @@ export const FeaturesShowcase = () => {
               {/* Lightbox Navigation */}
               <button
                 onClick={(e) => { e.stopPropagation(); prevLightbox(); }}
-                className="absolute left-4 md:left-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-50"
+                className="absolute left-4 md:left-8 p-3 rounded-full bg-[#F4EFEB] shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)] hover:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.1),inset_-2px_-2px_4px_rgba(255,255,255,0.8)] text-slate-800 transition-colors z-50"
               >
                 <ChevronLeft size={32} />
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); nextLightbox(); }}
-                className="absolute right-4 md:right-8 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors z-50"
+                className="absolute right-4 md:right-8 p-3 rounded-full bg-[#F4EFEB] shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)] hover:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.1),inset_-2px_-2px_4px_rgba(255,255,255,0.8)] text-slate-800 transition-colors z-50"
               >
                 <ChevronRight size={32} />
               </button>
@@ -368,8 +368,8 @@ export const FeaturesShowcase = () => {
                   <button
                     key={idx}
                     onClick={() => lightboxEmblaApi?.scrollTo(idx)}
-                    className={`w-2.5 h-2.5 rounded-full transition-all ${
-                      idx === lightboxIndex ? "bg-white w-6" : "bg-white/30 hover:bg-white/50"
+                    className={`w-2.5 h-2.5 rounded-full transition-all shadow-[inset_2px_2px_4px_rgba(0,0,0,0.2),inset_-2px_-2px_4px_rgba(255,255,255,0.8)] ${
+                      idx === lightboxIndex ? "bg-[#2F4157] w-6" : "bg-[#F4EFEB] hover:bg-slate-200"
                     }`}
                   />
                 ))}

@@ -86,7 +86,7 @@ export const Header = () => {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40"
           >
-            <div className="absolute inset-0 bg-white/95 backdrop-blur-xl transform-gpu will-change-transform" />
+            <div className="absolute inset-0 bg-[#F4EFEB] shadow-[inset_0_4px_8px_rgba(0,0,0,0.1)]" />
             <div className="relative z-10 flex flex-col justify-center items-center h-full overflow-hidden">
                <nav className="flex flex-col items-center gap-8 mb-16">
               {links.map((link, idx) => (

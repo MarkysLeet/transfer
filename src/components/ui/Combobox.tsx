@@ -134,11 +134,11 @@ export const Combobox = ({
 
   return (
     <div
-      className="relative h-14 bg-white/20 backdrop-blur-md transform-gpu will-change-transform border border-white/30 shadow-lg rounded-xl transition-all duration-300 focus-within:bg-white/40 focus-within:border-white/50"
+      className="relative h-14 bg-[#F4EFEB] rounded-xl transition-all duration-300 shadow-[inset_4px_4px_8px_rgba(0,0,0,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.8)] focus-within:shadow-[inset_6px_6px_10px_rgba(0,0,0,0.15),inset_-6px_-6px_10px_rgba(255,255,255,0.9)]"
       ref={containerRef}
     >
       {icon && (
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#E2DED3]">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2F4157]">
           {icon}
         </div>
       )}
@@ -152,7 +152,7 @@ export const Combobox = ({
           setIsOpen(true);
         }}
         onFocus={() => setIsOpen(true)}
-        className={`w-full h-full bg-transparent ${icon ? 'pl-12' : 'pl-5'} pr-12 text-sm text-[#E2DED3] placeholder:text-[#E2DED3]/70 focus:outline-none`}
+        className={`w-full h-full bg-transparent ${icon ? 'pl-12' : 'pl-5'} pr-12 text-sm text-[#2F4157] placeholder:text-[#2F4157]/60 focus:outline-none`}
       />
 
       {allowGeolocation && (
@@ -162,10 +162,10 @@ export const Combobox = ({
             e.stopPropagation();
             if (onGeolocationClick) onGeolocationClick();
           }}
-          className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-[#E2DED3]/80 hover:text-[#E2DED3] hover:bg-white/10 transition-colors"
+          className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-[#2F4157]/80 hover:text-[#2F4157] transition-colors"
           title="Use my location"
         >
-          <Locate className={`w-4 h-4 ${isLoadingLocation ? 'animate-pulse text-[#E2DED3]' : ''}`} />
+          <Locate className={`w-4 h-4 ${isLoadingLocation ? 'animate-pulse text-[#2F4157]' : ''}`} />
         </button>
       )}
 
@@ -187,7 +187,7 @@ export const Combobox = ({
                 zIndex: 9999,
               }}
             >
-              <div className="relative bg-white/95 backdrop-blur-xl transform-gpu will-change-transform border border-slate-200 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-60 overflow-y-auto hide-scrollbar py-2">
+              <div className="relative bg-[#F4EFEB] rounded-xl shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)] max-h-60 overflow-y-auto hide-scrollbar py-2">
                 {filteredOptions.map((option) => (
                   <button
                     key={option.value}

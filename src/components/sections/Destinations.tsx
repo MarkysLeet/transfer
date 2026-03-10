@@ -174,13 +174,13 @@ export const Destinations = () => {
           {/* Navigation Controls */}
           <button
             onClick={() => emblaApi?.scrollPrev()}
-            className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/80 shadow-lg text-slate-800 hover:bg-white transition-colors backdrop-blur-md hidden md:block"
+            className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-[#F4EFEB] shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)] hover:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.1),inset_-2px_-2px_4px_rgba(255,255,255,0.8)] text-slate-800 transition-all hidden md:block"
           >
             <ChevronLeft size={24} />
           </button>
           <button
             onClick={() => emblaApi?.scrollNext()}
-            className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/80 shadow-lg text-slate-800 hover:bg-white transition-colors backdrop-blur-md hidden md:block"
+            className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-[#F4EFEB] shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)] hover:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.1),inset_-2px_-2px_4px_rgba(255,255,255,0.8)] text-slate-800 transition-all hidden md:block"
           >
             <ChevronRight size={24} />
           </button>
@@ -196,7 +196,7 @@ export const Destinations = () => {
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedCard(null)}
           >
-            <div className="absolute inset-0 bg-[#F4EFEB]/80 backdrop-blur-xl transform-gpu will-change-transform pointer-events-none" />
+            <div className="absolute inset-0 bg-[#F4EFEB]/90 pointer-events-none" />
             <div className="relative z-10 flex items-center justify-center w-full h-full">
 
             <AnimatePresence mode="wait">
@@ -207,11 +207,11 @@ export const Destinations = () => {
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-2xl bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+                className="relative w-full max-w-2xl bg-[#F4EFEB] shadow-[12px_12px_24px_rgba(0,0,0,0.15),-12px_-12px_24px_rgba(255,255,255,0.8)] rounded-3xl overflow-hidden flex flex-col max-h-[90vh]"
               >
                 <button
                   onClick={() => setSelectedCard(null)}
-                  className="absolute top-4 right-4 z-30 p-2 rounded-full bg-black/40 text-white hover:text-white hover:bg-black/60 transition-colors backdrop-blur-md transform-gpu will-change-transform shadow-sm"
+                  className="absolute top-4 right-4 z-30 p-2 rounded-full bg-[#F4EFEB] text-slate-800 shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)] hover:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.1),inset_-2px_-2px_4px_rgba(255,255,255,0.8)] transition-all"
                 >
                   <X size={24} />
                 </button>

@@ -27,6 +27,7 @@ export const GooglePlacesCombobox = ({
 }: GooglePlacesComboboxProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const portalId = `google-combobox-dropdown-portal-${placeholder.replace(/\s+/g, '-').toLowerCase()}`;
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
 
   const {
@@ -43,11 +44,13 @@ export const GooglePlacesCombobox = ({
     defaultValue: value,
   });
 
+  // Only update inputValue if it is out of sync when a parent component sets a new value programmatically
+  // (e.g. initial load or reset). Ignore the normal typing scenario to avoid clearing suggestions abruptly.
   useEffect(() => {
-    if (value !== inputValue) {
+    if (value && value !== inputValue && !isOpen) {
       setValue(value, false);
     }
-  }, [value, inputValue, setValue]);
+  }, [value, inputValue, setValue, isOpen]);
 
   const updateDropdownPosition = () => {
     if (containerRef.current) {
@@ -76,7 +79,7 @@ export const GooglePlacesCombobox = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        const dropdownElement = document.getElementById("google-combobox-dropdown-portal");
+        const dropdownElement = document.getElementById(portalId);
         if (dropdownElement && dropdownElement.contains(event.target as Node)) {
            return;
         }
@@ -86,7 +89,7 @@ export const GooglePlacesCombobox = ({
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [portalId]);
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -144,7 +147,7 @@ export const GooglePlacesCombobox = ({
         <AnimatePresence>
           {isOpen && status === "OK" && data.length > 0 && (
             <motion.div
-              id="google-combobox-dropdown-portal"
+              id={portalId}
               data-lenis-prevent="true"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}

@@ -200,23 +200,12 @@ export const BookingWidget = () => {
     setIsPriceLoading(false);
   }, [carType, isLoaded]);
 
+  // Recalculate price only when the car type changes, assuming a destination is already set.
   useEffect(() => {
     let active = true;
-    if (to) {
-      // Debounce price calculation so it doesn't trigger immediately while typing
+    if (to && estimatedPrice !== null) {
       const timeoutId = setTimeout(() => {
         if (active) calculatePrice(to);
-      }, 800);
-      return () => {
-        active = false;
-        clearTimeout(timeoutId);
-      };
-    } else {
-      const timeoutId = setTimeout(() => {
-        if (active) {
-          setEstimatedPrice(null);
-          setDistanceFailed(false);
-        }
       }, 0);
       return () => {
         active = false;
@@ -224,7 +213,7 @@ export const BookingWidget = () => {
       };
     }
     return () => { active = false; };
-  }, [carType, to, calculatePrice]);
+  }, [carType, to, estimatedPrice, calculatePrice]); // Only trigger on carType change, NOT on 'to' change.
 
   const handleFromChange = (val: string) => {
     setFrom(val);
@@ -235,7 +224,11 @@ export const BookingWidget = () => {
 
   const handleToChange = (val: string, placeId?: string) => {
     setTo(val);
-    if (val && placeId) {
+    if (!val) {
+       setEstimatedPrice(null);
+       setDistanceFailed(false);
+    } else if (val && placeId) {
+       // Only calculate when explicitly selected from dropdown (has placeId)
        calculatePrice(val, placeId);
     }
   };

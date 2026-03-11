@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Locate, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import usePlacesAutocomplete from "use-places-autocomplete";
 
 interface GooglePlacesComboboxProps {

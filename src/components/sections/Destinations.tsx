@@ -1,11 +1,11 @@
 
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { ChevronLeft, ChevronRight, X, MousePointerClick } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Button } from "@/components/ui/Button";
 
@@ -27,11 +27,6 @@ export const Destinations = () => {
   });
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -89,7 +84,7 @@ export const Destinations = () => {
 
   const handleBookSelect = () => {
     if (!selectedCard) return;
-    const title = selectedCard.id; // Passing raw ID to sync with value in combobox better, but combobox uses "value" mapping.
+    // Passing raw ID to sync with value in combobox better, but combobox uses "value" mapping.
     // Wait, the user said "To field auto populated with that specific city's name". Combobox value works best with raw ID/value.
     const rawValue = selectedCard.id === "fethiyeKemer" ? "fethiye" : selectedCard.id; // Just map it properly
 

@@ -48,7 +48,7 @@ export const Reviews = () => {
     emblaApi.on("select", updateSelect);
   }, [emblaApi]);
 
-  const ReviewCard = ({ review, index }: { review: any, index: number }) => (
+  const ReviewCard = ({ review }: { review: { name: string; date?: string; rating: number; text: string; source?: string } }) => (
     <motion.div
       variants={{
         hidden: { opacity: 0, y: 30 },
@@ -67,7 +67,7 @@ export const Reviews = () => {
       </div>
 
       <p className="text-slate-600 leading-relaxed font-light mb-6 flex-grow">
-        "{review.text}"
+        &quot;{review.text}&quot;
       </p>
 
       <div className="mt-auto">
@@ -98,9 +98,9 @@ export const Reviews = () => {
         {isMobile ? (
           <div className="overflow-hidden pb-12 -mx-4 px-4" ref={emblaRef}>
             <div className="flex touch-pan-y gap-4">
-              {reviews.map((review, index) => (
-                <div key={index} className="flex-[0_0_85%] min-w-0 h-auto">
-                  <ReviewCard review={review} index={index} />
+              {reviews.map((review, idx) => (
+                <div key={idx} className="flex-[0_0_85%] min-w-0 h-auto">
+                  <ReviewCard review={review} />
                 </div>
               ))}
             </div>
@@ -132,8 +132,8 @@ export const Reviews = () => {
             }}
             className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto relative pt-4"
           >
-            {reviews.map((review, index) => (
-              <ReviewCard key={index} review={review} index={index} />
+          {reviews.map((review, idx) => (
+            <ReviewCard key={idx} review={review} />
             ))}
           </motion.div>
         )}

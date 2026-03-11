@@ -107,8 +107,29 @@ export const BookingWidget = () => {
 
     const destLower = destinationStr.toLowerCase();
 
+    // Helper to check against dictionary considering cyrillic translations and simple mapping
+    const findMatch = (str: string) => {
+      const cyrillicMap: Record<string, string> = {
+        "лара": "lara", "кунду": "kundu", "белек": "belek", "богазкент": "bogazkent",
+        "сиде": "side", "соргун": "sorgun", "кумкой": "kumkoy", "кумкёй": "kumkoy",
+        "эвренсеки": "evrenseki", "чолаклы": "colakli", "гюндогду": "gundogdu",
+        "кызылагач": "kizilagac", "кызылот": "kizilot", "окурджалар": "okurcalar",
+        "авсаллар": "avsallar", "тюрклер": "turkler", "конаклы": "konakli",
+        "алания": "alanya", "аланья": "alanya", "кемер": "kemer"
+      };
+
+      let match = Object.keys(PRICING_DICTIONARY).find(key => str.includes(key));
+      if (!match) {
+         const cyrillicMatch = Object.keys(cyrillicMap).find(key => str.includes(key));
+         if (cyrillicMatch) {
+            match = cyrillicMap[cyrillicMatch];
+         }
+      }
+      return match;
+    };
+
     // Step 1: Dictionary match
-    let matchedKey = Object.keys(PRICING_DICTIONARY).find(key => destLower.includes(key));
+    let matchedKey = findMatch(destLower);
 
     // If we have a placeId, let's also try to get the detailed place info to check address components
     if (!matchedKey && placeId && isLoaded && window.google) {
@@ -125,7 +146,7 @@ export const BookingWidget = () => {
         });
 
         const fullAddressLower = `${place.name} ${place.formatted_address} ${place.address_components?.map(c => c.long_name).join(" ")}`.toLowerCase();
-        matchedKey = Object.keys(PRICING_DICTIONARY).find(key => fullAddressLower.includes(key));
+        matchedKey = findMatch(fullAddressLower);
       } catch (error) {
         console.error("Error fetching place details:", error);
       }

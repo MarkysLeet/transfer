@@ -203,9 +203,20 @@ export const BookingWidget = () => {
   useEffect(() => {
     let active = true;
     if (to) {
-      // setTimeout avoids the exact synchronous invocation detection by the lint rule
+      // Debounce price calculation so it doesn't trigger immediately while typing
       const timeoutId = setTimeout(() => {
         if (active) calculatePrice(to);
+      }, 800);
+      return () => {
+        active = false;
+        clearTimeout(timeoutId);
+      };
+    } else {
+      const timeoutId = setTimeout(() => {
+        if (active) {
+          setEstimatedPrice(null);
+          setDistanceFailed(false);
+        }
       }, 0);
       return () => {
         active = false;
@@ -226,9 +237,6 @@ export const BookingWidget = () => {
     setTo(val);
     if (val && placeId) {
        calculatePrice(val, placeId);
-    } else if (!val) {
-       setEstimatedPrice(null);
-       setDistanceFailed(false);
     }
   };
 
@@ -307,16 +315,28 @@ export const BookingWidget = () => {
       <div className="flex flex-col md:flex-row gap-4 items-stretch relative z-50">
         {/* Main Glass Widget Container with Inputs */}
         <div className="flex-1 w-full h-14">
-          <Combobox
-            value={from}
-            onChange={handleFromChange}
-            placeholder={t("from")}
-            options={cities}
-            icon={<MapPin />}
-            allowGeolocation={true}
-            onGeolocationClick={handleGeolocation}
-            isLoadingLocation={isLoadingLocation}
-          />
+          {isLoaded ? (
+            <GooglePlacesCombobox
+              value={from}
+              onChange={handleFromChange}
+              placeholder={t("from")}
+              icon={<MapPin />}
+              allowGeolocation={true}
+              onGeolocationClick={handleGeolocation}
+              isLoadingLocation={isLoadingLocation}
+            />
+          ) : (
+            <Combobox
+              value={from}
+              onChange={handleFromChange}
+              placeholder={t("from")}
+              options={cities}
+              icon={<MapPin />}
+              allowGeolocation={true}
+              onGeolocationClick={handleGeolocation}
+              isLoadingLocation={isLoadingLocation}
+            />
+          )}
         </div>
         <div className="flex-1 w-full h-14">
           {isLoaded ? (
@@ -327,7 +347,7 @@ export const BookingWidget = () => {
               icon={<MapPin />}
             />
           ) : (
-             <Combobox
+            <Combobox
               value={to}
               onChange={(val) => setTo(val)}
               placeholder={t("to")}

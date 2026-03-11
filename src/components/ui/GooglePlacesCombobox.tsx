@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { MapPin, Locate } from "lucide-react";
 import usePlacesAutocomplete from "use-places-autocomplete";
 
 interface GooglePlacesComboboxProps {
@@ -11,6 +11,9 @@ interface GooglePlacesComboboxProps {
   onChange: (value: string, placeId?: string) => void;
   placeholder: string;
   icon?: React.ReactNode;
+  allowGeolocation?: boolean;
+  onGeolocationClick?: () => void;
+  isLoadingLocation?: boolean;
 }
 
 export const GooglePlacesCombobox = ({
@@ -18,6 +21,9 @@ export const GooglePlacesCombobox = ({
   onChange,
   placeholder,
   icon,
+  allowGeolocation,
+  onGeolocationClick,
+  isLoadingLocation,
 }: GooglePlacesComboboxProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -119,6 +125,20 @@ export const GooglePlacesCombobox = ({
         onFocus={() => setIsOpen(true)}
         className={`w-full h-full bg-transparent ${icon ? 'pl-12' : 'pl-5'} pr-12 text-sm text-[#2F4157] placeholder:text-[#2F4157]/60 focus:outline-none`}
       />
+
+      {allowGeolocation && (
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (onGeolocationClick) onGeolocationClick();
+          }}
+          className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-[#2F4157]/80 hover:text-[#2F4157] transition-colors"
+          title="Use my location"
+        >
+          <Locate className={`w-4 h-4 ${isLoadingLocation ? 'animate-pulse text-[#2F4157]' : ''}`} />
+        </button>
+      )}
 
       {mounted && createPortal(
         <AnimatePresence>

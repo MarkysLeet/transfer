@@ -12,6 +12,7 @@
     "climate": "Erweiterte Klimaregelung",
     "childSeat": "Kostenloser Kindersitz (ISOFIX)",
     "minibar": "Minibar mit Getränken (auf Anfrage)",
+    "minibarTooltip": "Premium-Wasser, natürliche Säfte, kohlensäurehaltige Getränke, leichte Snacks und Schokolade. Alkoholische Getränke werden nach vorheriger Absprache bereitgestellt.",
     "payment": "Im Auto bezahlen (Bar / Karte)",
     "noHiddenFees": "Festpreisgarantie"
   },
@@ -67,14 +68,18 @@
     "roundTrip": "Hin- und Rückfahrt",
     "childSeat": "Kindersitz",
     "free": "Kostenlos",
-    "minibar": "Minibar (+5€)",
+    "minibar": "Minibar (auf Anfrage)",
     "bookButton": "Preis berechnen",
     "waOnlyFrom": "Hallo! Ich möchte einen Transfer von: {from} buchen.",
     "waOnlyTo": "Hallo! Ich möchte einen Transfer nach: {to} buchen.",
     "waBoth": "Hallo! Ich möchte einen Transfer buchen: {from} — {to}.",
     "waDetails": "Optionen: {options}",
     "myLocation": "Mein Standort",
-    "locateError": "Standort konnte nicht ermittelt werden"
+    "locateError": "Standort konnte nicht ermittelt werden",
+    "carVito": "MB Vito VIP",
+    "carVw": "VW Transporter VIP",
+    "estimatedPrice": "Geschätzter Preis: €{price}",
+    "priceUponRequest": "Preis: Auf Anfrage"
   },
   "Cities": {
     "antalya": "Antalya",

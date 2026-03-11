@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Wifi, Wind, Baby, Coffee, CreditCard, ShieldCheck, ChevronLeft, ChevronRight, X, Check, Plus } from "lucide-react";
+import { Wifi, Wind, Baby, Coffee, CreditCard, ShieldCheck, ChevronLeft, ChevronRight, X, Check, Plus, Info } from "lucide-react";
 import { useBookingStore } from "@/store/useBookingStore";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -87,11 +87,12 @@ export const FeaturesShowcase = () => {
     { id: "wifi", icon: Wifi, title: t("wifi"), isUpsell: false },
     { id: "climate", icon: Wind, title: t("climate"), isUpsell: false },
     { id: "childSeat", icon: Baby, title: t("childSeat"), isUpsell: true, active: childSeat, toggle: toggleChildSeat },
-    { id: "minibar", icon: Coffee, title: t("minibar"), isUpsell: true, active: minibar, toggle: toggleMinibar },
+    { id: "minibar", icon: Coffee, title: t("minibar"), isUpsell: true, active: minibar, toggle: toggleMinibar, tooltip: t("minibarTooltip") },
     { id: "payment", icon: CreditCard, title: t("payment"), isUpsell: false },
     { id: "noHiddenFees", icon: ShieldCheck, title: t("noHiddenFees"), isUpsell: false },
   ];
 
+  const [tooltipOpen, setTooltipOpen] = useState(false);
 
   return (
     <section id="features" className="relative bg-[#FAFAFA] text-slate-900 py-16 md:py-24 overflow-hidden">
@@ -255,7 +256,11 @@ export const FeaturesShowcase = () => {
                      hidden: { opacity: 0, y: 30 },
                      visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
                    }}
-                   onClick={() => feature.isUpsell && feature.toggle && feature.toggle()}
+                   onClick={(e) => {
+                     // Prevent toggle if clicking on info icon
+                     if ((e.target as HTMLElement).closest('.info-icon')) return;
+                     if (feature.isUpsell && feature.toggle) feature.toggle();
+                   }}
                    className={`relative p-6 rounded-2xl bg-white border shadow-xl shadow-black/5 transition-all duration-300 group flex flex-col items-start gap-4 text-left w-full
                      ${feature.isUpsell
                         ? (feature.active ? "border-[#2F4157] bg-[#F4EFEB]/20" : "border-slate-100 hover:border-slate-300 hover:bg-slate-50 cursor-pointer")
@@ -290,16 +295,49 @@ export const FeaturesShowcase = () => {
                         </AnimatePresence>
                       </div>
                     )}
-                    <div className={`p-3 rounded-xl border transition-transform duration-300 shadow-sm
-                      ${feature.isUpsell && feature.active
-                        ? "bg-[#2F4157] border-[#2F4157] scale-110"
-                        : "bg-slate-50 border-slate-100 group-hover:scale-110"
-                      }
-                    `}>
-                      {feature.isUpsell && feature.active ? (
-                        <Check className="w-6 h-6 text-[#E2DED3] stroke-[2]" />
-                      ) : (
-                        <feature.icon className={`w-6 h-6 stroke-[1.5] ${feature.isUpsell ? "text-[#5D8093]" : "text-[#2F4157]"}`} />
+                    <div className="flex w-full justify-between items-start">
+                      <div className={`p-3 rounded-xl border transition-transform duration-300 shadow-sm
+                        ${feature.isUpsell && feature.active
+                          ? "bg-[#2F4157] border-[#2F4157] scale-110"
+                          : "bg-slate-50 border-slate-100 group-hover:scale-110"
+                        }
+                      `}>
+                        {feature.isUpsell && feature.active ? (
+                          <Check className="w-6 h-6 text-[#E2DED3] stroke-[2]" />
+                        ) : (
+                          <feature.icon className={`w-6 h-6 stroke-[1.5] ${feature.isUpsell ? "text-[#5D8093]" : "text-[#2F4157]"}`} />
+                        )}
+                      </div>
+
+                      {feature.id === "minibar" && (
+                        <div
+                          className="info-icon relative z-10"
+                          onMouseEnter={() => setTooltipOpen(true)}
+                          onMouseLeave={() => setTooltipOpen(false)}
+                          onClick={(e) => {
+                             e.stopPropagation();
+                             setTooltipOpen(!tooltipOpen);
+                          }}
+                        >
+                          <button className="p-1 rounded-full text-slate-400 hover:text-[#2F4157] hover:bg-slate-100 transition-colors">
+                            <Info size={18} />
+                          </button>
+
+                          <AnimatePresence>
+                            {tooltipOpen && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 10 }}
+                                transition={{ duration: 0.2 }}
+                                className="absolute bottom-full right-0 mb-2 w-64 p-3 bg-slate-900 text-white text-xs rounded-xl shadow-xl z-50 pointer-events-none"
+                              >
+                                {feature.tooltip}
+                                <div className="absolute top-full right-3 -mt-1 w-2 h-2 bg-slate-900 rotate-45" />
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
                       )}
                     </div>
                     <p className={`font-medium pr-6 transition-colors ${feature.isUpsell && feature.active ? "text-[#2F4157] font-semibold" : "text-slate-700 group-hover:text-slate-900"}`}>

@@ -12,6 +12,7 @@
     "climate": "Advanced Climate Control",
     "childSeat": "Free child seat (ISOFIX)",
     "minibar": "Mini-bar with drinks (on request)",
+    "minibarTooltip": "Premium water, natural juices, carbonated drinks, light snacks, and chocolate. Alcoholic beverages are provided by prior arrangement.",
     "payment": "Pay in car (Cash / Card)",
     "noHiddenFees": "Fixed price guarantee"
   },
@@ -67,14 +68,18 @@
     "roundTrip": "Round trip",
     "childSeat": "Child seat",
     "free": "Free",
-    "minibar": "Mini-bar (+5€)",
+    "minibar": "Mini-bar (on request)",
     "bookButton": "Check price",
     "waOnlyFrom": "Hello! I would like to book a transfer from: {from}.",
     "waOnlyTo": "Hello! I would like to book a transfer to: {to}.",
     "waBoth": "Hello! I would like to book a transfer route: {from} — {to}.",
     "waDetails": "Options: {options}",
     "myLocation": "My Location",
-    "locateError": "Could not determine location"
+    "locateError": "Could not determine location",
+    "carVito": "MB Vito VIP",
+    "carVw": "VW Transporter VIP",
+    "estimatedPrice": "Estimated Price: €{price}",
+    "priceUponRequest": "Price: Upon Request"
   },
   "Cities": {
     "antalya": "Antalya",

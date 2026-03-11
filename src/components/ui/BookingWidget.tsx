@@ -4,9 +4,34 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
-import { MapPin, Check, Plus } from "lucide-react";
+import { MapPin, Check, Plus, Car } from "lucide-react";
 import { Combobox } from "./Combobox";
+import { GooglePlacesCombobox } from "./GooglePlacesCombobox";
 import { useBookingStore } from "@/store/useBookingStore";
+import { useLoadScript } from "@react-google-maps/api";
+
+const LIBRARIES: "places"[] = ["places"];
+
+const PRICING_DICTIONARY: Record<string, { vw: number; vito: number }> = {
+  "lara": { vw: 30, vito: 40 },
+  "kundu": { vw: 30, vito: 40 },
+  "belek": { vw: 35, vito: 45 },
+  "bogazkent": { vw: 40, vito: 50 },
+  "side": { vw: 45, vito: 55 },
+  "sorgun": { vw: 45, vito: 55 },
+  "kumkoy": { vw: 45, vito: 55 },
+  "evrenseki": { vw: 45, vito: 55 },
+  "colakli": { vw: 45, vito: 55 },
+  "gundogdu": { vw: 45, vito: 55 },
+  "kizilagac": { vw: 55, vito: 65 },
+  "kizilot": { vw: 55, vito: 65 },
+  "okurcalar": { vw: 60, vito: 70 },
+  "avsallar": { vw: 60, vito: 70 },
+  "turkler": { vw: 65, vito: 75 },
+  "konakli": { vw: 65, vito: 75 },
+  "alanya": { vw: 70, vito: 80 },
+  "kemer": { vw: 50, vito: 60 },
+};
 
 export const BookingWidget = () => {
   const t = useTranslations("BookingWidget");
@@ -16,6 +41,15 @@ export const BookingWidget = () => {
   const [to, setTo] = useState("");
   const [coords, setCoords] = useState<{lat: number, lng: number} | null>(null);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+  const [carType, setCarType] = useState<"vito" | "vw">("vito");
+  const [estimatedPrice, setEstimatedPrice] = useState<number | null>(null);
+  const [isPriceLoading, setIsPriceLoading] = useState(false);
+  const [distanceFailed, setDistanceFailed] = useState(false);
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+    libraries: LIBRARIES,
+  });
 
   const { roundTrip, childSeat, minibar, toggleChildSeat, toggleMinibar, setRoundTrip } = useBookingStore();
 
@@ -64,10 +98,103 @@ export const BookingWidget = () => {
     );
   };
 
+  const calculatePrice = async (destinationStr: string, placeId?: string) => {
+    setEstimatedPrice(null);
+    setDistanceFailed(false);
+    if (!destinationStr) return;
+
+    setIsPriceLoading(true);
+
+    const destLower = destinationStr.toLowerCase();
+
+    // Step 1: Dictionary match
+    let matchedKey = Object.keys(PRICING_DICTIONARY).find(key => destLower.includes(key));
+
+    // If we have a placeId, let's also try to get the detailed place info to check address components
+    if (!matchedKey && placeId && isLoaded && window.google) {
+      try {
+        const service = new google.maps.places.PlacesService(document.createElement("div"));
+        const place: google.maps.places.PlaceResult = await new Promise((resolve, reject) => {
+          service.getDetails({ placeId, fields: ["address_components", "formatted_address", "name"] }, (result, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK && result) {
+              resolve(result);
+            } else {
+              reject(status);
+            }
+          });
+        });
+
+        const fullAddressLower = `${place.name} ${place.formatted_address} ${place.address_components?.map(c => c.long_name).join(" ")}`.toLowerCase();
+        matchedKey = Object.keys(PRICING_DICTIONARY).find(key => fullAddressLower.includes(key));
+      } catch (error) {
+        console.error("Error fetching place details:", error);
+      }
+    }
+
+    if (matchedKey) {
+      setEstimatedPrice(PRICING_DICTIONARY[matchedKey][carType]);
+      setIsPriceLoading(false);
+      return;
+    }
+
+    // Step 2: Distance Matrix fallback
+    if (isLoaded && window.google) {
+      try {
+        const service = new google.maps.DistanceMatrixService();
+        // Antalya Airport (AYT) coordinates
+        const origin = new google.maps.LatLng(36.8987, 30.8005);
+
+        const response = await service.getDistanceMatrix({
+          origins: [origin],
+          destinations: [placeId ? { placeId } : destinationStr],
+          travelMode: google.maps.TravelMode.DRIVING,
+        });
+
+        if (response.rows[0].elements[0].status === "OK") {
+          const distanceInMeters = response.rows[0].elements[0].distance.value;
+          const distanceInKm = distanceInMeters / 1000;
+
+          let calculatedPrice = 0;
+          if (carType === "vw") {
+             calculatedPrice = Math.max(30, distanceInKm * 1.0);
+          } else {
+             calculatedPrice = Math.max(40, distanceInKm * 1.2);
+          }
+          setEstimatedPrice(Math.round(calculatedPrice));
+        } else {
+          setDistanceFailed(true);
+        }
+      } catch (error) {
+        console.error("Distance Matrix error:", error);
+        setDistanceFailed(true);
+      }
+    } else {
+       setDistanceFailed(true);
+    }
+
+    setIsPriceLoading(false);
+  };
+
+  useEffect(() => {
+    if (to) {
+      calculatePrice(to);
+    }
+  }, [carType, to]);
+
   const handleFromChange = (val: string) => {
     setFrom(val);
     if (val !== t("myLocation")) {
       setCoords(null);
+    }
+  };
+
+  const handleToChange = (val: string, placeId?: string) => {
+    setTo(val);
+    if (val && placeId) {
+       calculatePrice(val, placeId);
+    } else if (!val) {
+       setEstimatedPrice(null);
+       setDistanceFailed(false);
     }
   };
 
@@ -89,6 +216,15 @@ export const BookingWidget = () => {
     if (childSeat) options.push(t("childSeat"));
     if (minibar) options.push(t("minibar"));
 
+    const carName = carType === "vito" ? t("carVito") : t("carVw");
+    message += `\nCar: ${carName}`;
+
+    if (estimatedPrice) {
+       message += `\nEstimated Price: €${estimatedPrice}`;
+    } else if (distanceFailed) {
+       message += `\nEstimated Price: Upon Request`;
+    }
+
     if (options.length > 0) {
       const optionsStr = options.join(", ");
       const detailsMsg = t("waDetails", {
@@ -105,6 +241,34 @@ export const BookingWidget = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-6 relative z-50">
+      {/* Car Type Selector */}
+      <div className="flex justify-center mb-2">
+        <div className="inline-flex bg-white/20 backdrop-blur-sm p-1.5 rounded-2xl border border-white/30 shadow-sm">
+          <button
+            onClick={() => setCarType("vito")}
+            className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+              carType === "vito"
+                ? "bg-white text-slate-900 shadow-md scale-100"
+                : "text-white/80 hover:text-white hover:bg-white/10 scale-95"
+            }`}
+          >
+            <Car size={16} />
+            {t("carVito")}
+          </button>
+          <button
+            onClick={() => setCarType("vw")}
+            className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+              carType === "vw"
+                ? "bg-white text-slate-900 shadow-md scale-100"
+                : "text-white/80 hover:text-white hover:bg-white/10 scale-95"
+            }`}
+          >
+            <Car size={16} />
+            {t("carVw")}
+          </button>
+        </div>
+      </div>
+
       {/* Container with Inputs (Glass) & Button (Outside) */}
       <div className="flex flex-col md:flex-row gap-4 items-stretch relative z-50">
         {/* Main Glass Widget Container with Inputs */}
@@ -121,13 +285,22 @@ export const BookingWidget = () => {
           />
         </div>
         <div className="flex-1 w-full h-14">
-          <Combobox
-            value={to}
-            onChange={(val) => setTo(val)}
-            placeholder={t("to")}
-            options={cities}
-            icon={<MapPin />}
-          />
+          {isLoaded ? (
+            <GooglePlacesCombobox
+              value={to}
+              onChange={handleToChange}
+              placeholder={t("to")}
+              icon={<MapPin />}
+            />
+          ) : (
+             <Combobox
+              value={to}
+              onChange={(val) => setTo(val)}
+              placeholder={t("to")}
+              options={cities}
+              icon={<MapPin />}
+            />
+          )}
         </div>
 
         {/* Button Outside Glass Container */}
@@ -140,6 +313,43 @@ export const BookingWidget = () => {
             {t("bookButton")}
           </Button>
         </div>
+      </div>
+
+      {/* Price Display */}
+      <div className="flex justify-center relative z-40 h-8">
+         <AnimatePresence mode="wait">
+            {isPriceLoading ? (
+               <motion.div
+                 key="loading"
+                 initial={{ opacity: 0, y: 10 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 exit={{ opacity: 0, y: -10 }}
+                 className="text-[#E2DED3] text-sm font-medium tracking-wide animate-pulse"
+               >
+                  Calculating...
+               </motion.div>
+            ) : estimatedPrice ? (
+               <motion.div
+                 key="price"
+                 initial={{ opacity: 0, y: 10 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 exit={{ opacity: 0, y: -10 }}
+                 className="text-[#E2DED3] text-lg font-semibold tracking-wide bg-[#2F4157]/80 px-6 py-1.5 rounded-full border border-[#E2DED3]/20 shadow-lg backdrop-blur-sm"
+               >
+                  {t("estimatedPrice", { price: estimatedPrice })}
+               </motion.div>
+            ) : distanceFailed && to ? (
+               <motion.div
+                 key="failed"
+                 initial={{ opacity: 0, y: 10 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 exit={{ opacity: 0, y: -10 }}
+                 className="text-[#E2DED3] text-lg font-medium tracking-wide bg-[#2F4157]/80 px-6 py-1.5 rounded-full border border-[#E2DED3]/20 shadow-lg backdrop-blur-sm"
+               >
+                  {t("priceUponRequest")}
+               </motion.div>
+            ) : null}
+         </AnimatePresence>
       </div>
 
       {/* Checkboxes Outside */}

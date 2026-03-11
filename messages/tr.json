@@ -12,6 +12,7 @@
     "climate": "Gelişmiş İklim Kontrolü",
     "childSeat": "Ücretsiz çocuk koltuğu (ISOFIX)",
     "minibar": "İçecekli mini bar (istek üzerine)",
+    "minibarTooltip": "Premium su, doğal meyve suları, gazlı içecekler, hafif atıştırmalıklar ve çikolata. Alkollü içecekler önceden anlaşma ile temin edilir.",
     "payment": "Araçta ödeme (Nakit / Kart)",
     "noHiddenFees": "Sabit fiyat garantisi"
   },
@@ -67,14 +68,18 @@
     "roundTrip": "Gidiş-dönüş",
     "childSeat": "Çocuk koltuğu",
     "free": "Ücretsiz",
-    "minibar": "Mini bar (+5€)",
+    "minibar": "Mini bar (istek üzerine)",
     "bookButton": "Fiyat al",
     "waOnlyFrom": "Merhaba! Şuradan bir transfer rezervasyonu yapmak istiyorum: {from}.",
     "waOnlyTo": "Merhaba! Şuraya bir transfer rezervasyonu yapmak istiyorum: {to}.",
     "waBoth": "Merhaba! Şuradan şuraya bir transfer rezervasyonu yapmak istiyorum: {from} — {to}.",
     "waDetails": "Seçenekler: {options}",
     "myLocation": "Konumum",
-    "locateError": "Konum belirlenemedi"
+    "locateError": "Konum belirlenemedi",
+    "carVito": "MB Vito VIP",
+    "carVw": "VW Transporter VIP",
+    "estimatedPrice": "Tahmini Fiyat: €{price}",
+    "priceUponRequest": "Fiyat: İstek Üzerine"
   },
   "Cities": {
     "antalya": "Antalya",

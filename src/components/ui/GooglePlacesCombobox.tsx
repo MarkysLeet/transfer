@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useId } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Locate } from "lucide-react";
@@ -27,7 +27,8 @@ export const GooglePlacesCombobox = ({
 }: GooglePlacesComboboxProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const portalId = `google-combobox-dropdown-portal-${placeholder.replace(/\s+/g, '-').toLowerCase()}`;
+  const uniqueId = useId();
+  const portalId = `google-combobox-dropdown-portal-${uniqueId.replace(/[^a-zA-Z0-9]/g, '')}`;
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
 
   const {

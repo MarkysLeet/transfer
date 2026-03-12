@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
@@ -200,20 +200,21 @@ export const BookingWidget = () => {
     setIsPriceLoading(false);
   }, [carType, isLoaded]);
 
-  // Recalculate price only when the car type changes, assuming a destination is already set.
+  // Recalculate price only when the car type changes, assuming a destination is already set and previously calculated.
+  // Using a separate ref to track if calculation is needed to prevent dependency cycle crashes.
+  const prevCarTypeRef = useRef(carType);
   useEffect(() => {
-    let active = true;
-    if (to && estimatedPrice !== null) {
-      const timeoutId = setTimeout(() => {
-        if (active) calculatePrice(to);
-      }, 0);
-      return () => {
-        active = false;
-        clearTimeout(timeoutId);
-      };
+    if (prevCarTypeRef.current !== carType) {
+      prevCarTypeRef.current = carType;
+      if (to && estimatedPrice !== null) {
+        // Defer calculation slightly to avoid synchronous setState warnings
+        const timeoutId = setTimeout(() => {
+          calculatePrice(to);
+        }, 0);
+        return () => clearTimeout(timeoutId);
+      }
     }
-    return () => { active = false; };
-  }, [carType, to, estimatedPrice, calculatePrice]); // Only trigger on carType change, NOT on 'to' change.
+  }, [carType, to, estimatedPrice, calculatePrice]);
 
   const handleFromChange = (val: string) => {
     setFrom(val);

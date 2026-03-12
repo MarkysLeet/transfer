@@ -74,7 +74,11 @@
     "waBoth": "Hello! I would like to book a transfer route: {from} — {to}.",
     "waDetails": "Options: {options}",
     "myLocation": "My Location",
-    "locateError": "Could not determine location"
+    "locateError": "Could not determine location",
+    "vwClass": "VW Transporter (1-5 pax)",
+    "vitoClass": "MB Vito (6-10 pax)",
+    "estimatedPrice": "Estimated price: €{price}",
+    "priceOnRequest": "Price on request"
   },
   "Cities": {
     "antalya": "Antalya",

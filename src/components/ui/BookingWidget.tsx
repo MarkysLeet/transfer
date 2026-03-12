@@ -1,12 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { MapPin, Check, Plus } from "lucide-react";
 import { Combobox } from "./Combobox";
 import { useBookingStore } from "@/store/useBookingStore";
+import { CarClassSelector, CarClass } from "./CarClassSelector";
+import { useLoadScript } from "@react-google-maps/api";
+
+const LIBRARIES: ("places" | "geometry")[] = ["places", "geometry"];
 
 export const BookingWidget = () => {
   const t = useTranslations("BookingWidget");
@@ -14,14 +18,26 @@ export const BookingWidget = () => {
 
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [fromPlaceId, setFromPlaceId] = useState("");
+  const [toPlaceId, setToPlaceId] = useState("");
   const [coords, setCoords] = useState<{lat: number, lng: number} | null>(null);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+  const [selectedClass, setSelectedClass] = useState<CarClass>("vito");
+  const [estimatedPrice, setEstimatedPrice] = useState<number | null>(null);
+  const [isPriceLoading, setIsPriceLoading] = useState(false);
+  const [priceError, setPriceError] = useState(false);
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+    libraries: LIBRARIES,
+  });
 
   const { roundTrip, childSeat, minibar, toggleChildSeat, toggleMinibar, setRoundTrip } = useBookingStore();
 
   useEffect(() => {
     const handleSelectDestination = (e: CustomEvent<string>) => {
       setTo(e.detail);
+      setToPlaceId("");
     };
     window.addEventListener('selectDestination', handleSelectDestination as EventListener);
     return () => window.removeEventListener('selectDestination', handleSelectDestination as EventListener);
@@ -64,11 +80,84 @@ export const BookingWidget = () => {
     );
   };
 
-  const handleFromChange = (val: string) => {
+  const calculateFixedPrice = useCallback((fromStr: string, toStr: string, carClass: CarClass): number | null => {
+    const fromLower = fromStr.toLowerCase();
+    const toLower = toStr.toLowerCase();
+    const isAirport = fromLower.includes("ayt") || fromLower.includes("antalya airport") || toLower.includes("ayt") || toLower.includes("antalya airport");
+
+    if (!isAirport) return null;
+
+    const combinedStr = fromLower + " " + toLower;
+
+    if (combinedStr.includes("lara") || combinedStr.includes("kundu")) return carClass === "vw" ? 30 : 40;
+    if (combinedStr.includes("belek")) return carClass === "vw" ? 35 : 45;
+    if (combinedStr.includes("bogazkent")) return carClass === "vw" ? 40 : 50;
+    if (combinedStr.includes("side") || combinedStr.includes("sorgun") || combinedStr.includes("kumkoy") || combinedStr.includes("evrenseki") || combinedStr.includes("colakli") || combinedStr.includes("gundogdu")) return carClass === "vw" ? 45 : 55;
+    if (combinedStr.includes("kizilagac") || combinedStr.includes("kizilot")) return carClass === "vw" ? 55 : 65;
+    if (combinedStr.includes("okurcalar") || combinedStr.includes("avsallar")) return carClass === "vw" ? 60 : 70;
+    if (combinedStr.includes("turkler") || combinedStr.includes("konakli")) return carClass === "vw" ? 65 : 75;
+    if (combinedStr.includes("alanya")) return carClass === "vw" ? 70 : 80;
+    if (combinedStr.includes("kemer")) return carClass === "vw" ? 50 : 60;
+
+    return null;
+  }, []);
+
+  useEffect(() => {
+    if (!from || !to || !isLoaded) {
+      setEstimatedPrice(null);
+      setPriceError(false);
+      return;
+    }
+
+    const fixedPrice = calculateFixedPrice(from, to, selectedClass);
+    if (fixedPrice !== null) {
+      setEstimatedPrice(fixedPrice);
+      setPriceError(false);
+      return;
+    }
+
+    // Use Distance Matrix
+    setIsPriceLoading(true);
+    setPriceError(false);
+
+    const service = new window.google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+      {
+        origins: [fromPlaceId ? { placeId: fromPlaceId } : from],
+        destinations: [toPlaceId ? { placeId: toPlaceId } : to],
+        travelMode: window.google.maps.TravelMode.DRIVING,
+      },
+      (response, status) => {
+        setIsPriceLoading(false);
+        if (status === "OK" && response && response.rows[0].elements[0].status === "OK") {
+          const distanceInKm = response.rows[0].elements[0].distance.value / 1000;
+          let calculatedPrice = 0;
+          if (selectedClass === "vw") {
+            calculatedPrice = Math.max(30, Math.round(distanceInKm * 1.0));
+          } else {
+            calculatedPrice = Math.max(40, Math.round(distanceInKm * 1.2));
+          }
+          setEstimatedPrice(calculatedPrice);
+        } else {
+          setEstimatedPrice(null);
+          setPriceError(true);
+        }
+      }
+    );
+
+  }, [from, to, fromPlaceId, toPlaceId, selectedClass, isLoaded, calculateFixedPrice]);
+
+  const handleFromChange = (val: string, placeId?: string) => {
     setFrom(val);
+    setFromPlaceId(placeId || "");
     if (val !== t("myLocation")) {
       setCoords(null);
     }
+  };
+
+  const handleToChange = (val: string, placeId?: string) => {
+    setTo(val);
+    setToPlaceId(placeId || "");
   };
 
   const handleBook = () => {
@@ -97,6 +186,15 @@ export const BookingWidget = () => {
       message += `\n${detailsMsg}`;
     }
 
+    if (selectedClass) {
+      const carClassName = selectedClass === "vw" ? "VW Transporter" : "MB Vito";
+      message += `\nClass: ${carClassName}`;
+    }
+
+    if (estimatedPrice) {
+      message += `\nPrice: €${estimatedPrice}`;
+    }
+
     const whatsappUrl = `https://wa.me/905418462550?text=${encodeURIComponent(
       message
     )}`;
@@ -104,7 +202,9 @@ export const BookingWidget = () => {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto flex flex-col gap-6 relative z-50">
+    <div className="w-full max-w-5xl mx-auto flex flex-col gap-4 relative z-50">
+      <CarClassSelector selectedClass={selectedClass} onChange={setSelectedClass} />
+
       {/* Container with Inputs (Glass) & Button (Outside) */}
       <div className="flex flex-col md:flex-row gap-4 items-stretch relative z-50">
         {/* Main Glass Widget Container with Inputs */}
@@ -113,20 +213,20 @@ export const BookingWidget = () => {
             value={from}
             onChange={handleFromChange}
             placeholder={t("from")}
-            options={cities}
             icon={<MapPin />}
             allowGeolocation={true}
             onGeolocationClick={handleGeolocation}
             isLoadingLocation={isLoadingLocation}
+            isLoaded={isLoaded}
           />
         </div>
         <div className="flex-1 w-full h-14">
           <Combobox
             value={to}
-            onChange={(val) => setTo(val)}
+            onChange={handleToChange}
             placeholder={t("to")}
-            options={cities}
             icon={<MapPin />}
+            isLoaded={isLoaded}
           />
         </div>
 
@@ -141,6 +241,30 @@ export const BookingWidget = () => {
           </Button>
         </div>
       </div>
+
+      {/* Price Display */}
+      <AnimatePresence>
+        {(estimatedPrice || priceError || isPriceLoading) && from && to && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="flex justify-center -mt-2 mb-2"
+          >
+            <div className="bg-white/80 backdrop-blur-md px-6 py-2.5 rounded-2xl shadow-sm border border-slate-200/50 flex items-center gap-2">
+              {isPriceLoading ? (
+                <div className="w-4 h-4 rounded-full border-2 border-[#2F4157]/20 border-t-[#2F4157] animate-spin" />
+              ) : priceError ? (
+                <span className="text-sm font-medium text-slate-700">{t("priceOnRequest")}</span>
+              ) : estimatedPrice ? (
+                <span className="text-[15px] font-semibold text-[#2F4157]">
+                  {t("estimatedPrice", { price: estimatedPrice })}
+                </span>
+              ) : null}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Checkboxes Outside */}
       <div className="flex flex-wrap gap-2 md:gap-8 justify-center items-center relative z-40">

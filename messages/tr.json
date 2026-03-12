@@ -74,7 +74,11 @@
     "waBoth": "Merhaba! Şuradan şuraya bir transfer rezervasyonu yapmak istiyorum: {from} — {to}.",
     "waDetails": "Seçenekler: {options}",
     "myLocation": "Konumum",
-    "locateError": "Konum belirlenemedi"
+    "locateError": "Konum belirlenemedi",
+    "vwClass": "VW Transporter (1-5 kişi)",
+    "vitoClass": "MB Vito (6-10 kişi)",
+    "estimatedPrice": "Tahmini fiyat: €{price}",
+    "priceOnRequest": "Fiyatı sorunuz"
   },
   "Cities": {
     "antalya": "Antalya",

@@ -120,9 +120,9 @@ export const BookingWidget = () => {
           const distanceInKm = response.rows[0].elements[0].distance.value / 1000;
           let calculatedPrice = 0;
           if (selectedClass === "vw") {
-            calculatedPrice = Math.max(30, Math.round(distanceInKm * 1.0));
+            calculatedPrice = Math.max(30, Math.round(24 + (distanceInKm * 0.37)));
           } else {
-            calculatedPrice = Math.max(30, Math.round(distanceInKm * 1.2));
+            calculatedPrice = Math.max(30, Math.round(34 + (distanceInKm * 0.37)));
           }
           setEstimatedPrice(calculatedPrice);
         } else {

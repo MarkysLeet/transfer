@@ -1,9 +1,9 @@
 "use client";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Wifi, Wind, Baby, Coffee, CreditCard, ShieldCheck, ChevronLeft, ChevronRight, X, Check, Plus } from "lucide-react";
+import { Wifi, Wind, Baby, Coffee, CreditCard, ShieldCheck, ChevronLeft, ChevronRight, X, Check, Plus, Info } from "lucide-react";
 import { useBookingStore } from "@/store/useBookingStore";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -19,8 +19,24 @@ export const FeaturesShowcase = () => {
   const [interiorIndex, setInteriorIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [minibarTooltipOpen, setMinibarTooltipOpen] = useState(false);
 
   const { childSeat, minibar, toggleChildSeat, toggleMinibar } = useBookingStore();
+  const tooltipRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+        setMinibarTooltipOpen(false);
+      }
+    };
+    if (minibarTooltipOpen) {
+      document.addEventListener("click", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [minibarTooltipOpen]);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [lightboxEmblaRef, lightboxEmblaApi] = useEmblaCarousel({ loop: true, startIndex: lightboxIndex });
@@ -87,7 +103,7 @@ export const FeaturesShowcase = () => {
     { id: "wifi", icon: Wifi, title: t("wifi"), isUpsell: false },
     { id: "climate", icon: Wind, title: t("climate"), isUpsell: false },
     { id: "childSeat", icon: Baby, title: t("childSeat"), isUpsell: true, active: childSeat, toggle: toggleChildSeat },
-    { id: "minibar", icon: Coffee, title: t("minibar"), isUpsell: true, active: minibar, toggle: toggleMinibar },
+    { id: "minibar", icon: Coffee, title: t("minibar"), isUpsell: true, active: minibar, toggle: toggleMinibar, hasTooltip: true },
     { id: "payment", icon: CreditCard, title: t("payment"), isUpsell: false },
     { id: "noHiddenFees", icon: ShieldCheck, title: t("noHiddenFees"), isUpsell: false },
   ];
@@ -302,9 +318,47 @@ export const FeaturesShowcase = () => {
                         <feature.icon className={`w-6 h-6 stroke-[1.5] ${feature.isUpsell ? "text-[#5D8093]" : "text-[#2F4157]"}`} />
                       )}
                     </div>
-                    <p className={`font-medium pr-6 transition-colors ${feature.isUpsell && feature.active ? "text-[#2F4157] font-semibold" : "text-slate-700 group-hover:text-slate-900"}`}>
-                      {feature.title}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className={`font-medium transition-colors ${feature.isUpsell && feature.active ? "text-[#2F4157] font-semibold" : "text-slate-700 group-hover:text-slate-900"}`}>
+                        {feature.title}
+                      </p>
+                    </div>
+
+                    {feature.hasTooltip && (
+                      <div
+                        ref={tooltipRef}
+                        className="absolute bottom-4 right-4 z-20"
+                        onMouseEnter={() => setMinibarTooltipOpen(true)}
+                        onMouseLeave={() => setMinibarTooltipOpen(false)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setMinibarTooltipOpen(!minibarTooltipOpen);
+                        }}
+                      >
+                        <Info
+                          size={20}
+                          strokeWidth={1.5}
+                          className={`cursor-pointer transition-colors ${feature.active ? "text-[#2F4157]" : "text-[#5D8093] hover:text-[#2F4157]"}`}
+                        />
+                        <AnimatePresence>
+                          {minibarTooltipOpen && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                              transition={{ duration: 0.2 }}
+                              className="absolute bottom-full right-0 mb-3 w-[280px] sm:w-[320px] bg-slate-900 text-[#E2DED3] text-sm p-4 rounded-2xl shadow-2xl"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <div className="relative">
+                                {t("minibarTooltip")}
+                                <div className="absolute -bottom-[22px] right-1 w-0 h-0 border-l-[8px] border-r-[8px] border-t-[8px] border-l-transparent border-r-transparent border-t-slate-900" />
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    )}
                  </motion.button>
                ))}
              </motion.div>

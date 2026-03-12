@@ -13,7 +13,8 @@
     "childSeat": "Free child seat (ISOFIX)",
     "minibar": "Mini-bar with drinks (on request)",
     "payment": "Pay in car (Cash / Card)",
-    "noHiddenFees": "Fixed price guarantee"
+    "noHiddenFees": "Fixed price guarantee",
+    "minibarTooltip": "Premium water, natural juices, soft drinks, light snacks, and chocolate. Alcoholic beverages are provided by prior arrangement."
   },
   "Destinations": {
     "title": "Destinations",
@@ -67,8 +68,8 @@
     "roundTrip": "Round trip",
     "childSeat": "Child seat",
     "free": "Free",
-    "minibar": "Mini-bar (+5€)",
-    "bookButton": "Check price",
+    "minibar": "Mini-bar (Extra charge)",
+    "bookButton": "Book Transfer",
     "waOnlyFrom": "Hello! I would like to book a transfer from: {from}.",
     "waOnlyTo": "Hello! I would like to book a transfer to: {to}.",
     "waBoth": "Hello! I would like to book a transfer route: {from} — {to}.",

@@ -45,13 +45,17 @@ export const GooglePlacesCombobox = ({
     defaultValue: value,
   });
 
-  // Only update inputValue if it is out of sync when a parent component sets a new value programmatically
-  // (e.g. initial load or reset). Ignore the normal typing scenario to avoid clearing suggestions abruptly.
+  // Sync the `value` prop (if it changes from the outside) into the combobox input value.
+  // We check that the new value isn't empty and it hasn't been synced to avoid re-rendering loops.
+  const isSyncingRef = useRef(false);
   useEffect(() => {
-    if (value && value !== inputValue && !isOpen) {
+    if (value && value !== inputValue && !isSyncingRef.current) {
+      isSyncingRef.current = true;
       setValue(value, false);
+    } else {
+      isSyncingRef.current = false;
     }
-  }, [value, inputValue, setValue, isOpen]);
+  }, [value, inputValue, setValue]);
 
   const updateDropdownPosition = () => {
     if (containerRef.current) {
@@ -122,8 +126,11 @@ export const GooglePlacesCombobox = ({
         value={inputValue}
         onChange={(e) => {
           setValue(e.target.value);
-          onChange(e.target.value);
           setIsOpen(true);
+          // Trigger onChange to parent if the input is cleared manually, so it drops the calculation.
+          if (!e.target.value) {
+             onChange("");
+          }
         }}
         disabled={!ready}
         onFocus={() => setIsOpen(true)}

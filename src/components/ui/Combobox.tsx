@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Locate, MapPin } from "lucide-react";
+import { useTranslations } from "next-intl";
 import usePlacesAutocomplete, { getDetails } from "use-places-autocomplete";
 
 interface ComboboxProps {
@@ -27,6 +28,7 @@ export const Combobox = ({
   isLoadingLocation,
   isLoaded,
 }: ComboboxProps) => {
+  const t = useTranslations("BookingWidget");
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
@@ -42,6 +44,7 @@ export const Combobox = ({
     requestOptions: {
       // Prioritize Turkey
       componentRestrictions: { country: "tr" },
+      language: "en",
     },
     debounce: 300,
     initOnMount: false,
@@ -156,7 +159,7 @@ export const Combobox = ({
 
       {mounted && createPortal(
         <AnimatePresence>
-          {isOpen && status === "OK" && (
+          {isOpen && (autocompleteValue.trim().length > 0) && (
             <motion.div
               id="combobox-dropdown-portal"
               data-lenis-prevent="true"
@@ -173,19 +176,35 @@ export const Combobox = ({
               }}
             >
               <div className="relative bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto hide-scrollbar py-2">
-                {data.map(({ place_id, description, structured_formatting: { main_text, secondary_text } }) => (
-                  <button
-                    key={place_id}
-                    onClick={() => handleSelect(description, place_id)}
-                    className="w-full text-left px-4 py-2 hover:bg-slate-50 transition-colors flex items-start gap-3"
-                  >
-                    <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium text-slate-900">{main_text}</span>
-                      <span className="text-xs text-slate-500">{secondary_text}</span>
-                    </div>
-                  </button>
-                ))}
+                {status === "OK" ? (
+                  data.map(({ place_id, description, structured_formatting: { main_text, secondary_text } }) => (
+                    <button
+                      key={place_id}
+                      onClick={() => handleSelect(description, place_id)}
+                      className="w-full text-left px-4 py-2 hover:bg-slate-50 transition-colors flex items-start gap-3"
+                    >
+                      <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-slate-900">{main_text}</span>
+                        <span className="text-xs text-slate-500">{secondary_text}</span>
+                      </div>
+                    </button>
+                  ))
+                ) : (
+                  <div className="px-4 py-3 text-sm text-slate-500 flex items-center gap-2">
+                    {status === "ZERO_RESULTS" ? (
+                      <>
+                        <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />
+                        <span>{t("noResults", { defaultMessage: "No results found" })}</span>
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-4 h-4 rounded-full border-2 border-slate-300 border-t-[#2F4157] animate-spin" />
+                        <span>{t("searching", { defaultMessage: "Searching..." })}</span>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             </motion.div>
           )}

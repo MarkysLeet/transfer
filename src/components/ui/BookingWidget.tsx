@@ -27,6 +27,18 @@ export const BookingWidget = () => {
   const [isPriceLoading, setIsPriceLoading] = useState(false);
   const [priceError, setPriceError] = useState(false);
 
+  // Debounced values for Distance Matrix API
+  const [debouncedFrom, setDebouncedFrom] = useState("");
+  const [debouncedTo, setDebouncedTo] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedFrom(from);
+      setDebouncedTo(to);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [from, to]);
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
     libraries: LIBRARIES,
@@ -83,33 +95,40 @@ export const BookingWidget = () => {
   const calculateFixedPrice = useCallback((fromStr: string, toStr: string, carClass: CarClass): number | null => {
     const fromLower = fromStr.toLowerCase();
     const toLower = toStr.toLowerCase();
-    const isAirport = fromLower.includes("ayt") || fromLower.includes("antalya airport") || toLower.includes("ayt") || toLower.includes("antalya airport");
+
+    // Check for airport synonyms in multiple languages
+    const airportKeywords = [
+      "ayt", "antalya", "антали", "havaliman", "airport", "flughafen"
+    ];
+
+    const isAirport = airportKeywords.some(kw => fromLower.includes(kw) || toLower.includes(kw));
 
     if (!isAirport) return null;
 
     const combinedStr = fromLower + " " + toLower;
 
-    if (combinedStr.includes("lara") || combinedStr.includes("kundu")) return carClass === "vw" ? 30 : 40;
-    if (combinedStr.includes("belek")) return carClass === "vw" ? 35 : 45;
-    if (combinedStr.includes("bogazkent")) return carClass === "vw" ? 40 : 50;
-    if (combinedStr.includes("side") || combinedStr.includes("sorgun") || combinedStr.includes("kumkoy") || combinedStr.includes("evrenseki") || combinedStr.includes("colakli") || combinedStr.includes("gundogdu")) return carClass === "vw" ? 45 : 55;
-    if (combinedStr.includes("kizilagac") || combinedStr.includes("kizilot")) return carClass === "vw" ? 55 : 65;
-    if (combinedStr.includes("okurcalar") || combinedStr.includes("avsallar")) return carClass === "vw" ? 60 : 70;
-    if (combinedStr.includes("turkler") || combinedStr.includes("konakli")) return carClass === "vw" ? 65 : 75;
-    if (combinedStr.includes("alanya")) return carClass === "vw" ? 70 : 80;
-    if (combinedStr.includes("kemer")) return carClass === "vw" ? 50 : 60;
+    // Check for resort synonyms in multiple languages
+    if (combinedStr.includes("lara") || combinedStr.includes("kundu") || combinedStr.includes("лара") || combinedStr.includes("кунду")) return carClass === "vw" ? 30 : 40;
+    if (combinedStr.includes("belek") || combinedStr.includes("белек")) return carClass === "vw" ? 35 : 45;
+    if (combinedStr.includes("bogazkent") || combinedStr.includes("boğazkent") || combinedStr.includes("богазкент")) return carClass === "vw" ? 40 : 50;
+    if (combinedStr.includes("side") || combinedStr.includes("sorgun") || combinedStr.includes("kumkoy") || combinedStr.includes("kumköy") || combinedStr.includes("evrenseki") || combinedStr.includes("colakli") || combinedStr.includes("çolaklı") || combinedStr.includes("gundogdu") || combinedStr.includes("gündoğdu") || combinedStr.includes("сиде") || combinedStr.includes("соргун") || combinedStr.includes("кумкой") || combinedStr.includes("эвренсеки") || combinedStr.includes("чолаклы") || combinedStr.includes("гюндогду")) return carClass === "vw" ? 45 : 55;
+    if (combinedStr.includes("kizilagac") || combinedStr.includes("kızılağaç") || combinedStr.includes("kizilot") || combinedStr.includes("kızılot") || combinedStr.includes("кызылагач") || combinedStr.includes("кызылот")) return carClass === "vw" ? 55 : 65;
+    if (combinedStr.includes("okurcalar") || combinedStr.includes("avsallar") || combinedStr.includes("окурджалар") || combinedStr.includes("авсаллар")) return carClass === "vw" ? 60 : 70;
+    if (combinedStr.includes("turkler") || combinedStr.includes("türkler") || combinedStr.includes("konakli") || combinedStr.includes("konaklı") || combinedStr.includes("тюрклер") || combinedStr.includes("конаклы")) return carClass === "vw" ? 65 : 75;
+    if (combinedStr.includes("alanya") || combinedStr.includes("алания") || combinedStr.includes("аланья")) return carClass === "vw" ? 70 : 80;
+    if (combinedStr.includes("kemer") || combinedStr.includes("кемер")) return carClass === "vw" ? 50 : 60;
 
     return null;
   }, []);
 
   useEffect(() => {
-    if (!from || !to || !isLoaded) {
+    if (!debouncedFrom || !debouncedTo || !isLoaded) {
       setEstimatedPrice(null);
       setPriceError(false);
       return;
     }
 
-    const fixedPrice = calculateFixedPrice(from, to, selectedClass);
+    const fixedPrice = calculateFixedPrice(debouncedFrom, debouncedTo, selectedClass);
     if (fixedPrice !== null) {
       setEstimatedPrice(fixedPrice);
       setPriceError(false);
@@ -123,8 +142,8 @@ export const BookingWidget = () => {
     const service = new window.google.maps.DistanceMatrixService();
     service.getDistanceMatrix(
       {
-        origins: [fromPlaceId ? { placeId: fromPlaceId } : from],
-        destinations: [toPlaceId ? { placeId: toPlaceId } : to],
+        origins: [fromPlaceId ? { placeId: fromPlaceId } : debouncedFrom],
+        destinations: [toPlaceId ? { placeId: toPlaceId } : debouncedTo],
         travelMode: window.google.maps.TravelMode.DRIVING,
       },
       (response, status) => {
@@ -145,7 +164,7 @@ export const BookingWidget = () => {
       }
     );
 
-  }, [from, to, fromPlaceId, toPlaceId, selectedClass, isLoaded, calculateFixedPrice]);
+  }, [debouncedFrom, debouncedTo, fromPlaceId, toPlaceId, selectedClass, isLoaded, calculateFixedPrice]);
 
   const handleFromChange = (val: string, placeId?: string) => {
     setFrom(val);

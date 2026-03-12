@@ -78,7 +78,9 @@
     "vwClass": "VW Transporter (1-5 чел.)",
     "vitoClass": "MB Vito (6-10 чел.)",
     "estimatedPrice": "Ориентировочная стоимость: €{price}",
-    "priceOnRequest": "Цена по запросу"
+    "priceOnRequest": "Цена по запросу",
+    "searching": "Поиск...",
+    "noResults": "Ничего не найдено"
   },
   "Cities": {
     "antalya": "Анталья",

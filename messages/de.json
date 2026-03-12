@@ -78,7 +78,9 @@
     "vwClass": "VW Transporter (1-5 Pers.)",
     "vitoClass": "MB Vito (6-10 Pers.)",
     "estimatedPrice": "Geschätzter Preis: €{price}",
-    "priceOnRequest": "Preis auf Anfrage"
+    "priceOnRequest": "Preis auf Anfrage",
+    "searching": "Suchen...",
+    "noResults": "Keine Ergebnisse gefunden"
   },
   "Cities": {
     "antalya": "Antalya",

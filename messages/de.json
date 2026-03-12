@@ -13,7 +13,8 @@
     "childSeat": "Kostenloser Kindersitz (ISOFIX)",
     "minibar": "Minibar mit Getränken (auf Anfrage)",
     "payment": "Im Auto bezahlen (Bar / Karte)",
-    "noHiddenFees": "Festpreisgarantie"
+    "noHiddenFees": "Festpreisgarantie",
+    "minibarTooltip": "Premium-Wasser, natürliche Säfte, Erfrischungsgetränke, leichte Snacks und Schokolade. Alkoholische Getränke werden nach vorheriger Absprache bereitgestellt."
   },
   "Destinations": {
     "title": "Routen",
@@ -67,8 +68,8 @@
     "roundTrip": "Hin- und Rückfahrt",
     "childSeat": "Kindersitz",
     "free": "Kostenlos",
-    "minibar": "Minibar (+5€)",
-    "bookButton": "Preis berechnen",
+    "minibar": "Minibar (Gegen Aufpreis)",
+    "bookButton": "Transfer buchen",
     "waOnlyFrom": "Hallo! Ich möchte einen Transfer von: {from} buchen.",
     "waOnlyTo": "Hallo! Ich möchte einen Transfer nach: {to} buchen.",
     "waBoth": "Hallo! Ich möchte einen Transfer buchen: {from} — {to}.",

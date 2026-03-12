@@ -13,7 +13,8 @@
     "childSeat": "Ücretsiz çocuk koltuğu (ISOFIX)",
     "minibar": "İçecekli mini bar (istek üzerine)",
     "payment": "Araçta ödeme (Nakit / Kart)",
-    "noHiddenFees": "Sabit fiyat garantisi"
+    "noHiddenFees": "Sabit fiyat garantisi",
+    "minibarTooltip": "Premium su, doğal meyve suları, alkolsüz içecekler, hafif atıştırmalıklar ve çikolata. Alkollü içecekler önceden anlaşmaya bağlı olarak temin edilir."
   },
   "Destinations": {
     "title": "Güzergahlar",
@@ -67,8 +68,8 @@
     "roundTrip": "Gidiş-dönüş",
     "childSeat": "Çocuk koltuğu",
     "free": "Ücretsiz",
-    "minibar": "Mini bar (+5€)",
-    "bookButton": "Fiyat al",
+    "minibar": "Mini bar (Ekstra ücret)",
+    "bookButton": "Transfer Rezerve Et",
     "waOnlyFrom": "Merhaba! Şuradan bir transfer rezervasyonu yapmak istiyorum: {from}.",
     "waOnlyTo": "Merhaba! Şuraya bir transfer rezervasyonu yapmak istiyorum: {to}.",
     "waBoth": "Merhaba! Şuradan şuraya bir transfer rezervasyonu yapmak istiyorum: {from} — {to}.",

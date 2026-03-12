@@ -1,67 +1,66 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Locate } from "lucide-react";
-
-// Ensure we're a client component (already has "use client" at top)
-
-// Levenshtein distance for fuzzy search
-function levenshteinDistance(a: string, b: string): number {
-  if (a.length === 0) return b.length;
-  if (b.length === 0) return a.length;
-
-  const matrix = [];
-
-  for (let i = 0; i <= b.length; i++) {
-    matrix[i] = [i];
-  }
-
-  for (let j = 0; j <= a.length; j++) {
-    matrix[0][j] = j;
-  }
-
-  for (let i = 1; i <= b.length; i++) {
-    for (let j = 1; j <= a.length; j++) {
-      if (b.charAt(i - 1) === a.charAt(j - 1)) {
-        matrix[i][j] = matrix[i - 1][j - 1];
-      } else {
-        matrix[i][j] = Math.min(
-          matrix[i - 1][j - 1] + 1,
-          Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
-        );
-      }
-    }
-  }
-
-  return matrix[b.length][a.length];
-}
+import { Locate, MapPin } from "lucide-react";
+import { useTranslations } from "next-intl";
+import usePlacesAutocomplete, { getDetails } from "use-places-autocomplete";
 
 interface ComboboxProps {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: string, placeId?: string) => void;
   placeholder: string;
-  options: { label: string; value: string }[];
   icon?: React.ReactNode;
   allowGeolocation?: boolean;
   onGeolocationClick?: () => void;
   isLoadingLocation?: boolean;
+  isLoaded?: boolean;
 }
 
 export const Combobox = ({
   value,
   onChange,
   placeholder,
-  options,
   icon,
   allowGeolocation,
   onGeolocationClick,
   isLoadingLocation,
+  isLoaded,
 }: ComboboxProps) => {
+  const t = useTranslations("BookingWidget");
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
+
+  const {
+    ready,
+    value: autocompleteValue,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+    init,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      // Prioritize Turkey
+      componentRestrictions: { country: "tr" },
+      language: "en",
+    },
+    debounce: 300,
+    initOnMount: false,
+  });
+
+  // Initialize once Google API is loaded
+  useEffect(() => {
+    if (isLoaded) {
+      init();
+    }
+  }, [isLoaded, init]);
+
+  // Sync external value
+  useEffect(() => {
+    setValue(value, false);
+  }, [value, setValue]);
 
   const updateDropdownPosition = useCallback(() => {
     if (containerRef.current) {
@@ -105,32 +104,23 @@ export const Combobox = ({
 
   const [mounted, setMounted] = useState(false);
 
-  // To avoid hydration mismatch, check if window is defined without effect first if possible.
-  // But for portals, effect is safest. NextJS might warn about cascading, so we suppress or refactor.
   useEffect(() => {
-    // Adding setTimeout avoids the synchronous cascading render warning
     const timer = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(timer);
   }, []);
 
-  const filteredOptions = useMemo(() => {
-    if (!value) return options;
+  const handleSelect = (description: string, placeId: string) => {
+    setValue(description, false);
+    clearSuggestions();
+    onChange(description, placeId);
+    setIsOpen(false);
+  };
 
-    const searchTerm = value.toLowerCase().trim();
-
-    // Exact or substring match first
-    const substringMatches = options.filter(o => o.label.toLowerCase().includes(searchTerm));
-    if (substringMatches.length > 0) return substringMatches;
-
-    // Fuzzy search fallback
-    return options
-      .map(option => ({
-        ...option,
-        distance: levenshteinDistance(searchTerm, option.label.toLowerCase()),
-      }))
-      .filter(option => option.distance <= 3) // Max 3 typos allowed
-      .sort((a, b) => a.distance - b.distance);
-  }, [value, options]);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    onChange(e.target.value);
+    setIsOpen(true);
+  };
 
   return (
     <div
@@ -146,12 +136,10 @@ export const Combobox = ({
       <input
         type="text"
         placeholder={placeholder}
-        value={value}
-        onChange={(e) => {
-          onChange(e.target.value);
-          setIsOpen(true);
-        }}
+        value={autocompleteValue}
+        onChange={handleInputChange}
         onFocus={() => setIsOpen(true)}
+        disabled={!ready}
         className={`w-full h-full bg-transparent ${icon ? 'pl-12' : 'pl-5'} pr-12 text-sm text-[#2F4157] placeholder:text-[#2F4157]/60 focus:outline-none`}
       />
 
@@ -171,7 +159,7 @@ export const Combobox = ({
 
       {mounted && createPortal(
         <AnimatePresence>
-          {isOpen && filteredOptions.length > 0 && (
+          {isOpen && (autocompleteValue.trim().length > 0) && (
             <motion.div
               id="combobox-dropdown-portal"
               data-lenis-prevent="true"
@@ -181,25 +169,42 @@ export const Combobox = ({
               transition={{ duration: 0.2 }}
               style={{
                 position: 'absolute',
-                top: `${dropdownPosition.top + 8}px`, // 8px for mt-2 equivalent
+                top: `${dropdownPosition.top + 8}px`,
                 left: `${dropdownPosition.left}px`,
                 width: `${dropdownPosition.width}px`,
                 zIndex: 9999,
               }}
             >
               <div className="relative bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto hide-scrollbar py-2">
-                {filteredOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() => {
-                      onChange(option.label);
-                      setIsOpen(false);
-                    }}
-                    className="w-full text-left px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-                  >
-                    {option.label}
-                  </button>
-                ))}
+                {status === "OK" ? (
+                  data.map(({ place_id, description, structured_formatting: { main_text, secondary_text } }) => (
+                    <button
+                      key={place_id}
+                      onClick={() => handleSelect(description, place_id)}
+                      className="w-full text-left px-4 py-2 hover:bg-slate-50 transition-colors flex items-start gap-3"
+                    >
+                      <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-slate-900">{main_text}</span>
+                        <span className="text-xs text-slate-500">{secondary_text}</span>
+                      </div>
+                    </button>
+                  ))
+                ) : (
+                  <div className="px-4 py-3 text-sm text-slate-500 flex items-center gap-2">
+                    {status === "ZERO_RESULTS" ? (
+                      <>
+                        <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />
+                        <span>{t("noResults", { defaultMessage: "No results found" })}</span>
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-4 h-4 rounded-full border-2 border-slate-300 border-t-[#2F4157] animate-spin" />
+                        <span>{t("searching", { defaultMessage: "Searching..." })}</span>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             </motion.div>
           )}

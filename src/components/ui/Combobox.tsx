@@ -3,13 +3,14 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Locate, MapPin } from "lucide-react";
+import { Locate, MapPin, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import usePlacesAutocomplete, { getDetails } from "use-places-autocomplete";
 
 interface ComboboxProps {
   value: string;
   onChange: (value: string, placeId?: string) => void;
+  onClear?: () => void;
   placeholder: string;
   icon?: React.ReactNode;
   allowGeolocation?: boolean;
@@ -21,6 +22,7 @@ interface ComboboxProps {
 export const Combobox = ({
   value,
   onChange,
+  onClear,
   placeholder,
   icon,
   allowGeolocation,
@@ -143,17 +145,48 @@ export const Combobox = ({
         className={`w-full h-full bg-transparent ${icon ? 'pl-12' : 'pl-5'} pr-12 text-sm text-[#2F4157] placeholder:text-[#2F4157]/60 focus:outline-none`}
       />
 
-      {allowGeolocation && (
+      {allowGeolocation ? (
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-[#2F4157]/80 hover:text-[#2F4157] transition-colors">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (onClear) onClear();
+            }}
+            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
+              autocompleteValue.length > 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+            }`}
+            title="Clear"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (onGeolocationClick) onGeolocationClick();
+            }}
+            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
+              autocompleteValue.length === 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+            }`}
+            title="Use my location"
+          >
+            <Locate className={`w-4 h-4 ${isLoadingLocation ? "animate-pulse text-[#2F4157]" : ""}`} />
+          </button>
+        </div>
+      ) : (
         <button
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            if (onGeolocationClick) onGeolocationClick();
+            if (onClear) onClear();
           }}
-          className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-[#2F4157]/80 hover:text-[#2F4157] transition-colors"
-          title="Use my location"
+          className={`absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-[#2F4157]/80 hover:text-[#2F4157] transition-opacity duration-200 ${
+            autocompleteValue.length > 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
+          title="Clear"
         >
-          <Locate className={`w-4 h-4 ${isLoadingLocation ? 'animate-pulse text-[#2F4157]' : ''}`} />
+          <X className="w-4 h-4" />
         </button>
       )}
 

@@ -31,6 +31,7 @@ export const BookingWidget = () => {
   const [debouncedFrom, setDebouncedFrom] = useState("");
   const [debouncedTo, setDebouncedTo] = useState("");
 
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedFrom(from);
@@ -45,6 +46,7 @@ export const BookingWidget = () => {
   });
 
   const { roundTrip, childSeat, minibar, toggleChildSeat, toggleMinibar, setRoundTrip } = useBookingStore();
+
 
   useEffect(() => {
     const handleSelectDestination = (e: CustomEvent<string>) => {
@@ -92,50 +94,16 @@ export const BookingWidget = () => {
     );
   };
 
-  const calculateFixedPrice = useCallback((fromStr: string, toStr: string, carClass: CarClass): number | null => {
-    const fromLower = fromStr.toLowerCase();
-    const toLower = toStr.toLowerCase();
-
-    // Check for airport synonyms in multiple languages
-    const airportKeywords = [
-      "ayt", "antalya", "антали", "havaliman", "airport", "flughafen"
-    ];
-
-    const isAirport = airportKeywords.some(kw => fromLower.includes(kw) || toLower.includes(kw));
-
-    if (!isAirport) return null;
-
-    const combinedStr = fromLower + " " + toLower;
-
-    // Check for resort synonyms in multiple languages
-    if (combinedStr.includes("lara") || combinedStr.includes("kundu") || combinedStr.includes("лара") || combinedStr.includes("кунду")) return carClass === "vw" ? 30 : 40;
-    if (combinedStr.includes("belek") || combinedStr.includes("белек")) return carClass === "vw" ? 35 : 45;
-    if (combinedStr.includes("bogazkent") || combinedStr.includes("boğazkent") || combinedStr.includes("богазкент")) return carClass === "vw" ? 40 : 50;
-    if (combinedStr.includes("side") || combinedStr.includes("sorgun") || combinedStr.includes("kumkoy") || combinedStr.includes("kumköy") || combinedStr.includes("evrenseki") || combinedStr.includes("colakli") || combinedStr.includes("çolaklı") || combinedStr.includes("gundogdu") || combinedStr.includes("gündoğdu") || combinedStr.includes("сиде") || combinedStr.includes("соргун") || combinedStr.includes("кумкой") || combinedStr.includes("эвренсеки") || combinedStr.includes("чолаклы") || combinedStr.includes("гюндогду")) return carClass === "vw" ? 45 : 55;
-    if (combinedStr.includes("kizilagac") || combinedStr.includes("kızılağaç") || combinedStr.includes("kizilot") || combinedStr.includes("kızılot") || combinedStr.includes("кызылагач") || combinedStr.includes("кызылот")) return carClass === "vw" ? 55 : 65;
-    if (combinedStr.includes("okurcalar") || combinedStr.includes("avsallar") || combinedStr.includes("окурджалар") || combinedStr.includes("авсаллар")) return carClass === "vw" ? 60 : 70;
-    if (combinedStr.includes("turkler") || combinedStr.includes("türkler") || combinedStr.includes("konakli") || combinedStr.includes("konaklı") || combinedStr.includes("тюрклер") || combinedStr.includes("конаклы")) return carClass === "vw" ? 65 : 75;
-    if (combinedStr.includes("alanya") || combinedStr.includes("алания") || combinedStr.includes("аланья")) return carClass === "vw" ? 70 : 80;
-    if (combinedStr.includes("kemer") || combinedStr.includes("кемер")) return carClass === "vw" ? 50 : 60;
-
-    return null;
-  }, []);
 
   useEffect(() => {
     if (!debouncedFrom || !debouncedTo || !isLoaded) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setEstimatedPrice(null);
       setPriceError(false);
       return;
     }
 
-    const fixedPrice = calculateFixedPrice(debouncedFrom, debouncedTo, selectedClass);
-    if (fixedPrice !== null) {
-      setEstimatedPrice(fixedPrice);
-      setPriceError(false);
-      return;
-    }
-
-    // Use Distance Matrix
+    // Use Distance Matrix for all calculations
     setIsPriceLoading(true);
     setPriceError(false);
 
@@ -154,17 +122,18 @@ export const BookingWidget = () => {
           if (selectedClass === "vw") {
             calculatedPrice = Math.max(30, Math.round(distanceInKm * 1.0));
           } else {
-            calculatedPrice = Math.max(40, Math.round(distanceInKm * 1.2));
+            calculatedPrice = Math.max(30, Math.round(distanceInKm * 1.2));
           }
           setEstimatedPrice(calculatedPrice);
         } else {
-          setEstimatedPrice(null);
+          // eslint-disable-next-line react-hooks/set-state-in-effect
+      setEstimatedPrice(null);
           setPriceError(true);
         }
       }
     );
 
-  }, [debouncedFrom, debouncedTo, fromPlaceId, toPlaceId, selectedClass, isLoaded, calculateFixedPrice]);
+  }, [debouncedFrom, debouncedTo, fromPlaceId, toPlaceId, selectedClass, isLoaded]);
 
   const handleFromChange = (val: string, placeId?: string) => {
     setFrom(val);
@@ -177,6 +146,21 @@ export const BookingWidget = () => {
   const handleToChange = (val: string, placeId?: string) => {
     setTo(val);
     setToPlaceId(placeId || "");
+  };
+
+  const handleClearFrom = () => {
+    setFrom("");
+    setFromPlaceId("");
+    setCoords(null);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+      setEstimatedPrice(null);
+  };
+
+  const handleClearTo = () => {
+    setTo("");
+    setToPlaceId("");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+      setEstimatedPrice(null);
   };
 
   const handleBook = () => {
@@ -231,6 +215,7 @@ export const BookingWidget = () => {
           <Combobox
             value={from}
             onChange={handleFromChange}
+            onClear={handleClearFrom}
             placeholder={t("from")}
             icon={<MapPin />}
             allowGeolocation={true}
@@ -243,6 +228,7 @@ export const BookingWidget = () => {
           <Combobox
             value={to}
             onChange={handleToChange}
+            onClear={handleClearTo}
             placeholder={t("to")}
             icon={<MapPin />}
             isLoaded={isLoaded}

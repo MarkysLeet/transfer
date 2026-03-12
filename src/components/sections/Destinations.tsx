@@ -115,7 +115,7 @@ export const Destinations = () => {
         </div>
 
         {/* Embla Cover Flow Carousel */}
-        <div className="relative max-w-5xl mx-auto overflow-hidden py-12">
+        <div className="relative max-w-[1200px] mx-auto overflow-hidden py-24">
           <div
             className="overflow-visible"
             ref={emblaRef}
@@ -124,13 +124,43 @@ export const Destinations = () => {
               WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)'
             }}
           >
-            <div className="flex touch-pan-y -ml-4">
+            <div className="flex touch-pan-y -ml-4 md:-ml-6 items-center">
               {cards.map((card, index) => {
+                const distance = Math.abs(selectedIndex - index);
                 const isActive = index === selectedIndex;
+
+                // Desktop Coverflow Logic (5 cards)
+                // Center: 100%, Distance 1: 90%, Distance >= 2: 80%
+                let desktopScale = "md:scale-80";
+                let desktopZIndex = "md:z-0";
+                let desktopOpacity = "md:opacity-40";
+
+                if (distance === 0) {
+                  desktopScale = "md:scale-100";
+                  desktopZIndex = "md:z-30";
+                  desktopOpacity = "md:opacity-100 md:shadow-2xl";
+                } else if (distance === 1) {
+                  desktopScale = "md:scale-90";
+                  desktopZIndex = "md:z-20";
+                  desktopOpacity = "md:opacity-70";
+                }
+
+                // Mobile/Tablet Coverflow Logic (3 cards)
+                // Center: 100%, Distance >= 1: 85%
+                let mobileScale = "scale-90";
+                let mobileZIndex = "z-10";
+                let mobileOpacity = "opacity-50";
+
+                if (distance === 0) {
+                  mobileScale = "scale-100";
+                  mobileZIndex = "z-30";
+                  mobileOpacity = "opacity-100 shadow-xl";
+                }
+
                 return (
                   <div
                     key={card.id}
-                    className="flex-[0_0_80%] md:flex-[0_0_40%] min-w-0 pl-4 relative"
+                    className="flex-[0_0_65%] sm:flex-[0_0_50%] md:flex-[0_0_30%] lg:flex-[0_0_25%] min-w-0 pl-4 md:pl-6 relative transition-transform duration-500"
                     onClick={() => {
                       if (isActive) {
                         setSelectedCard(card);
@@ -140,8 +170,11 @@ export const Destinations = () => {
                     }}
                   >
                     <div
-                      className={`relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer shadow-lg transition-all duration-500 ease-out bg-white transform-gpu
-                        ${isActive ? "scale-105 opacity-100 z-20 shadow-2xl hover:scale-110" : "scale-90 opacity-70 z-10"}
+                      className={`relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] bg-white
+                        ${mobileScale} ${desktopScale}
+                        ${mobileZIndex} ${desktopZIndex}
+                        ${mobileOpacity} ${desktopOpacity}
+                        ${isActive ? "hover:scale-105" : ""}
                       `}
                     >
                       <div className="absolute inset-0">

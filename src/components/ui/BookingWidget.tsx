@@ -40,7 +40,7 @@ export const BookingWidget = () => {
   }, [from, to]);
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+    googleMapsApiKey: "AIzaSyBIdr4O7lzMBsXWWTsxIT7P63UfT0oEYe4",
     libraries: LIBRARIES,
   });
 

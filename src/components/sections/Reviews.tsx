@@ -48,6 +48,7 @@ export const Reviews = () => {
     emblaApi.on("select", updateSelect);
   }, [emblaApi]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
   const ReviewCard = ({ review, index }: { review: any, index: number }) => (
     <motion.div
       variants={{
@@ -67,7 +68,7 @@ export const Reviews = () => {
       </div>
 
       <p className="text-slate-600 leading-relaxed font-light mb-6 flex-grow">
-        "{review.text}"
+        &quot;{review.text}&quot;
       </p>
 
       <div className="mt-auto">

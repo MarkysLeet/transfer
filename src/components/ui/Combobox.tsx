@@ -146,14 +146,14 @@ export const Combobox = ({
       />
 
       {allowGeolocation ? (
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-[#2F4157]/80 hover:text-[#2F4157] transition-colors relative w-6 h-6 flex items-center justify-center">
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-[#2F4157]/80 hover:text-[#2F4157] transition-colors">
           <button
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               if (onClear) onClear();
             }}
-            className={`absolute transition-opacity duration-200 ${
+            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
               autocompleteValue.length > 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
             }`}
             title="Clear"
@@ -166,7 +166,7 @@ export const Combobox = ({
               e.stopPropagation();
               if (onGeolocationClick) onGeolocationClick();
             }}
-            className={`absolute transition-opacity duration-200 ${
+            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
               autocompleteValue.length === 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
             }`}
             title="Use my location"

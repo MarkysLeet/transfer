@@ -28,26 +28,88 @@ export const Destinations = () => {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const onSelect = useCallback(() => {
+  const tweenScale = useCallback(() => {
     if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
+
+    const engine = emblaApi.internalEngine();
+    const scrollProgress = emblaApi.scrollProgress();
+    const isScrollEvent = emblaApi.scrollSnapList().length > 0;
+
+    if (!isScrollEvent) return;
+
+    emblaApi.scrollSnapList().forEach((scrollSnap, snapIndex) => {
+      let diffToTarget = scrollSnap - scrollProgress;
+      const slidesInSnap = engine.slideRegistry[snapIndex];
+
+      slidesInSnap.forEach((slideIndex) => {
+        if (emblaApi.slideNodes()[slideIndex] == null) return;
+
+        // Ensure infinite loop values are correctly wrapped
+        if (engine.options.loop) {
+          engine.slideLooper.loopPoints.forEach((loopItem) => {
+            const target = loopItem.target();
+
+            if (slideIndex === loopItem.index && target !== 0) {
+              const sign = Math.sign(target);
+
+              if (sign === -1) {
+                diffToTarget = scrollSnap - (1 + scrollProgress);
+              }
+              if (sign === 1) {
+                diffToTarget = scrollSnap + (1 - scrollProgress);
+              }
+            }
+          });
+        }
+
+        // Calculate dynamic scale and opacity
+        const tweenValue = 1 - Math.abs(diffToTarget * 1.5); // Adjust multiplier to control falloff
+        const scale = Math.max(0.8, Math.min(1, tweenValue));
+        const opacity = Math.max(0.4, Math.min(1, tweenValue + 0.2));
+        const zIndex = Math.round(scale * 100);
+
+        const slideNode = emblaApi.slideNodes()[slideIndex];
+        const innerCard = slideNode.querySelector('.embla-card-inner') as HTMLElement;
+        if (innerCard) {
+            innerCard.style.transform = `scale(${scale})`;
+            innerCard.style.opacity = `${opacity}`;
+            slideNode.style.zIndex = `${zIndex}`;
+
+            // Apply drop shadow on the center card
+            if (scale > 0.95) {
+                innerCard.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)';
+            } else {
+                innerCard.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+            }
+        }
+      });
+    });
   }, [emblaApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
 
-    // Only call setState if the value actually changed to prevent cascading renders
     const updateSelect = () => {
-      setSelectedIndex((current) => {
-        const next = emblaApi.selectedScrollSnap();
-        return current === next ? current : next;
-      });
+      setSelectedIndex(emblaApi.selectedScrollSnap());
     };
 
     updateSelect();
+    tweenScale();
+
     emblaApi.on("select", updateSelect);
-    emblaApi.on("reInit", updateSelect);
-  }, [emblaApi]);
+    emblaApi.on("scroll", tweenScale);
+    emblaApi.on("reInit", tweenScale);
+
+    // Request animation frame for smooth tweening during momentum scroll
+    const onFrame = () => {
+      if (!emblaApi.internalEngine().scrollBody.settled()) {
+        tweenScale();
+        requestAnimationFrame(onFrame);
+      }
+    };
+    emblaApi.on("pointerUp", () => requestAnimationFrame(onFrame));
+
+  }, [emblaApi, tweenScale]);
 
   const cards: DestinationCard[] = [
     {
@@ -126,41 +188,12 @@ export const Destinations = () => {
           >
             <div className="flex touch-pan-y -ml-4 md:-ml-6 items-center">
               {cards.map((card, index) => {
-                const distance = Math.abs(selectedIndex - index);
                 const isActive = index === selectedIndex;
-
-                // Desktop Coverflow Logic (5 cards)
-                // Center: 100%, Distance 1: 90%, Distance >= 2: 80%
-                let desktopScale = "md:scale-80";
-                let desktopZIndex = "md:z-0";
-                let desktopOpacity = "md:opacity-40";
-
-                if (distance === 0) {
-                  desktopScale = "md:scale-100";
-                  desktopZIndex = "md:z-30";
-                  desktopOpacity = "md:opacity-100 md:shadow-2xl";
-                } else if (distance === 1) {
-                  desktopScale = "md:scale-90";
-                  desktopZIndex = "md:z-20";
-                  desktopOpacity = "md:opacity-70";
-                }
-
-                // Mobile/Tablet Coverflow Logic (3 cards)
-                // Center: 100%, Distance >= 1: 85%
-                let mobileScale = "scale-90";
-                let mobileZIndex = "z-10";
-                let mobileOpacity = "opacity-50";
-
-                if (distance === 0) {
-                  mobileScale = "scale-100";
-                  mobileZIndex = "z-30";
-                  mobileOpacity = "opacity-100 shadow-xl";
-                }
 
                 return (
                   <div
                     key={card.id}
-                    className="flex-[0_0_65%] sm:flex-[0_0_50%] md:flex-[0_0_30%] lg:flex-[0_0_25%] min-w-0 pl-4 md:pl-6 relative transition-transform duration-500"
+                    className="flex-[0_0_65%] sm:flex-[0_0_50%] md:flex-[0_0_30%] lg:flex-[0_0_25%] min-w-0 pl-4 md:pl-6 relative"
                     onClick={() => {
                       if (isActive) {
                         setSelectedCard(card);
@@ -170,19 +203,15 @@ export const Destinations = () => {
                     }}
                   >
                     <div
-                      className={`relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] bg-white
-                        ${mobileScale} ${desktopScale}
-                        ${mobileZIndex} ${desktopZIndex}
-                        ${mobileOpacity} ${desktopOpacity}
-                        ${isActive ? "hover:scale-105" : ""}
-                      `}
+                      className={`embla-card-inner relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer bg-white`}
+                      style={{ willChange: "transform, opacity", transition: "transform 0.1s ease-out, opacity 0.1s ease-out, box-shadow 0.1s ease-out" }}
                     >
                       <div className="absolute inset-0">
                         <Image
                           src={card.image}
                           alt={card.title}
                           fill
-                          className="object-cover transition-transform duration-700 hover:scale-105"
+                          className="object-cover transition-transform duration-700 hover:scale-110"
                           sizes="(max-width: 768px) 100vw, 33vw"
                         />
                       </div>

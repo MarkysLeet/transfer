@@ -27,16 +27,39 @@ export const Destinations = () => {
   });
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [tweenValues, setTweenValues] = useState<number[]>([]);
 
-  const onSelect = useCallback(() => {
+  const onScroll = useCallback(() => {
     if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
+
+    const engine = emblaApi.internalEngine();
+    const scrollProgress = emblaApi.scrollProgress();
+
+    const styles = emblaApi.scrollSnapList().map((scrollSnap, index) => {
+      let diffToTarget = scrollSnap - scrollProgress;
+
+      if (engine.options.loop) {
+        engine.slideLooper.loopPoints.forEach((loopItem) => {
+          const target = loopItem.target();
+          if (index === loopItem.index && target !== 0) {
+            const sign = Math.sign(target);
+            if (sign === -1) {
+              diffToTarget = scrollSnap - (1 + scrollProgress);
+            }
+            if (sign === 1) {
+              diffToTarget = scrollSnap + (1 - scrollProgress);
+            }
+          }
+        });
+      }
+      return Math.abs(diffToTarget);
+    });
+    setTweenValues(styles);
+  }, [emblaApi, setTweenValues]);
 
   useEffect(() => {
     if (!emblaApi) return;
 
-    // Only call setState if the value actually changed to prevent cascading renders
     const updateSelect = () => {
       setSelectedIndex((current) => {
         const next = emblaApi.selectedScrollSnap();
@@ -44,10 +67,14 @@ export const Destinations = () => {
       });
     };
 
+    onScroll();
     updateSelect();
+
+    emblaApi.on("scroll", onScroll);
+    emblaApi.on("reInit", onScroll);
     emblaApi.on("select", updateSelect);
     emblaApi.on("reInit", updateSelect);
-  }, [emblaApi]);
+  }, [emblaApi, onScroll]);
 
   const cards: DestinationCard[] = [
     {
@@ -126,32 +153,36 @@ export const Destinations = () => {
           >
             <div className="flex touch-pan-y -ml-4 md:-ml-6 items-center">
               {cards.map((card, index) => {
-                const distance = Math.abs(selectedIndex - index);
+                const tweenValue = tweenValues.length > index ? tweenValues[index] : 0;
+                const distance = Math.round(tweenValue * cards.length); // Rough distance estimation
+
                 const isActive = index === selectedIndex;
 
-                // Desktop Coverflow Logic (5 cards)
-                // Center: 100%, Distance 1: 90%, Distance >= 2: 80%
+                // Smooth scaling and opacity using tweenValue (which ranges 0-1 depending on distance from center)
+                // Desktop Coverflow Logic: Center = 1, Distance 1 = ~0.9, >1 = 0.8
+                const isCenter = tweenValue < 0.1;
+                const isNearCenter = tweenValue >= 0.1 && tweenValue < 0.3;
+
                 let desktopScale = "md:scale-80";
                 let desktopZIndex = "md:z-0";
                 let desktopOpacity = "md:opacity-40";
 
-                if (distance === 0) {
+                if (isCenter) {
                   desktopScale = "md:scale-100";
                   desktopZIndex = "md:z-30";
                   desktopOpacity = "md:opacity-100 md:shadow-2xl";
-                } else if (distance === 1) {
+                } else if (isNearCenter) {
                   desktopScale = "md:scale-90";
                   desktopZIndex = "md:z-20";
                   desktopOpacity = "md:opacity-70";
                 }
 
-                // Mobile/Tablet Coverflow Logic (3 cards)
-                // Center: 100%, Distance >= 1: 85%
+                // Mobile/Tablet Coverflow Logic
                 let mobileScale = "scale-90";
                 let mobileZIndex = "z-10";
                 let mobileOpacity = "opacity-50";
 
-                if (distance === 0) {
+                if (isCenter) {
                   mobileScale = "scale-100";
                   mobileZIndex = "z-30";
                   mobileOpacity = "opacity-100 shadow-xl";
@@ -160,7 +191,7 @@ export const Destinations = () => {
                 return (
                   <div
                     key={card.id}
-                    className="flex-[0_0_65%] sm:flex-[0_0_50%] md:flex-[0_0_30%] lg:flex-[0_0_25%] min-w-0 pl-4 md:pl-6 relative transition-transform duration-500"
+                    className="flex-[0_0_65%] sm:flex-[0_0_50%] md:flex-[0_0_30%] lg:flex-[0_0_25%] min-w-0 pl-4 md:pl-6 relative"
                     onClick={() => {
                       if (isActive) {
                         setSelectedCard(card);
@@ -170,11 +201,11 @@ export const Destinations = () => {
                     }}
                   >
                     <div
-                      className={`relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] bg-white
+                      className={`relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer bg-white
                         ${mobileScale} ${desktopScale}
                         ${mobileZIndex} ${desktopZIndex}
                         ${mobileOpacity} ${desktopOpacity}
-                        ${isActive ? "hover:scale-105" : ""}
+                        ${isActive ? "hover:scale-105 transition-transform duration-700" : ""}
                       `}
                     >
                       <div className="absolute inset-0">

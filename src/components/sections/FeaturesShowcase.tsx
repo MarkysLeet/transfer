@@ -33,7 +33,7 @@ export const FeaturesShowcase = () => {
 
   const currentInteriorImages = selectedClass === "vw" ? vwInteriorImages : vitoInteriorImages;
   const currentExteriorImage = selectedClass === "vw" ? vwExteriorImage : vitoExteriorImage;
-  const currentCarTitle = selectedClass === "vw" ? ["VW", "Transporter"] : ["Mercedes Benz", "Vito"];
+  const currentCarTitle = selectedClass === "vw" ? ["Volkswagen", "Transporter"] : ["Mercedes-Benz", "Vito"];
 
   const [interiorIndex, setInteriorIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -165,7 +165,7 @@ export const FeaturesShowcase = () => {
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <span className="relative z-20">{tWidget("vwClass")}</span>
+              <span className="relative z-20">{tWidget("fleetVwClass")}</span>
             </button>
 
             <button
@@ -182,7 +182,7 @@ export const FeaturesShowcase = () => {
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <span className="relative z-20">{tWidget("vitoClass")}</span>
+              <span className="relative z-20">{tWidget("fleetVitoClass")}</span>
             </button>
           </div>
         </div>

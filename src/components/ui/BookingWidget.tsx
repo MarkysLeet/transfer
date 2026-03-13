@@ -190,7 +190,7 @@ export const BookingWidget = () => {
     }
 
     if (selectedClass) {
-      const carClassName = selectedClass === "vw" ? "VW Transporter" : "MB Vito";
+      const carClassName = selectedClass === "vw" ? "Volkswagen Transporter" : "Mercedes-Benz Vito";
       message += `\nClass: ${carClassName}`;
     }
 

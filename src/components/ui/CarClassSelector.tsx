@@ -14,11 +14,11 @@ export const CarClassSelector = ({ selectedClass, onChange }: CarClassSelectorPr
   const t = useTranslations("BookingWidget");
 
   return (
-    <div className="flex bg-white/50 backdrop-blur-sm p-1 rounded-2xl shadow-sm border border-slate-200/60 mx-auto w-full max-w-md relative z-40 mb-2">
+    <div className="flex bg-white/50 backdrop-blur-sm p-1 rounded-2xl shadow-sm border border-slate-200/60 mx-auto w-full max-w-lg relative z-40 mb-2">
       <button
         type="button"
         onClick={() => onChange("vw")}
-        className={`flex-1 relative py-2.5 text-sm font-medium transition-colors z-10 rounded-xl ${
+        className={`flex-1 relative py-2.5 px-1 md:px-2 text-xs md:text-sm font-medium transition-colors z-10 rounded-xl whitespace-nowrap ${
           selectedClass === "vw" ? "text-[#E2DED3]" : "text-[#2F4157] hover:bg-white/40"
         }`}
       >
@@ -35,7 +35,7 @@ export const CarClassSelector = ({ selectedClass, onChange }: CarClassSelectorPr
       <button
         type="button"
         onClick={() => onChange("vito")}
-        className={`flex-1 relative py-2.5 text-sm font-medium transition-colors z-10 rounded-xl ${
+        className={`flex-1 relative py-2.5 px-1 md:px-2 text-xs md:text-sm font-medium transition-colors z-10 rounded-xl whitespace-nowrap ${
           selectedClass === "vito" ? "text-[#E2DED3]" : "text-[#2F4157] hover:bg-white/40"
         }`}
       >

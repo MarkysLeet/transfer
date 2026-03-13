@@ -165,7 +165,7 @@ export const FeaturesShowcase = () => {
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <span className="relative z-20">{tWidget("vwClass")}</span>
+              <span className="relative z-20">{tWidget("vwClassShort")}</span>
             </button>
 
             <button
@@ -182,7 +182,7 @@ export const FeaturesShowcase = () => {
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <span className="relative z-20">{tWidget("vitoClass")}</span>
+              <span className="relative z-20">{tWidget("vitoClassShort")}</span>
             </button>
           </div>
         </div>
@@ -324,7 +324,7 @@ export const FeaturesShowcase = () => {
                initial={{ opacity: 0, y: 10 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ duration: 0.5 }}
-               className="mb-12"
+               className="mb-6"
              >
                 <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight tracking-wider uppercase text-slate-900">
                   {currentCarTitle[0]} <br />

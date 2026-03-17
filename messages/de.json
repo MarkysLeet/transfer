@@ -82,6 +82,9 @@
     "vwClassShort": "Volkswagen Transporter",
     "vitoClassShort": "Mercedes-Benz Vito",
     "estimatedPrice": "Geschätzter Preis: €{price}",
+    "pricePrompt": "📍 Geben Sie die Route für ein genaues Angebot ein",
+    "priceCalculating": "⏳ Entfernung wird berechnet...",
+    "priceResult": "Endpreis: <b>€{price}</b>",
     "priceOnRequest": "Preis auf Anfrage",
     "searching": "Suchen...",
     "noResults": "Keine Ergebnisse gefunden"

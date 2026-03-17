@@ -249,26 +249,29 @@ export const BookingWidget = () => {
 
       {/* Price Display */}
       <AnimatePresence>
-        {(estimatedPrice || priceError || isPriceLoading) && from && to && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="flex justify-center -mt-2 mb-2"
-          >
-            <div className="bg-white/80 backdrop-blur-md px-6 py-2.5 rounded-2xl shadow-sm border border-slate-200/50 flex items-center gap-2">
-              {isPriceLoading ? (
-                <div className="w-4 h-4 rounded-full border-2 border-[#2F4157]/20 border-t-[#2F4157] animate-spin" />
-              ) : priceError ? (
-                <span className="text-sm font-medium text-slate-700">{t("priceOnRequest")}</span>
-              ) : estimatedPrice ? (
-                <span className="text-[15px] font-semibold text-[#2F4157]">
-                  {t("estimatedPrice", { price: estimatedPrice })}
-                </span>
-              ) : null}
-            </div>
-          </motion.div>
-        )}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          className="flex justify-center -mt-2 mb-2"
+        >
+          <div className="bg-white/60 backdrop-blur-md border border-white/40 text-[#2F4157] shadow-sm rounded-full px-6 py-2 transition-all duration-300 min-w-[300px] flex items-center justify-center gap-2 text-sm md:text-base">
+            {(!debouncedFrom || !debouncedTo) ? (
+              <span className="font-medium text-[#2F4157]/80">{t("pricePrompt")}</span>
+            ) : isPriceLoading ? (
+              <span className="font-medium text-[#2F4157]/80 animate-pulse">{t("priceCalculating")}</span>
+            ) : priceError ? (
+              <span className="font-medium text-[#2F4157]/80">{t("priceOnRequest")}</span>
+            ) : estimatedPrice ? (
+              <span className="font-medium">
+                {t.rich("priceResult", {
+                  price: estimatedPrice,
+                  b: (chunks) => <b className="font-semibold text-lg">{chunks}</b>
+                })}
+              </span>
+            ) : null}
+          </div>
+        </motion.div>
       </AnimatePresence>
 
       {/* Checkboxes Outside */}

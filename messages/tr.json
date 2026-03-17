@@ -82,6 +82,9 @@
     "vwClassShort": "Volkswagen Transporter",
     "vitoClassShort": "Mercedes-Benz Vito",
     "estimatedPrice": "Tahmini fiyat: €{price}",
+    "pricePrompt": "📍 Kesin bir fiyat teklifi için rotayı girin",
+    "priceCalculating": "⏳ Mesafe hesaplanıyor...",
+    "priceResult": "Son fiyat: <b>€{price}</b>",
     "priceOnRequest": "Talep üzerine fiyat",
     "searching": "Aranıyor...",
     "noResults": "Sonuç bulunamadı"

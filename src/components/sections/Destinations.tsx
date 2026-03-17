@@ -119,15 +119,18 @@ export const Destinations = () => {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
       lenis?.stop();
+      window.dispatchEvent(new CustomEvent("hideHeader"));
     } else {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
       lenis?.start();
+      window.dispatchEvent(new CustomEvent("showHeader"));
     }
     return () => {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
       lenis?.start();
+      window.dispatchEvent(new CustomEvent("showHeader"));
     };
   }, [selectedCard, lenis]);
 
@@ -357,17 +360,6 @@ export const Destinations = () => {
             <div className="absolute inset-0 bg-[#F4EFEB]/90 pointer-events-none" />
             <div className="relative z-10 flex items-center justify-center w-full h-full">
 
-              {/* Global Navigation - Previous */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePrevDestination(e);
-                }}
-                className="group absolute left-1 md:left-6 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300"
-              >
-                <ChevronLeft size={36} strokeWidth={1.5} className="text-slate-800 opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
-              </button>
-
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedCard.id}
@@ -378,6 +370,28 @@ export const Destinations = () => {
                 onClick={(e) => e.stopPropagation()}
                 className="relative w-full max-w-2xl bg-white shadow-2xl rounded-3xl overflow-visible flex flex-col max-h-[90vh] pb-4 md:pb-6 mb-6"
               >
+
+                {/* Global Navigation - Previous */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePrevDestination(e);
+                  }}
+                  className="group absolute -left-12 md:-left-16 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300 hidden sm:block"
+                >
+                  <ChevronLeft size={36} strokeWidth={1.5} className="text-slate-800 opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
+                </button>
+
+                {/* Global Navigation - Next */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNextDestination(e);
+                  }}
+                  className="group absolute -right-12 md:-right-16 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300 hidden sm:block"
+                >
+                  <ChevronRight size={36} strokeWidth={1.5} className="text-slate-800 opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
+                </button>
                 <button
                   onClick={() => setSelectedCard(null)}
                   className="absolute top-4 right-4 z-30 p-2 rounded-full bg-white text-slate-800 shadow-md hover:bg-slate-50 transition-all border border-slate-100"
@@ -463,17 +477,6 @@ export const Destinations = () => {
                 </div>
               </motion.div>
             </AnimatePresence>
-
-              {/* Global Navigation - Next */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleNextDestination(e);
-                }}
-                className="group absolute right-1 md:right-6 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300"
-              >
-                <ChevronRight size={36} strokeWidth={1.5} className="text-slate-800 opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
-              </button>
             </div>
           </motion.div>
         )}

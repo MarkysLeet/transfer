@@ -229,17 +229,17 @@ export const FeaturesShowcase = () => {
   });
 
   // Scroll mappings for Desktop Cinematic View
-  // Phase 1 (0-0.2): Fade in exterior car
-  // Phase 2 (0.2-0.4): Fade in exterior cards
-  // Phase 3 (0.4-0.6): Crossfade exterior -> interior
-  // Phase 4 (0.6-0.8): Fade in interior cards
-  // Phase 5 (0.8-1.0): Hold
+  // Phase 1 (0-0.2): Exterior car starts visible, wait to fade cards
+  // Phase 2 (0.15-0.3): Fade in exterior cards
+  // Phase 3 (0.4-0.5): Crossfade exterior -> interior
+  // Phase 4 (0.55-0.7): Fade in interior cards
+  // Phase 5 (0.7-1.0): Hold
 
-  const extCarOpacity = useTransform(scrollYProgress, [0, 0.1, 0.4, 0.5], [0, 1, 1, 0]);
-  const extCarScale = useTransform(scrollYProgress, [0, 0.1, 0.4, 0.5], [0.9, 1, 1, 0.95]);
+  const extCarOpacity = useTransform(scrollYProgress, [0, 0.4, 0.5], [1, 1, 0]);
+  const extCarScale = useTransform(scrollYProgress, [0, 0.4, 0.5], [1, 1, 0.95]);
 
-  const extCardsOpacity = useTransform(scrollYProgress, [0.15, 0.3, 0.4, 0.5], [0, 1, 1, 0]);
-  const extCardsY = useTransform(scrollYProgress, [0.15, 0.3], [30, 0]);
+  const extCardsOpacity = useTransform(scrollYProgress, [0.1, 0.25, 0.4, 0.5], [0, 1, 1, 0]);
+  const extCardsY = useTransform(scrollYProgress, [0.1, 0.25], [30, 0]);
 
   const intPhotoOpacity = useTransform(scrollYProgress, [0.4, 0.55], [0, 1]);
   const intPhotoScale = useTransform(scrollYProgress, [0.4, 0.55], [0.95, 1]);
@@ -250,8 +250,8 @@ export const FeaturesShowcase = () => {
   return (
     <section id="features" className="relative bg-[#FAFAFA] text-slate-900">
 
-      {/* Top Header - Always visible, not scroll-jacked */}
-      <div className="pt-16 md:pt-24 pb-8 relative z-50">
+      {/* Top Header - Always visible, made sticky so it stays visible during scroll */}
+      <div className="pt-16 md:pt-24 pb-8 sticky top-0 z-[60] bg-gradient-to-b from-[#FAFAFA] to-transparent">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <motion.h2
@@ -266,7 +266,7 @@ export const FeaturesShowcase = () => {
             <div className="h-1 bg-slate-200 w-24 rounded-full mx-auto mb-10" />
 
             {/* Car Class Selector Tab */}
-            <div className="flex bg-white/50 backdrop-blur-sm p-1 rounded-2xl shadow-sm border border-slate-200/60 mx-auto w-full max-w-md relative">
+            <div className="flex bg-white/80 backdrop-blur-md p-1 rounded-2xl shadow-sm border border-slate-200/60 mx-auto w-full max-w-md relative">
               <button
                 type="button"
                 onClick={() => setSelectedClass("vw")}

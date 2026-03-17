@@ -26,7 +26,7 @@ const vwExteriorImage = "https://res.cloudinary.com/dcnwhciua/image/upload/v1773
 type CarClass = "vw" | "vito";
 
 // --- Extracted FeatureCard Component ---
-const FeatureCard = ({ feature, className = "", minibarTooltipText }: { feature: any, className?: string, minibarTooltipText: string }) => {
+const FeatureCard = ({ feature, className = "", minibarTooltipText }: { feature: any, className?: string, minibarTooltipText?: string }) => {
   const [minibarTooltipOpen, setMinibarTooltipOpen] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
@@ -228,18 +228,23 @@ export const FeaturesShowcase = () => {
     offset: ["start start", "end end"]
   });
 
-  // Scroll mappings for Desktop Cinematic View
-  // Phase 1 (0-0.2): Exterior car starts visible, wait to fade cards
-  // Phase 2 (0.15-0.3): Fade in exterior cards
-  // Phase 3 (0.4-0.5): Crossfade exterior -> interior
-  // Phase 4 (0.55-0.7): Fade in interior cards
-  // Phase 5 (0.7-1.0): Hold
+  // Desktop Cinematic View - CSS Snap Storytelling
+  // Phase 1 (0-0.2): Intro (Blur in)
+  // Phase 2 (0.2-0.4): Exterior Cards
+  // Phase 3 (0.4-0.6): Crossfade
+  // Phase 4 (0.6-0.8): Interior Cards
 
-  const extCarOpacity = useTransform(scrollYProgress, [0, 0.4, 0.5], [1, 1, 0]);
-  const extCarScale = useTransform(scrollYProgress, [0, 0.4, 0.5], [1, 1, 0.95]);
+  // Phase 1 Entrance
+  const carEntranceBlur = useTransform(scrollYProgress, [0, 0.1], ["blur(10px)", "blur(0px)"]);
+  const carEntranceOpacity = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
+  const carEntranceScale = useTransform(scrollYProgress, [0, 0.1], [0.95, 1]);
 
-  const extCardsOpacity = useTransform(scrollYProgress, [0.1, 0.25, 0.4, 0.5], [0, 1, 1, 0]);
-  const extCardsY = useTransform(scrollYProgress, [0.1, 0.25], [30, 0]);
+  // Phase transitions
+  const extCarOpacity = useTransform(scrollYProgress, [0.4, 0.5], [1, 0]);
+  const extCarScale = useTransform(scrollYProgress, [0.4, 0.5], [1, 0.95]);
+
+  const extCardsOpacity = useTransform(scrollYProgress, [0.15, 0.25, 0.4, 0.5], [0, 1, 1, 0]);
+  const extCardsY = useTransform(scrollYProgress, [0.15, 0.25], [30, 0]);
 
   const intPhotoOpacity = useTransform(scrollYProgress, [0.4, 0.55], [0, 1]);
   const intPhotoScale = useTransform(scrollYProgress, [0.4, 0.55], [0.95, 1]);
@@ -248,10 +253,10 @@ export const FeaturesShowcase = () => {
   const intCardsY = useTransform(scrollYProgress, [0.55, 0.7], [30, 0]);
 
   return (
-    <section id="features" className="relative bg-[#FAFAFA] text-slate-900">
+    <section id="features" className="relative bg-[#FAFAFA] text-slate-900 lg:snap-start">
 
-      {/* Top Header - Always visible, made sticky so it stays visible during scroll */}
-      <div className="pt-16 md:pt-24 pb-8 sticky top-0 z-[60] bg-gradient-to-b from-[#FAFAFA] to-transparent">
+      {/* Top Header - Mobile only, since Desktop uses absolute bottom tabs */}
+      <div className="pt-16 md:pt-24 pb-8 lg:hidden">
         <div className="container mx-auto px-4">
           <div className="text-center">
             <motion.h2
@@ -306,16 +311,28 @@ export const FeaturesShowcase = () => {
       </div>
 
       {/* =========================================
-          DESKTOP CINEMATIC SCROLL-JACKING (>=1024px)
+          DESKTOP CINEMATIC SNAP SCROLL (>=1024px)
           ========================================= */}
-      <div ref={containerRef} className="hidden lg:block h-[300vh] relative">
+      <div ref={containerRef} className="hidden lg:block h-[400vh] relative">
         <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+
+          {/* Snap Sections for native mousewheel step feel */}
+          <div className="absolute inset-0 z-0 h-[400vh] pointer-events-none">
+            <div className="h-[100vh] snap-start" />
+            <div className="h-[100vh] snap-start" />
+            <div className="h-[100vh] snap-start" />
+            <div className="h-[100vh] snap-start" />
+          </div>
 
           <div className="absolute inset-0 max-w-[1400px] mx-auto w-full px-8 flex items-center justify-center">
 
             {/* --- PHASE 1 & 2: EXTERIOR --- */}
             <motion.div
-              style={{ opacity: extCarOpacity, scale: extCarScale }}
+              style={{
+                opacity: useTransform(scrollYProgress, (val) => Math.min(carEntranceOpacity.get(), extCarOpacity.get())),
+                scale: useTransform(scrollYProgress, (val) => val < 0.2 ? carEntranceScale.get() : extCarScale.get()),
+                filter: carEntranceBlur
+              }}
               className="absolute inset-0 flex items-center justify-center z-10 will-change-transform"
             >
               {/* Soft radial shadow under the car */}
@@ -395,6 +412,32 @@ export const FeaturesShowcase = () => {
              <h2 className="text-[8rem] font-bold leading-none tracking-tighter uppercase text-slate-300 whitespace-nowrap">
                 {currentCarTitle[0]}<br/>{currentCarTitle[1]}
              </h2>
+          </div>
+
+          {/* Bottom Desktop Tabs */}
+          <div className="absolute bottom-12 inset-x-0 flex justify-center z-50 pointer-events-auto">
+            <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 shadow-xl border border-white/40">
+              <button
+                onClick={() => setSelectedClass("vw")}
+                className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
+                  selectedClass === "vw"
+                    ? "bg-[#2F4157] text-[#E2DED3] shadow-md"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
+                }`}
+              >
+                {tWidget("vwClassShort")}
+              </button>
+              <button
+                onClick={() => setSelectedClass("vito")}
+                className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
+                  selectedClass === "vito"
+                    ? "bg-[#2F4157] text-[#E2DED3] shadow-md"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
+                }`}
+              >
+                {tWidget("vitoClassShort")}
+              </button>
+            </div>
           </div>
 
         </div>

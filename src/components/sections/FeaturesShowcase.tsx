@@ -1,6 +1,7 @@
 "use client";
 import { useState, useCallback, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { MousePointer2 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Wifi, Wind, Baby, Coffee, CreditCard, ShieldCheck, ChevronLeft, ChevronRight, X, Check, Plus, Info } from "lucide-react";
@@ -222,38 +223,18 @@ export const FeaturesShowcase = () => {
     if (emblaApi) emblaApi.scrollTo(0);
   }, [selectedClass, emblaApi]);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+  const [activeInteriorSlide, setActiveInteriorSlide] = useState(0);
 
-  // Desktop Cinematic View - CSS Snap Storytelling
-  // Phase 1 (0-0.2): Intro (Blur in)
-  // Phase 2 (0.2-0.4): Exterior Cards
-  // Phase 3 (0.4-0.6): Crossfade
-  // Phase 4 (0.6-0.8): Interior Cards
-
-  // Phase 1 Entrance
-  const carEntranceBlur = useTransform(scrollYProgress, [0, 0.1], ["blur(10px)", "blur(0px)"]);
-  const carEntranceOpacity = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
-  const carEntranceScale = useTransform(scrollYProgress, [0, 0.1], [0.95, 1]);
-
-  // Phase transitions
-  const extCarOpacity = useTransform(scrollYProgress, [0.4, 0.5], [1, 0]);
-  const extCarScale = useTransform(scrollYProgress, [0.4, 0.5], [1, 0.95]);
-
-  const extCardsOpacity = useTransform(scrollYProgress, [0.15, 0.25, 0.4, 0.5], [0, 1, 1, 0]);
-  const extCardsY = useTransform(scrollYProgress, [0.15, 0.25], [30, 0]);
-
-  const intPhotoOpacity = useTransform(scrollYProgress, [0.4, 0.55], [0, 1]);
-  const intPhotoScale = useTransform(scrollYProgress, [0.4, 0.55], [0.95, 1]);
-
-  const intCardsOpacity = useTransform(scrollYProgress, [0.55, 0.7], [0, 1]);
-  const intCardsY = useTransform(scrollYProgress, [0.55, 0.7], [30, 0]);
+  // Auto-play interior slideshow on desktop
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveInteriorSlide((prev) => (prev + 1) % currentInteriorImages.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [currentInteriorImages.length]);
 
   return (
-    <section id="features" className="relative bg-[#FAFAFA] text-slate-900 lg:snap-start">
+    <section id="features" className="relative bg-[#FAFAFA] text-slate-900">
 
       {/* Top Header - Mobile only, since Desktop uses absolute bottom tabs */}
       <div className="pt-16 md:pt-24 pb-8 lg:hidden">
@@ -311,32 +292,31 @@ export const FeaturesShowcase = () => {
       </div>
 
       {/* =========================================
-          DESKTOP CINEMATIC SNAP SCROLL (>=1024px)
+          DESKTOP CINEMATIC SNAP SLIDES (>=1024px)
           ========================================= */}
-      <div ref={containerRef} className="hidden lg:block h-[400vh] relative">
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+      <div className="hidden lg:block relative">
 
-          {/* Snap Sections for native mousewheel step feel */}
-          <div className="absolute inset-0 z-0 h-[400vh] pointer-events-none">
-            <div className="h-[100vh] snap-start" />
-            <div className="h-[100vh] snap-start" />
-            <div className="h-[100vh] snap-start" />
-            <div className="h-[100vh] snap-start" />
-          </div>
-
+        {/* SLIDE 1: EXTERIOR */}
+        <div className="h-screen w-full relative overflow-hidden flex items-center justify-center lg:snap-start">
           <div className="absolute inset-0 max-w-[1400px] mx-auto w-full px-8 flex items-center justify-center">
 
-            {/* --- PHASE 1 & 2: EXTERIOR --- */}
+            {/* Background Title Overlay */}
+            <div className="absolute top-[20%] left-10 opacity-30 pointer-events-none z-0">
+               <h2 className="text-[8rem] font-bold leading-none tracking-tighter uppercase text-slate-300 whitespace-nowrap">
+                  {currentCarTitle[0]}<br/>{currentCarTitle[1]}
+               </h2>
+            </div>
+
+            {/* Car Exterior Animation */}
             <motion.div
-              style={{
-                opacity: useTransform(scrollYProgress, (val) => Math.min(carEntranceOpacity.get(), extCarOpacity.get())),
-                scale: useTransform(scrollYProgress, (val) => val < 0.2 ? carEntranceScale.get() : extCarScale.get()),
-                filter: carEntranceBlur
-              }}
-              className="absolute inset-0 flex items-center justify-center z-10 will-change-transform"
+              initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              viewport={{ once: false, amount: 0.5 }}
+              className="absolute inset-0 flex items-center justify-center z-10"
             >
               {/* Soft radial shadow under the car */}
-              <div className="absolute top-[60%] w-[800px] h-[300px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/20 via-black/5 to-transparent blur-2xl rounded-full" />
+              <div className="absolute top-[60%] w-[800px] h-[300px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/20 via-black/5 to-transparent blur-2xl rounded-full pointer-events-none" />
 
               <div className="relative w-[800px] h-[500px]">
                 <Image
@@ -350,10 +330,13 @@ export const FeaturesShowcase = () => {
               </div>
             </motion.div>
 
-            {/* Exterior Cards positioned around the car */}
+            {/* Exterior Cards Animation */}
             <motion.div
-              style={{ opacity: extCardsOpacity, y: extCardsY }}
-              className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center will-change-transform"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+              viewport={{ once: false, amount: 0.5 }}
+              className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center"
             >
               {/* Left Card */}
               <div className="absolute left-[5%] top-[30%] w-[300px] pointer-events-auto">
@@ -369,27 +352,69 @@ export const FeaturesShowcase = () => {
               </div>
             </motion.div>
 
+          </div>
+        </div>
 
-            {/* --- PHASE 3 & 4: INTERIOR --- */}
+        {/* SLIDE 2: INTERIOR */}
+        <div className="h-screen w-full relative overflow-hidden flex items-center justify-center lg:snap-start">
+          <div className="absolute inset-0 max-w-[1400px] mx-auto w-full px-8 flex items-center justify-center">
+
+            {/* Background Title Overlay */}
+            <div className="absolute top-[20%] left-10 opacity-30 pointer-events-none z-0">
+               <h2 className="text-[8rem] font-bold leading-none tracking-tighter uppercase text-slate-300 whitespace-nowrap">
+                  {currentCarTitle[0]}<br/>{currentCarTitle[1]}
+               </h2>
+            </div>
+
+            {/* Interior Photo Animation */}
             <motion.div
-              style={{ opacity: intPhotoOpacity, scale: intPhotoScale }}
-              className="absolute inset-0 flex items-center justify-center z-30 will-change-transform"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              viewport={{ once: false, amount: 0.5 }}
+              className="absolute inset-0 flex items-center justify-center z-10"
             >
               <div className="relative w-[900px] h-[600px] rounded-3xl overflow-hidden shadow-2xl border border-white/40">
-                <Image
-                  src={currentInteriorImages[0]}
-                  alt={`${currentCarTitle.join(" ")} Interior`}
-                  fill
-                  className="object-cover"
-                  sizes="60vw"
-                />
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeInteriorSlide}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={currentInteriorImages[activeInteriorSlide]}
+                      alt={`${currentCarTitle.join(" ")} Interior`}
+                      fill
+                      className="object-cover"
+                      sizes="60vw"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+                {/* Dots indicator inside desktop interior slider */}
+                <div className="absolute bottom-6 inset-x-0 flex justify-center gap-2 z-20">
+                  {currentInteriorImages.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveInteriorSlide(idx)}
+                      className={`w-2 h-2 rounded-full transition-all shadow-sm ${
+                        idx === activeInteriorSlide ? "bg-white w-6" : "bg-white/50 hover:bg-white/80"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
             </motion.div>
 
-            {/* Interior Cards positioned around the photo */}
+            {/* Interior Cards Animation */}
             <motion.div
-              style={{ opacity: intCardsOpacity, y: intCardsY }}
-              className="absolute inset-0 pointer-events-none z-40 flex items-center justify-center will-change-transform"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+              viewport={{ once: false, amount: 0.5 }}
+              className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center"
             >
                {/* Left Top Card */}
                <div className="absolute left-[2%] top-[20%] w-[300px] pointer-events-auto">
@@ -405,41 +430,51 @@ export const FeaturesShowcase = () => {
               </div>
             </motion.div>
 
-          </div>
+            {/* Scroll Indicator (Quiet Luxury) */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 1.5 }}
+              viewport={{ once: false }}
+              className="absolute bottom-10 inset-x-0 flex flex-col items-center justify-center gap-2 pointer-events-none z-30"
+            >
+              <span className="text-xs uppercase tracking-[0.2em] text-slate-400 font-medium">Scroll</span>
+              <div className="w-[1px] h-12 bg-slate-300 relative overflow-hidden">
+                <motion.div
+                  animate={{ y: [0, 48] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                  className="absolute inset-x-0 top-0 h-4 bg-slate-600"
+                />
+              </div>
+            </motion.div>
 
-          {/* Title overlay in sticky view */}
-          <div className="absolute top-[20%] left-10 opacity-30 pointer-events-none z-0">
-             <h2 className="text-[8rem] font-bold leading-none tracking-tighter uppercase text-slate-300 whitespace-nowrap">
-                {currentCarTitle[0]}<br/>{currentCarTitle[1]}
-             </h2>
           </div>
+        </div>
 
-          {/* Bottom Desktop Tabs */}
-          <div className="absolute bottom-12 inset-x-0 flex justify-center z-50 pointer-events-auto">
-            <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 shadow-xl border border-white/40">
-              <button
-                onClick={() => setSelectedClass("vw")}
-                className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
-                  selectedClass === "vw"
-                    ? "bg-[#2F4157] text-[#E2DED3] shadow-md"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
-                }`}
-              >
-                {tWidget("vwClassShort")}
-              </button>
-              <button
-                onClick={() => setSelectedClass("vito")}
-                className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
-                  selectedClass === "vito"
-                    ? "bg-[#2F4157] text-[#E2DED3] shadow-md"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
-                }`}
-              >
-                {tWidget("vitoClassShort")}
-              </button>
-            </div>
+        {/* Floating Global Car Tabs (Desktop) */}
+        <div className="fixed bottom-12 inset-x-0 flex justify-center z-50 pointer-events-none">
+          <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 shadow-xl border border-white/40 pointer-events-auto">
+            <button
+              onClick={() => setSelectedClass("vw")}
+              className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
+                selectedClass === "vw"
+                  ? "bg-[#2F4157] text-[#E2DED3] shadow-md"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
+              }`}
+            >
+              {tWidget("vwClassShort")}
+            </button>
+            <button
+              onClick={() => setSelectedClass("vito")}
+              className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
+                selectedClass === "vito"
+                  ? "bg-[#2F4157] text-[#E2DED3] shadow-md"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
+              }`}
+            >
+              {tWidget("vitoClassShort")}
+            </button>
           </div>
-
         </div>
       </div>
 

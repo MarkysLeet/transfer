@@ -25,7 +25,7 @@ export const HowItWorks = () => {
   ];
 
   return (
-    <section id="how-it-works" className="py-20 md:py-32 bg-white relative overflow-hidden border-t border-slate-100">
+    <section id="how-it-works" className="py-20 md:py-32 bg-white relative overflow-hidden border-t border-slate-100 lg:min-h-screen ">
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16 md:mb-24">
           <motion.h2

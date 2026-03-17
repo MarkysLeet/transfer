@@ -20,7 +20,7 @@ export const FAQ = () => {
   };
 
   return (
-    <section id="faq" className="py-20 md:py-32 bg-white relative overflow-hidden border-t border-slate-100">
+    <section id="faq" className="py-20 md:py-32 bg-white relative overflow-hidden border-t border-slate-100 lg:min-h-screen ">
       <div className="container mx-auto px-4 relative z-10 max-w-4xl">
         <div className="text-center mb-16">
           <motion.h2

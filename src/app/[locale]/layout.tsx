@@ -10,6 +10,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomBar } from "@/components/layout/MobileBottomBar";
+import { FloatingNav } from "@/components/layout/FloatingNav";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -47,7 +48,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={clsx(inter.variable)}>
       <body
-        className="antialiased bg-[#FAFAFA] text-slate-900 selection:bg-bronze-500 selection:text-white relative min-h-screen"
+        className="antialiased bg-[#FAFAFA] text-slate-900 selection:bg-bronze-500 selection:text-white relative min-h-screen overflow-x-hidden"
       >
         {/* Global Soft Background */}
         <div
@@ -58,7 +59,10 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <SmoothScroll>
             <Header />
-            <main className="min-h-screen relative z-0 overflow-x-hidden max-w-[100vw]">{children}</main>
+            <FloatingNav />
+            <main className="min-h-screen relative z-0 max-w-[100vw]">
+              {children}
+            </main>
             <Footer />
             <MobileBottomBar />
           </SmoothScroll>

@@ -260,7 +260,7 @@ export const Destinations = () => {
   };
 
   return (
-    <section id="destinations" className="py-20 md:py-32 bg-[#FAFAFA] overflow-hidden">
+    <section id="destinations" className="py-20 md:py-32 bg-[#FAFAFA] overflow-hidden lg:min-h-screen ">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center mb-16">
           <motion.h2

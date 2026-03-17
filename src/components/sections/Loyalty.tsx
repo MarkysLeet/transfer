@@ -20,7 +20,7 @@ export const Loyalty = () => {
   ];
 
   return (
-    <section id="loyalty" className="py-20 md:py-32 bg-[#FAFAFA] relative overflow-hidden border-t border-slate-200">
+    <section id="loyalty" className="py-20 md:py-32 bg-[#FAFAFA] relative overflow-hidden border-t border-slate-200 lg:min-h-screen lg:snap-start lg:snap-always flex items-center">
       {/* Soft Gradients */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-slate-200/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-slate-200/50 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />

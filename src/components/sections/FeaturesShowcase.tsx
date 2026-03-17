@@ -1,6 +1,6 @@
 "use client";
 import { useState, useCallback, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { MousePointer2 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -224,6 +224,21 @@ export const FeaturesShowcase = () => {
   }, [selectedClass, emblaApi]);
 
   const [activeInteriorSlide, setActiveInteriorSlide] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isInteriorPhase, setIsInteriorPhase] = useState(false);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest > 0.4 && !isInteriorPhase) {
+      setIsInteriorPhase(true);
+    } else if (latest <= 0.4 && isInteriorPhase) {
+      setIsInteriorPhase(false);
+    }
+  });
 
   // Auto-play interior slideshow on desktop
   useEffect(() => {
@@ -292,161 +307,147 @@ export const FeaturesShowcase = () => {
       </div>
 
       {/* =========================================
-          DESKTOP CINEMATIC SNAP SLIDES (>=1024px)
+          DESKTOP CINEMATIC SCROLLJACKING (>=1024px)
           ========================================= */}
-      <div className="hidden lg:block relative">
+      <div ref={containerRef} className="hidden lg:block h-[300vh] relative">
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
 
-        {/* SLIDE 1: EXTERIOR */}
-        <div className="h-screen w-full relative overflow-hidden flex items-center justify-center lg:snap-start">
           <div className="absolute inset-0 max-w-[1400px] mx-auto w-full px-8 flex items-center justify-center">
 
-            {/* Background Title Overlay */}
+            {/* Background Title Overlay (Static throughout) */}
             <div className="absolute top-[20%] left-10 opacity-30 pointer-events-none z-0">
                <h2 className="text-[8rem] font-bold leading-none tracking-tighter uppercase text-slate-300 whitespace-nowrap">
                   {currentCarTitle[0]}<br/>{currentCarTitle[1]}
                </h2>
             </div>
 
-            {/* Car Exterior Animation */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              viewport={{ once: false, amount: 0.5 }}
-              className="absolute inset-0 flex items-center justify-center z-10"
-            >
-              {/* Soft radial shadow under the car */}
-              <div className="absolute top-[60%] w-[800px] h-[300px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/20 via-black/5 to-transparent blur-2xl rounded-full pointer-events-none" />
+            <AnimatePresence mode="wait">
+              {!isInteriorPhase ? (
+                // --- SLIDE 1: EXTERIOR ---
+                <motion.div
+                  key="exterior-view"
+                  initial={{ opacity: 0, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, scale: 0.95, filter: "blur(5px)" }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="absolute inset-0 flex items-center justify-center z-10"
+                >
+                  {/* Car Exterior Photo */}
+                  <motion.div className="absolute inset-0 flex items-center justify-center z-10">
+                    <div className="absolute top-[60%] w-[800px] h-[300px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/20 via-black/5 to-transparent blur-2xl rounded-full pointer-events-none" />
 
-              <div className="relative w-[800px] h-[500px]">
-                <Image
-                  src={currentExteriorImage}
-                  alt={`${currentCarTitle.join(" ")} Exterior`}
-                  fill
-                  className="object-contain drop-shadow-2xl"
-                  sizes="50vw"
-                  priority
-                />
-              </div>
-            </motion.div>
+                    <div className="relative w-[800px] h-[500px]">
+                      <Image
+                        src={currentExteriorImage}
+                        alt={`${currentCarTitle.join(" ")} Exterior`}
+                        fill
+                        className="object-contain drop-shadow-2xl"
+                        sizes="50vw"
+                        priority
+                      />
+                    </div>
+                  </motion.div>
 
-            {/* Exterior Cards Animation */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              viewport={{ once: false, amount: 0.5 }}
-              className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center"
-            >
-              {/* Left Card */}
-              <div className="absolute left-[5%] top-[30%] w-[300px] pointer-events-auto">
-                <FeatureCard feature={exteriorFeatures[0]} minibarTooltipText={t("minibarTooltip")} />
-              </div>
-              {/* Right Top Card */}
-              <div className="absolute right-[5%] top-[25%] w-[300px] pointer-events-auto">
-                <FeatureCard feature={exteriorFeatures[1]} minibarTooltipText={t("minibarTooltip")} />
-              </div>
-              {/* Right Bottom Card */}
-              <div className="absolute right-[10%] top-[60%] w-[300px] pointer-events-auto">
-                <FeatureCard feature={exteriorFeatures[2]} minibarTooltipText={t("minibarTooltip")} />
-              </div>
-            </motion.div>
-
-          </div>
-        </div>
-
-        {/* SLIDE 2: INTERIOR */}
-        <div className="h-screen w-full relative overflow-hidden flex items-center justify-center lg:snap-start">
-          <div className="absolute inset-0 max-w-[1400px] mx-auto w-full px-8 flex items-center justify-center">
-
-            {/* Background Title Overlay */}
-            <div className="absolute top-[20%] left-10 opacity-30 pointer-events-none z-0">
-               <h2 className="text-[8rem] font-bold leading-none tracking-tighter uppercase text-slate-300 whitespace-nowrap">
-                  {currentCarTitle[0]}<br/>{currentCarTitle[1]}
-               </h2>
-            </div>
-
-            {/* Interior Photo Animation */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              viewport={{ once: false, amount: 0.5 }}
-              className="absolute inset-0 flex items-center justify-center z-10"
-            >
-              <div className="relative w-[900px] h-[600px] rounded-3xl overflow-hidden shadow-2xl border border-white/40">
-                <AnimatePresence mode="wait">
+                  {/* Exterior Cards */}
                   <motion.div
-                    key={activeInteriorSlide}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                    className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center"
+                  >
+                    <div className="absolute left-[5%] top-[30%] w-[300px] pointer-events-auto">
+                      <FeatureCard feature={exteriorFeatures[0]} minibarTooltipText={t("minibarTooltip")} />
+                    </div>
+                    <div className="absolute right-[5%] top-[25%] w-[300px] pointer-events-auto">
+                      <FeatureCard feature={exteriorFeatures[1]} minibarTooltipText={t("minibarTooltip")} />
+                    </div>
+                    <div className="absolute right-[10%] top-[60%] w-[300px] pointer-events-auto">
+                      <FeatureCard feature={exteriorFeatures[2]} minibarTooltipText={t("minibarTooltip")} />
+                    </div>
+                  </motion.div>
+                </motion.div>
+              ) : (
+                // --- SLIDE 2: INTERIOR ---
+                <motion.div
+                  key="interior-view"
+                  initial={{ opacity: 0, scale: 1.05, filter: "blur(5px)" }}
+                  animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="absolute inset-0 flex items-center justify-center z-10"
+                >
+                  {/* Interior Photo Slideshow */}
+                  <motion.div className="absolute inset-0 flex items-center justify-center z-10">
+                    <div className="relative w-[900px] h-[600px] rounded-3xl overflow-hidden shadow-2xl border border-white/40">
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={activeInteriorSlide}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.8 }}
+                          className="absolute inset-0"
+                        >
+                          <Image
+                            src={currentInteriorImages[activeInteriorSlide]}
+                            alt={`${currentCarTitle.join(" ")} Interior`}
+                            fill
+                            className="object-cover"
+                            sizes="60vw"
+                          />
+                        </motion.div>
+                      </AnimatePresence>
+                      <div className="absolute bottom-6 inset-x-0 flex justify-center gap-2 z-20">
+                        {currentInteriorImages.map((_, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => setActiveInteriorSlide(idx)}
+                            className={`w-2 h-2 rounded-full transition-all shadow-sm ${
+                              idx === activeInteriorSlide ? "bg-white w-6" : "bg-white/50 hover:bg-white/80"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Interior Cards */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                    className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center"
+                  >
+                     <div className="absolute left-[2%] top-[20%] w-[300px] pointer-events-auto">
+                      <FeatureCard feature={interiorFeatures[0]} minibarTooltipText={t("minibarTooltip")} />
+                    </div>
+                    <div className="absolute left-[5%] top-[65%] w-[300px] pointer-events-auto">
+                      <FeatureCard feature={interiorFeatures[1]} minibarTooltipText={t("minibarTooltip")} />
+                    </div>
+                    <div className="absolute right-[2%] top-[45%] w-[300px] pointer-events-auto">
+                      <FeatureCard feature={interiorFeatures[2]} minibarTooltipText={t("minibarTooltip")} />
+                    </div>
+                  </motion.div>
+
+                  {/* Scroll Indicator */}
+                  <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="absolute inset-0"
+                    transition={{ duration: 1, delay: 1 }}
+                    className="absolute bottom-10 inset-x-0 flex flex-col items-center justify-center gap-2 pointer-events-none z-30"
                   >
-                    <Image
-                      src={currentInteriorImages[activeInteriorSlide]}
-                      alt={`${currentCarTitle.join(" ")} Interior`}
-                      fill
-                      className="object-cover"
-                      sizes="60vw"
-                    />
+                    <span className="text-xs uppercase tracking-[0.2em] text-slate-400 font-medium">Scroll</span>
+                    <div className="w-[1px] h-12 bg-slate-300 relative overflow-hidden">
+                      <motion.div
+                        animate={{ y: [0, 48] }}
+                        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                        className="absolute inset-x-0 top-0 h-4 bg-slate-600"
+                      />
+                    </div>
                   </motion.div>
-                </AnimatePresence>
-                {/* Dots indicator inside desktop interior slider */}
-                <div className="absolute bottom-6 inset-x-0 flex justify-center gap-2 z-20">
-                  {currentInteriorImages.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setActiveInteriorSlide(idx)}
-                      className={`w-2 h-2 rounded-full transition-all shadow-sm ${
-                        idx === activeInteriorSlide ? "bg-white w-6" : "bg-white/50 hover:bg-white/80"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Interior Cards Animation */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              viewport={{ once: false, amount: 0.5 }}
-              className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center"
-            >
-               {/* Left Top Card */}
-               <div className="absolute left-[2%] top-[20%] w-[300px] pointer-events-auto">
-                <FeatureCard feature={interiorFeatures[0]} minibarTooltipText={t("minibarTooltip")} />
-              </div>
-              {/* Left Bottom Card */}
-              <div className="absolute left-[5%] top-[65%] w-[300px] pointer-events-auto">
-                <FeatureCard feature={interiorFeatures[1]} minibarTooltipText={t("minibarTooltip")} />
-              </div>
-              {/* Right Center Card */}
-              <div className="absolute right-[2%] top-[45%] w-[300px] pointer-events-auto">
-                <FeatureCard feature={interiorFeatures[2]} minibarTooltipText={t("minibarTooltip")} />
-              </div>
-            </motion.div>
-
-            {/* Scroll Indicator (Quiet Luxury) */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1.5 }}
-              viewport={{ once: false }}
-              className="absolute bottom-10 inset-x-0 flex flex-col items-center justify-center gap-2 pointer-events-none z-30"
-            >
-              <span className="text-xs uppercase tracking-[0.2em] text-slate-400 font-medium">Scroll</span>
-              <div className="w-[1px] h-12 bg-slate-300 relative overflow-hidden">
-                <motion.div
-                  animate={{ y: [0, 48] }}
-                  transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                  className="absolute inset-x-0 top-0 h-4 bg-slate-600"
-                />
-              </div>
-            </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
           </div>
         </div>

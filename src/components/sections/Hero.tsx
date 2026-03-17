@@ -8,7 +8,7 @@ export const Hero = () => {
   const t = useTranslations("Hero");
 
   return (
-    <section id="hero" className="relative min-h-[100svh] flex flex-col justify-center overflow-visible pt-20 md:pt-32 pb-8 lg:pb-0 lg:snap-start lg:snap-always">
+    <section id="hero" className="relative min-h-[100svh] flex flex-col justify-center overflow-visible pt-20 md:pt-32 pb-8 lg:pb-0  lg:snap-always">
       {/* Background Video with Dark Overlay */}
       <div className="absolute inset-0 z-0 overflow-hidden bg-background">
         <video

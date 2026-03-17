@@ -46,7 +46,7 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={clsx(inter.variable, "lg:snap-y lg:snap-mandatory")}>
+    <html lang={locale} className={clsx(inter.variable)}>
       <body
         className="antialiased bg-[#FAFAFA] text-slate-900 selection:bg-bronze-500 selection:text-white relative min-h-screen overflow-x-hidden"
       >

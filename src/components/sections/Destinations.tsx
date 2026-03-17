@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight, X, MousePointerClick } from "lucide-react";
+import { useLenis } from "lenis/react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Button } from "@/components/ui/Button";
 
@@ -35,6 +36,7 @@ export const Destinations = () => {
     align: "start",
   });
   const [modalSelectedIndex, setModalSelectedIndex] = useState(0);
+  const lenis = useLenis();
 
   useEffect(() => {
     if (!modalEmblaApi) return;
@@ -115,13 +117,22 @@ export const Destinations = () => {
   useEffect(() => {
     if (selectedCard) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+      lenis?.stop();
+      window.dispatchEvent(new CustomEvent("hideHeader"));
     } else {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      lenis?.start();
+      window.dispatchEvent(new CustomEvent("showHeader"));
     }
     return () => {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      lenis?.start();
+      window.dispatchEvent(new CustomEvent("showHeader"));
     };
-  }, [selectedCard]);
+  }, [selectedCard, lenis]);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -324,15 +335,15 @@ export const Destinations = () => {
           {/* Navigation Controls */}
           <button
             onClick={() => emblaApi?.scrollPrev()}
-            className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white shadow-md hover:bg-slate-50 border border-slate-100 text-slate-800 transition-all hidden md:block"
+            className="absolute -left-2 md:-left-10 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={24} strokeWidth={1.5} />
           </button>
           <button
             onClick={() => emblaApi?.scrollNext()}
-            className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white shadow-md hover:bg-slate-50 border border-slate-100 text-slate-800 transition-all hidden md:block"
+            className="absolute -right-2 md:-right-10 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
           >
-            <ChevronRight size={24} />
+            <ChevronRight size={24} strokeWidth={1.5} />
           </button>
         </div>
       </div>
@@ -343,19 +354,11 @@ export const Destinations = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4"
             onClick={() => setSelectedCard(null)}
           >
             <div className="absolute inset-0 bg-[#F4EFEB]/90 pointer-events-none" />
             <div className="relative z-10 flex items-center justify-center w-full h-full">
-
-              {/* Global Navigation - Previous */}
-              <button
-                onClick={handlePrevDestination}
-                className="group absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-white/10 hover:bg-white text-slate-800 shadow-lg border border-slate-200/20 hover:border-slate-200 transition-all backdrop-blur-sm"
-              >
-                <ChevronLeft size={28} className="text-white group-hover:text-slate-800" />
-              </button>
 
             <AnimatePresence mode="wait">
               <motion.div
@@ -367,6 +370,28 @@ export const Destinations = () => {
                 onClick={(e) => e.stopPropagation()}
                 className="relative w-full max-w-2xl bg-white shadow-2xl rounded-3xl overflow-visible flex flex-col max-h-[90vh] pb-4 md:pb-6 mb-6"
               >
+
+                {/* Global Navigation - Previous */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePrevDestination(e);
+                  }}
+                  className="group absolute -left-12 md:-left-16 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300 hidden sm:block"
+                >
+                  <ChevronLeft size={36} strokeWidth={1.5} className="text-slate-800 opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
+                </button>
+
+                {/* Global Navigation - Next */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNextDestination(e);
+                  }}
+                  className="group absolute -right-12 md:-right-16 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300 hidden sm:block"
+                >
+                  <ChevronRight size={36} strokeWidth={1.5} className="text-slate-800 opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
+                </button>
                 <button
                   onClick={() => setSelectedCard(null)}
                   className="absolute top-4 right-4 z-30 p-2 rounded-full bg-white text-slate-800 shadow-md hover:bg-slate-50 transition-all border border-slate-100"
@@ -452,14 +477,6 @@ export const Destinations = () => {
                 </div>
               </motion.div>
             </AnimatePresence>
-
-              {/* Global Navigation - Next */}
-              <button
-                onClick={handleNextDestination}
-                className="group absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-white/10 hover:bg-white text-slate-800 shadow-lg border border-slate-200/20 hover:border-slate-200 transition-all backdrop-blur-sm"
-              >
-                <ChevronRight size={28} className="text-white group-hover:text-slate-800" />
-              </button>
             </div>
           </motion.div>
         )}

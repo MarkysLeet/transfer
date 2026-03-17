@@ -23,12 +23,28 @@ export const Header = () => {
   const pathname = usePathname();
   const t = useTranslations("Navigation");
 
+  const [isHidden, setIsHidden] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Listen for custom events to hide/show header when modals are open
+  useEffect(() => {
+    const handleHide = () => setIsHidden(true);
+    const handleShow = () => setIsHidden(false);
+
+    window.addEventListener("hideHeader", handleHide);
+    window.addEventListener("showHeader", handleShow);
+
+    return () => {
+      window.removeEventListener("hideHeader", handleHide);
+      window.removeEventListener("showHeader", handleShow);
+    };
   }, []);
 
   useEffect(() => {
@@ -60,7 +76,8 @@ export const Header = () => {
       <header
         className={cn(
           "hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
-          scrolled ? "bg-[#F4EFEB] shadow-md border-slate-200 py-4" : "bg-transparent border-transparent py-6"
+          scrolled ? "bg-[#F4EFEB] shadow-md border-slate-200 py-4" : "bg-transparent border-transparent py-6",
+          isHidden ? "opacity-0 pointer-events-none -translate-y-full" : "opacity-100 translate-y-0"
         )}
       >
         <div className="container mx-auto px-4 flex items-center justify-between">

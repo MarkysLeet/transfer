@@ -1,11 +1,11 @@
 
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { ChevronLeft, ChevronRight, X, MousePointerClick } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useLenis } from "lenis/react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Button } from "@/components/ui/Button";
@@ -37,6 +37,31 @@ export const Destinations = () => {
   });
   const [modalSelectedIndex, setModalSelectedIndex] = useState(0);
   const lenis = useLenis();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  // Scroll phase animations for desktop
+  const phase1Opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const phase1Y = useTransform(scrollYProgress, [0, 0.4], [0, -50]);
+  const bgBlur = useTransform(scrollYProgress, [0.2, 0.5], [0, 8]);
+  const bgDarken = useTransform(scrollYProgress, [0.2, 0.5], [0, 0.6]);
+  const phase2Opacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
+  const phase2Scale = useTransform(scrollYProgress, [0.3, 0.6], [0.8, 1]);
+
+  const [isDesktop, setIsDesktop] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop);
+    return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
 
   useEffect(() => {
     if (!modalEmblaApi) return;
@@ -259,34 +284,18 @@ export const Destinations = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  return (
-    <section id="destinations" className="py-20 md:py-32 bg-[#FAFAFA] overflow-hidden lg:min-h-screen ">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-16">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 tracking-wider"
-          >
-            {tDestinations("title")}
-          </motion.h2>
-          <div className="h-1 bg-slate-200 w-24 rounded-full mx-auto" />
-        </div>
-
-        {/* Embla Cover Flow Carousel */}
-        <div className="relative max-w-[1200px] mx-auto overflow-hidden py-24">
-          <div
-            className="overflow-visible"
-            ref={emblaRef}
-            style={{
-              maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)'
-            }}
-          >
-            <div className="flex touch-pan-y -ml-4 md:-ml-6 items-center">
-              {cards.map((card, index) => {
+  const CarouselContent = () => (
+    <div className={`relative max-w-[1200px] mx-auto overflow-hidden ${isDesktop ? '' : 'py-12'}`}>
+      <div
+        className="overflow-visible"
+        ref={emblaRef}
+        style={{
+          maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)'
+        }}
+      >
+        <div className="flex touch-pan-y -ml-4 md:-ml-6 items-center">
+          {cards.map((card, index) => {
                 const isActive = index === selectedIndex;
 
                 return (
@@ -328,25 +337,111 @@ export const Destinations = () => {
                     </div>
                   </div>
                 );
-              })}
-            </div>
-          </div>
-
-          {/* Navigation Controls */}
-          <button
-            onClick={() => emblaApi?.scrollPrev()}
-            className="absolute -left-2 md:-left-10 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
-          >
-            <ChevronLeft size={24} strokeWidth={1.5} />
-          </button>
-          <button
-            onClick={() => emblaApi?.scrollNext()}
-            className="absolute -right-2 md:-right-10 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
-          >
-            <ChevronRight size={24} strokeWidth={1.5} />
-          </button>
+          })}
         </div>
       </div>
+
+      {/* Navigation Controls */}
+      <button
+        onClick={() => emblaApi?.scrollPrev()}
+        className="absolute -left-2 md:-left-10 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
+      >
+        <ChevronLeft size={24} strokeWidth={1.5} />
+      </button>
+      <button
+        onClick={() => emblaApi?.scrollNext()}
+        className="absolute -right-2 md:-right-10 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
+      >
+        <ChevronRight size={24} strokeWidth={1.5} />
+      </button>
+    </div>
+  );
+
+  if (!mounted) return <section id="destinations" className="py-20 md:py-32 bg-[#FAFAFA] min-h-screen" />;
+
+  return (
+    <section id="destinations" className="bg-[#FAFAFA] relative overflow-hidden">
+
+      {/* DESKTOP NARRATIVE SCROLL (>= 1024px) */}
+      {isDesktop && (
+        <div ref={containerRef} className="h-[300vh] relative w-full">
+          <div className="sticky top-0 h-screen w-full overflow-hidden">
+
+          {/* Immersive Background */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="https://storage.yandexcloud.net/arina-reels-storage/antalya_coast.jpg"
+              alt="Antalya Coast"
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+            />
+            {/* Darken Overlay linked to scroll */}
+            <motion.div
+              className="absolute inset-0 bg-black pointer-events-none"
+              style={{ opacity: bgDarken, backdropFilter: useTransform(bgBlur, b => `blur(${b}px)`) }}
+            />
+          </div>
+
+          {/* Phase 1: Title & Atmosphere */}
+          <motion.div
+            style={{ opacity: phase1Opacity, y: phase1Y, willChange: "transform, opacity" }}
+            className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none"
+          >
+            <h2 className="text-6xl md:text-8xl font-bold mb-6 text-white tracking-wider drop-shadow-2xl">
+              {tDestinations("title")}
+            </h2>
+          </motion.div>
+
+          {/* Phase 2: Coverflow Carousel */}
+          <motion.div
+            style={{ opacity: phase2Opacity, scale: phase2Scale, willChange: "transform, opacity" }}
+            className="absolute inset-0 z-20 flex items-center justify-center"
+          >
+            <div className="w-full">
+              <CarouselContent />
+            </div>
+          </motion.div>
+
+            {/* Scroll Indicator */}
+            <motion.div
+              style={{ opacity: phase1Opacity }}
+              className="absolute bottom-10 inset-x-0 flex flex-col items-center justify-center gap-2 pointer-events-none z-30"
+            >
+              <span className="text-xs uppercase tracking-[0.2em] text-white/70 font-medium">Scroll</span>
+              <div className="w-[1px] h-12 bg-white/20 relative overflow-hidden">
+                <motion.div
+                  animate={{ y: [0, 48] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                  className="absolute inset-x-0 top-0 h-4 bg-white"
+                />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      )}
+
+      {/* MOBILE VERTICAL LAYOUT (< 1024px) */}
+      {!isDesktop && (
+        <div className="py-20 md:py-32">
+          <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center mb-16">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 tracking-wider"
+            >
+              {tDestinations("title")}
+            </motion.h2>
+            <div className="h-1 bg-slate-200 w-24 rounded-full mx-auto" />
+          </div>
+          <CarouselContent />
+        </div>
+      </div>
+      )}
 
       <AnimatePresence>
         {selectedCard && (

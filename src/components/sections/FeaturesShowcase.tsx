@@ -450,31 +450,31 @@ export const FeaturesShowcase = () => {
             </AnimatePresence>
 
           </div>
-        </div>
 
-        {/* Floating Global Car Tabs (Desktop) */}
-        <div className="absolute bottom-12 inset-x-0 flex justify-center z-50 pointer-events-none">
-          <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 shadow-xl border border-white/40 pointer-events-auto">
-            <button
-              onClick={() => setSelectedClass("vw")}
-              className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
-                selectedClass === "vw"
-                  ? "bg-[#2F4157] text-[#E2DED3] shadow-md"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
-              }`}
-            >
-              {tWidget("vwClassShort")}
-            </button>
-            <button
-              onClick={() => setSelectedClass("vito")}
-              className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
-                selectedClass === "vito"
-                  ? "bg-[#2F4157] text-[#E2DED3] shadow-md"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
-              }`}
-            >
-              {tWidget("vitoClassShort")}
-            </button>
+          {/* Floating Global Car Tabs (Desktop) */}
+          <div className="absolute bottom-12 inset-x-0 flex justify-center z-50 pointer-events-none">
+            <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 shadow-xl border border-white/40 pointer-events-auto">
+              <button
+                onClick={() => setSelectedClass("vw")}
+                className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
+                  selectedClass === "vw"
+                    ? "bg-[#2F4157] text-[#E2DED3] shadow-md"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
+                }`}
+              >
+                {tWidget("vwClassShort")}
+              </button>
+              <button
+                onClick={() => setSelectedClass("vito")}
+                className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
+                  selectedClass === "vito"
+                    ? "bg-[#2F4157] text-[#E2DED3] shadow-md"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
+                }`}
+              >
+                {tWidget("vitoClassShort")}
+              </button>
+            </div>
           </div>
         </div>
       </div>

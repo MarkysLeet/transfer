@@ -248,7 +248,7 @@ export const FeaturesShowcase = () => {
   }, [currentInteriorImages.length]);
 
   return (
-    <section id="features" className="relative w-full overflow-hidden bg-[#FAFAFA] min-h-screen lg:h-screen lg:snap-start lg:snap-always">
+    <section id="features" className="relative w-full overflow-hidden bg-[#FAFAFA] min-h-screen lg:snap-start">
 
       {/* Top Header - Mobile only, since Desktop uses absolute bottom tabs */}
       <div className="pt-16 md:pt-24 pb-8 lg:hidden">

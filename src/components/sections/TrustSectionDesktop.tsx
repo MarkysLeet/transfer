@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Star, MessageSquare, ChevronDown } from "lucide-react";
 
@@ -8,7 +8,7 @@ export const TrustSectionDesktop = () => {
   const tReviews = useTranslations("Reviews");
   const tFAQ = useTranslations("FAQ");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [phase, setPhase] = useState<1 | 2>(1);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const reviews = [
     { name: tReviews("review1Name"), text: tReviews("review1Text"), rating: 5 },
@@ -27,58 +27,45 @@ export const TrustSectionDesktop = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  useEffect(() => {
-    // Phase 1 lasts for 3 seconds, then we switch to Phase 2 (the actual content)
-    // We only trigger this when the section comes into view, but to keep it simple
-    // without `useInView` tracking, we can just let `whileInView` handle the container
-    // and rely on a local intersection observer to trigger the phase shift.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"]
+  });
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setPhase(2), 2500);
-        }
-      });
-    }, { threshold: 0.5 });
+  // Title animates up and fades out
+  const titleY = useTransform(scrollYProgress, [0, 0.4], [0, -250]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const titleScale = useTransform(scrollYProgress, [0, 0.4], [1, 0.8]);
 
-    const el = document.getElementById("trust-desktop");
-    if (el) observer.observe(el);
-
-    return () => observer.disconnect();
-  }, []);
+  // Content animates up from the bottom
+  const contentY = useTransform(scrollYProgress, [0.2, 0.6], [800, 0]);
+  const contentOpacity = useTransform(scrollYProgress, [0.2, 0.6], [0, 1]);
+  const contentPointerEvents = useTransform(scrollYProgress, (v) => v > 0.4 ? "auto" : "none");
 
   return (
-    <section id="trust-desktop" className="h-screen w-full bg-[#FAFAFA] relative overflow-hidden lg:snap-start lg:snap-always flex items-center justify-center">
+    <section ref={sectionRef} id="trust-desktop" className="h-[200vh] w-full bg-[#FAFAFA] relative lg:snap-start">
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden">
 
-      <AnimatePresence mode="wait">
-        {phase === 1 && (
-          <motion.div
-            key="phase1"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, y: -50 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="absolute inset-0 flex flex-col items-center justify-center z-10"
-          >
-            <div className="flex gap-3 mb-6">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-16 h-16 fill-yellow-400 text-yellow-400 drop-shadow-lg" />
-              ))}
-            </div>
-            <h2 className="text-6xl md:text-8xl font-bold mb-6 text-slate-900 tracking-wider text-center max-w-5xl leading-tight">
-              {tReviews("trustSectionTitle")}
-            </h2>
-          </motion.div>
-        )}
+        {/* Phase 1: Fixed empty background with "Highly Recommended Service" + badges */}
+        <motion.div
+          style={{ y: titleY, opacity: titleOpacity, scale: titleScale }}
+          className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none"
+        >
+          <div className="flex gap-3 mb-6">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-16 h-16 fill-yellow-400 text-yellow-400 drop-shadow-lg" />
+            ))}
+          </div>
+          <h2 className="text-6xl md:text-8xl font-bold mb-6 text-slate-900 tracking-wider text-center max-w-5xl leading-tight">
+            {tReviews("trustSectionTitle")}
+          </h2>
+        </motion.div>
 
-        {phase === 2 && (
-          <motion.div
-            key="phase2"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            className="absolute inset-0 z-20 flex flex-col items-center pt-24 pb-12 w-full max-w-7xl mx-auto px-8"
-          >
+        {/* Phase 2: Marquee + FAQ coming up */}
+        <motion.div
+          style={{ y: contentY, opacity: contentOpacity, pointerEvents: contentPointerEvents }}
+          className="absolute inset-0 z-20 flex flex-col items-center pt-24 pb-12 w-full max-w-7xl mx-auto px-8"
+        >
             {/* Top Half: Marquee Reviews */}
             <div className="w-full mb-16 overflow-hidden">
               <h3 className="text-3xl font-bold text-slate-900 mb-8">{tReviews("title")}</h3>
@@ -159,9 +146,8 @@ export const TrustSectionDesktop = () => {
                </div>
             </div>
 
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </motion.div>
+      </div>
     </section>
   );
 };

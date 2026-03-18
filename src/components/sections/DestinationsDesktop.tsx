@@ -280,8 +280,9 @@ export const DestinationsDesktop = () => {
     <section
       ref={sectionRef}
       id="destinations"
-      className="h-screen relative lg:snap-start lg:snap-always flex items-center justify-center overflow-hidden"
+      className="h-[200vh] relative lg:snap-start"
     >
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
         {/* Background Image Phase 1 & 2 */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -291,23 +292,33 @@ export const DestinationsDesktop = () => {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-10" />
+          <motion.div
+            className="absolute inset-0 bg-black z-10"
+            style={{ opacity: bgOpacity }}
+          />
+          <motion.div
+            className="absolute inset-0 backdrop-blur-md z-10"
+            style={{ backdropFilter: bgBlur, WebkitBackdropFilter: bgBlur }}
+          />
         </div>
 
-        {/* Floating title block with dark glassmorphism (User Request #2) */}
-        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-20 pointer-events-none bg-black/40 backdrop-blur-md border border-white/10 px-12 py-6 rounded-full shadow-2xl">
+        <motion.div
+          style={{ y: titleY, opacity: titleOpacity }}
+          className="relative z-20 text-center flex flex-col items-center pointer-events-none bg-black/40 backdrop-blur-md border border-white/10 px-12 py-6 rounded-full shadow-2xl"
+        >
           <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-wider drop-shadow-lg text-center">
             {tDestinations("title")}
           </h2>
-        </div>
+        </motion.div>
 
         {/* Embla Cover Flow Carousel Phase 2 */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: false, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative z-30 flex items-center justify-center w-full h-full mt-12"
+          style={{
+            opacity: carouselOpacity,
+            scale: carouselScale,
+            pointerEvents: carouselPointerEvents
+          }}
+          className="absolute inset-0 z-30 flex items-center justify-center"
         >
           <div className="w-full max-w-[1400px] mx-auto overflow-hidden py-24 relative">
             <div
@@ -380,6 +391,7 @@ export const DestinationsDesktop = () => {
             </button>
           </div>
         </motion.div>
+      </div>
 
       <AnimatePresence>
         {selectedCard && (

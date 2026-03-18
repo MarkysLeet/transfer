@@ -22,10 +22,11 @@ export const TrustSection = () => {
     return () => window.removeEventListener("resize", checkDesktop);
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+  // We conditionally pass the target to useScroll only if mounted and isDesktop are true
+  // to avoid passing an unhydrated ref.
+  const { scrollYProgress } = useScroll(
+    mounted && isDesktop ? { target: containerRef, offset: ["start start", "end end"] } : undefined
+  );
 
   // Phase 1 (Trigger) -> Phase 2 (Details) transitions
   const triggerOpacity = useTransform(scrollYProgress, [0, 0.3, 0.4], [1, 1, 0]);

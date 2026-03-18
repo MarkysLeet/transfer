@@ -39,10 +39,14 @@ export const Destinations = () => {
   const lenis = useLenis();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+  const [isDesktop, setIsDesktop] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  // We must not pass an unmounted target ref to useScroll during SSR/initial render.
+  // We handle this by conditionally applying the target inside useScroll only after mounting.
+  const { scrollYProgress } = useScroll(
+    mounted && isDesktop ? { target: containerRef, offset: ["start start", "end end"] } : undefined
+  );
 
   // Scroll phase animations for desktop
   const phase1Opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
@@ -51,9 +55,6 @@ export const Destinations = () => {
   const bgDarken = useTransform(scrollYProgress, [0.2, 0.5], [0, 0.6]);
   const phase2Opacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
   const phase2Scale = useTransform(scrollYProgress, [0.3, 0.6], [0.8, 1]);
-
-  const [isDesktop, setIsDesktop] = useState(true);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);

@@ -19,6 +19,7 @@
   },
   "Destinations": {
     "title": "Routen",
+    "destinationsPromptTitle": "Entdecken Sie die Türkei",
     "tabAirports": "Flughäfen",
     "tabResorts": "Ferienorte",
     "tabTours": "Historische Touren",

@@ -19,6 +19,7 @@
   },
   "Destinations": {
     "title": "Güzergahlar",
+    "destinationsPromptTitle": "Türkiye'yi Keşfedin",
     "tabAirports": "Havalimanları",
     "tabResorts": "Tatil Köyleri",
     "tabTours": "Tarihi Turlar",

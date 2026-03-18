@@ -19,6 +19,7 @@
   },
   "Destinations": {
     "title": "Destinations",
+    "destinationsPromptTitle": "Discover Turkey",
     "tabAirports": "Airports",
     "tabResorts": "Resorts",
     "tabTours": "Historical Tours",

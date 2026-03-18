@@ -12,6 +12,11 @@ export const HowItWorks = () => {
   const [isDesktop, setIsDesktop] = useState(true);
   const [mounted, setMounted] = useState(false);
 
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
   useEffect(() => {
     setMounted(true);
     const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
@@ -19,10 +24,6 @@ export const HowItWorks = () => {
     window.addEventListener("resize", checkDesktop);
     return () => window.removeEventListener("resize", checkDesktop);
   }, []);
-
-  const { scrollYProgress } = useScroll(
-    mounted && isDesktop ? { target: containerRef, offset: ["start start", "end end"] } : undefined
-  );
 
   // Fade from image 1 to image 2 based on scroll progress
   // Phase 1: 0% - 40%, Crossfade: 40% - 60%, Phase 2: 60% - 100%
@@ -62,14 +63,11 @@ export const HowItWorks = () => {
     },
   ];
 
-  if (!mounted) return <section id="how-it-works" className="bg-white relative overflow-hidden border-t border-slate-100 min-h-screen" />;
-
   return (
     <section id="how-it-works" className="bg-white relative overflow-hidden border-t border-slate-100">
 
       {/* DESKTOP NARRATIVE SCROLL (>= 1024px) */}
-      {isDesktop && (
-      <div ref={containerRef} className="h-[300vh] relative w-full">
+      <div ref={containerRef} className={`h-[300vh] relative w-full ${!mounted || !isDesktop ? 'hidden' : 'block'}`}>
         <div className="sticky top-0 h-screen w-full flex items-center">
           <div className="container mx-auto px-4 max-w-7xl flex h-[80vh] gap-16 items-center">
 
@@ -137,11 +135,9 @@ export const HowItWorks = () => {
           </div>
         </div>
       </div>
-      )}
 
       {/* MOBILE VERTICAL LAYOUT (< 1024px) */}
-      {!isDesktop && (
-      <div className="py-20 md:py-32">
+      <div className={`py-20 md:py-32 ${mounted && !isDesktop ? 'block' : 'hidden'}`}>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16 md:mb-24">
             <motion.h2
@@ -211,7 +207,6 @@ export const HowItWorks = () => {
           </motion.div>
         </div>
       </div>
-      )}
     </section>
   );
 };

@@ -42,11 +42,10 @@ export const Destinations = () => {
   const [isDesktop, setIsDesktop] = useState(true);
   const [mounted, setMounted] = useState(false);
 
-  // We must not pass an unmounted target ref to useScroll during SSR/initial render.
-  // We handle this by conditionally applying the target inside useScroll only after mounting.
-  const { scrollYProgress } = useScroll(
-    mounted && isDesktop ? { target: containerRef, offset: ["start start", "end end"] } : undefined
-  );
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
   // Scroll phase animations for desktop
   const phase1Opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
@@ -358,14 +357,11 @@ export const Destinations = () => {
     </div>
   );
 
-  if (!mounted) return <section id="destinations" className="py-20 md:py-32 bg-[#FAFAFA] min-h-screen" />;
-
   return (
     <section id="destinations" className="bg-[#FAFAFA] relative overflow-hidden">
 
       {/* DESKTOP NARRATIVE SCROLL (>= 1024px) */}
-      {isDesktop && (
-        <div ref={containerRef} className="h-[300vh] relative w-full">
+      <div ref={containerRef} className={`h-[300vh] relative w-full ${!mounted || !isDesktop ? 'hidden' : 'block'}`}>
           <div className="sticky top-0 h-screen w-full overflow-hidden">
 
           {/* Immersive Background */}
@@ -421,11 +417,9 @@ export const Destinations = () => {
             </motion.div>
           </div>
         </div>
-      )}
 
       {/* MOBILE VERTICAL LAYOUT (< 1024px) */}
-      {!isDesktop && (
-        <div className="py-20 md:py-32">
+      <div className={`py-20 md:py-32 ${mounted && !isDesktop ? 'block' : 'hidden'}`}>
           <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-16">
             <motion.h2
@@ -442,7 +436,6 @@ export const Destinations = () => {
           {renderCarousel()}
         </div>
       </div>
-      )}
 
       <AnimatePresence>
         {selectedCard && (

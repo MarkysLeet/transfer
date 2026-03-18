@@ -22,11 +22,10 @@ export const TrustSection = () => {
     return () => window.removeEventListener("resize", checkDesktop);
   }, []);
 
-  // We conditionally pass the target to useScroll only if mounted and isDesktop are true
-  // to avoid passing an unhydrated ref.
-  const { scrollYProgress } = useScroll(
-    mounted && isDesktop ? { target: containerRef, offset: ["start start", "end end"] } : undefined
-  );
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
   // Phase 1 (Trigger) -> Phase 2 (Details) transitions
   const triggerOpacity = useTransform(scrollYProgress, [0, 0.3, 0.4], [1, 1, 0]);
@@ -44,21 +43,18 @@ export const TrustSection = () => {
     { icon: CheckCircle2, text: "100%", sub: "Reliable", x: 130, y: 120, delay: 0.8 },
   ];
 
-  if (!mounted) {
-    return <section className="min-h-screen bg-[#FAFAFA]" />; // Skeleton
-  }
-
-  if (!isDesktop) {
-    return (
-      <div className="flex flex-col">
-        <Reviews />
-        <FAQ />
-      </div>
-    );
-  }
-
   return (
-    <section ref={containerRef} className="relative h-[300vh] bg-white text-slate-900 border-t border-slate-100 hidden lg:block">
+    <>
+      {!mounted && <section className="min-h-screen bg-[#FAFAFA]" />}
+
+      {mounted && !isDesktop && (
+        <div className="flex flex-col">
+          <Reviews />
+          <FAQ />
+        </div>
+      )}
+
+      <section ref={containerRef} className={`relative h-[300vh] bg-white text-slate-900 border-t border-slate-100 ${!mounted || !isDesktop ? 'hidden' : 'block'}`}>
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center">
 
         {/* Phase 1: Trigger (Hero Title & Badges) */}
@@ -175,5 +171,6 @@ export const TrustSection = () => {
 
       </div>
     </section>
+    </>
   );
 };

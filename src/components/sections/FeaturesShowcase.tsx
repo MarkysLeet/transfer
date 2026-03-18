@@ -15,10 +15,9 @@ const vitoInteriorImages = [
 ];
 
 const vwInteriorImages = [
-  "https://res.cloudinary.com/dcnwhciua/image/upload/v1773342349/468308041_18464263342065049_6129014434542481614_n_roqojc.jpg",
-  "https://res.cloudinary.com/dcnwhciua/image/upload/v1773342349/468338109_18464263204065049_6378178145718819133_n_ollq9p.jpg",
-  "https://res.cloudinary.com/dcnwhciua/image/upload/v1773342350/468389469_18464262997065049_5677012176024068913_n_nsrxkv.jpg",
-  "https://res.cloudinary.com/dcnwhciua/image/upload/v1773342351/468397680_18464263072065049_6334717953885968324_n_gl59fg.jpg"
+  "https://storage.yandexcloud.net/arina-reels-storage/VW1.jpg",
+  "https://storage.yandexcloud.net/arina-reels-storage/VW2.jpg",
+  "https://storage.yandexcloud.net/arina-reels-storage/VW3.jpg"
 ];
 
 const vitoExteriorImage = "https://res.cloudinary.com/dcnwhciua/image/upload/v1772476361/Mercedes_V-Class_Mercedes-Benz_Viano_Mercedes-Benz_Vito_Mercedes-Benz_S-Class_Minivan_PNG-removebg-preview_jmtgkz.png";
@@ -147,7 +146,7 @@ export const FeaturesShowcase = () => {
 
   const currentInteriorImages = selectedClass === "vw" ? vwInteriorImages : vitoInteriorImages;
   const currentExteriorImage = selectedClass === "vw" ? vwExteriorImage : vitoExteriorImage;
-  const currentCarTitle = selectedClass === "vw" ? ["VW", "Transporter"] : ["Mercedes Benz", "Vito"];
+  const currentCarTitle = selectedClass === "vw" ? ["Volkswagen", "Transporter"] : ["Mercedes Benz", "Vito"];
 
   const [interiorIndex, setInteriorIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -327,7 +326,8 @@ export const FeaturesShowcase = () => {
                 <motion.div
                   key="exterior-view"
                   initial={{ opacity: 0, filter: "blur(10px)" }}
-                  animate={{ opacity: 1, filter: "blur(0px)" }}
+                  whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                  viewport={{ once: true, amount: 0.2 }}
                   exit={{ opacity: 0, scale: 0.95, filter: "blur(5px)" }}
                   transition={{ duration: 0.8, ease: "easeInOut" }}
                   className="absolute inset-0 flex items-center justify-center z-10"
@@ -453,7 +453,7 @@ export const FeaturesShowcase = () => {
         </div>
 
         {/* Floating Global Car Tabs (Desktop) */}
-        <div className="fixed bottom-12 inset-x-0 flex justify-center z-50 pointer-events-none">
+        <div className="absolute bottom-12 inset-x-0 flex justify-center z-50 pointer-events-none">
           <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 shadow-xl border border-white/40 pointer-events-auto">
             <button
               onClick={() => setSelectedClass("vw")}

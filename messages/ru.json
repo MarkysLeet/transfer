@@ -19,6 +19,7 @@
   },
   "Destinations": {
     "title": "Маршруты",
+    "destinationsPromptTitle": "Откройте для себя Турцию",
     "tabAirports": "Аэропорты",
     "tabResorts": "Курорты",
     "tabTours": "Исторические туры",

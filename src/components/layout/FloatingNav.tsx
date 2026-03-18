@@ -1,22 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLenis } from "lenis/react";
-
-const sections = [
-  { id: "hero", label: "Home" },
-  { id: "features", label: "Fleet" },
-  { id: "destinations", label: "Destinations" },
-  { id: "how-it-works", label: "Booking" },
-  { id: "reviews", label: "Reviews" },
-  { id: "faq", label: "FAQ" }
-];
+import { useTranslations } from "next-intl";
 
 export const FloatingNav = () => {
   const [activeSection, setActiveSection] = useState("hero");
   const [isDesktop, setIsDesktop] = useState(false);
   const lenis = useLenis();
+  const tNav = useTranslations("Navigation");
+
+  const sections = useMemo(() => [
+    { id: "hero", label: tNav("home") },
+    { id: "features", label: tNav("fleet") },
+    { id: "destinations", label: tNav("destinations") },
+    { id: "how-it-works-desktop", label: tNav("booking") },
+    { id: "trust-desktop", label: tNav("reviews") },
+  ], [tNav]);
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
@@ -48,7 +49,7 @@ export const FloatingNav = () => {
     });
 
     return () => observer.disconnect();
-  }, [isDesktop]);
+  }, [isDesktop, sections]);
 
   const scrollTo = (id: string) => {
     if (lenis) {

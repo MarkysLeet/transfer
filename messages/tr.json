@@ -57,6 +57,10 @@
     "contact": "İletişim",
     "whatsappMessage": "Merhaba, VIP transfer rezervasyonu yapmak istiyorum. Güzergah: Antalya Havalimanı - [Otel/Hedef]. Tarih: [Tarih]. Yolcu sayısı: [Kişi sayısı]",
     "home": "Ana Sayfa",
+    "fleet": "Filo",
+    "destinations": "Güzergahlar",
+    "booking": "Rezervasyon",
+    "reviews": "Yorumlar",
     "routes": "Rotalar",
     "club": "Tavsiye Sistemi"
   },

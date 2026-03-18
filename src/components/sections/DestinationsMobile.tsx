@@ -335,13 +335,13 @@ export const DestinationsMobile = () => {
           {/* Navigation Controls */}
           <button
             onClick={() => emblaApi?.scrollPrev()}
-            className="absolute -left-2 md:-left-10 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
+            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
           >
             <ChevronLeft size={24} strokeWidth={1.5} />
           </button>
           <button
             onClick={() => emblaApi?.scrollNext()}
-            className="absolute -right-2 md:-right-10 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
+            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
           >
             <ChevronRight size={24} strokeWidth={1.5} />
           </button>
@@ -377,7 +377,7 @@ export const DestinationsMobile = () => {
                     e.stopPropagation();
                     handlePrevDestination(e);
                   }}
-                  className="group absolute -left-12 md:-left-16 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300 hidden sm:block"
+                  className="group absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300 hidden sm:block"
                 >
                   <ChevronLeft size={36} strokeWidth={1.5} className="text-slate-800 opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
                 </button>
@@ -388,7 +388,7 @@ export const DestinationsMobile = () => {
                     e.stopPropagation();
                     handleNextDestination(e);
                   }}
-                  className="group absolute -right-12 md:-right-16 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300 hidden sm:block"
+                  className="group absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300 hidden sm:block"
                 >
                   <ChevronRight size={36} strokeWidth={1.5} className="text-slate-800 opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
                 </button>

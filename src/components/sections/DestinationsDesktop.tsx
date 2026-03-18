@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -44,21 +44,17 @@ export const DestinationsDesktop = () => {
     offset: ["start start", "end end"]
   });
 
-  // Phase 1: Background scale-up
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const [isPhase2, setIsPhase2] = useState(false);
 
-  // Phase 2: Blur and darken background
-  const bgBlur = useTransform(scrollYProgress, [0, 0.4], ["blur(0px)", "blur(12px)"]);
-  const bgDarken = useTransform(scrollYProgress, [0, 0.4], [0.2, 0.6]);
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    // Snap to Phase 2 once scroll passes 25% mark
+    if (latest > 0.25 && !isPhase2) {
+      setIsPhase2(true);
+    } else if (latest <= 0.25 && isPhase2) {
+      setIsPhase2(false);
+    }
+  });
 
-  // Prompt Title
-  const promptY = useTransform(scrollYProgress, [0, 0.4], ["0%", "-50%"]);
-  const promptOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-
-  // Carousel
-  const carouselScale = useTransform(scrollYProgress, [0.3, 0.6], [0.8, 1]);
-  const carouselOpacity = useTransform(scrollYProgress, [0.3, 0.6], [0, 1]);
-  const carouselPointerEvents = useTransform(scrollYProgress, [0.5, 0.6], ["none", "auto"]);
 
   useEffect(() => {
     if (!modalEmblaApi) return;
@@ -282,13 +278,10 @@ export const DestinationsDesktop = () => {
   };
 
   return (
-    <section id="destinations" ref={containerRef} className="relative h-[300vh] bg-[#FAFAFA]">
+    <section id="destinations" ref={containerRef} className="relative h-[200vh] bg-[#FAFAFA]">
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center items-center">
         {/* Background Image Wrapper */}
-        <motion.div
-          className="absolute inset-0 z-0"
-          style={{ scale: bgScale }}
-        >
+        <motion.div className="absolute inset-0 z-0" animate={{ scale: isPhase2 ? 1.05 : 1 }} transition={{ duration: 1.2, ease: "easeInOut" }}>
           <Image
             src="https://storage.yandexcloud.net/arina-reels-storage/antalya_coast.jpg"
             alt="Antalya Coast"
@@ -301,22 +294,16 @@ export const DestinationsDesktop = () => {
         {/* Background Overlay (Darken + Blur) */}
         <motion.div
           className="absolute inset-0 z-0 bg-black"
-          style={{
-            opacity: bgDarken,
-            backdropFilter: bgBlur,
-            WebkitBackdropFilter: bgBlur
+          animate={{
+            opacity: isPhase2 ? 0.6 : 0.2,
+            backdropFilter: isPhase2 ? "blur(12px)" : "blur(0px)",
+
           }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
         />
 
         {/* Phase 1: Atmosphere Text */}
-        <motion.div
-          className="absolute z-10 text-center px-4 w-full"
-          style={{
-            y: promptY,
-            opacity: promptOpacity,
-            pointerEvents: "none"
-          }}
-        >
+        <motion.div className="absolute z-10 text-center px-4 w-full pointer-events-none" animate={{ y: isPhase2 ? "-50%" : "0%", opacity: isPhase2 ? 0 : 1 }} transition={{ duration: 0.8, ease: "easeInOut" }}>
           <h2 className="text-5xl md:text-7xl font-bold text-white tracking-wider mb-6 drop-shadow-lg">
             {tDestinations("destinationsPromptTitle")}
           </h2>
@@ -324,14 +311,7 @@ export const DestinationsDesktop = () => {
         </motion.div>
 
         {/* Phase 2: Interactive Carousel */}
-        <motion.div
-          className="relative z-20 w-full max-w-7xl mx-auto px-4"
-          style={{
-            scale: carouselScale,
-            opacity: carouselOpacity,
-            pointerEvents: carouselPointerEvents as any
-          }}
-        >
+        <motion.div className="relative z-20 w-full max-w-7xl mx-auto px-4" animate={{ scale: isPhase2 ? 1 : 0.8, opacity: isPhase2 ? 1 : 0 }} transition={{ duration: 0.8, ease: "backOut", delay: 0.2 }} style={{ pointerEvents: isPhase2 ? "auto" : "none" }}>
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-white tracking-wider">
               {tDestinations("title")}
@@ -398,13 +378,13 @@ export const DestinationsDesktop = () => {
           {/* Navigation Controls */}
           <button
             onClick={() => emblaApi?.scrollPrev()}
-            className="absolute -left-2 md:-left-10 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
+            className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
           >
             <ChevronLeft size={24} strokeWidth={1.5} />
           </button>
           <button
             onClick={() => emblaApi?.scrollNext()}
-            className="absolute -right-2 md:-right-10 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
+            className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
           >
             <ChevronRight size={24} strokeWidth={1.5} />
           </button>
@@ -441,7 +421,7 @@ export const DestinationsDesktop = () => {
                     e.stopPropagation();
                     handlePrevDestination(e);
                   }}
-                  className="group absolute -left-12 md:-left-16 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300 hidden sm:block"
+                  className="group absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300 hidden sm:block"
                 >
                   <ChevronLeft size={36} strokeWidth={1.5} className="text-slate-800 opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
                 </button>
@@ -452,7 +432,7 @@ export const DestinationsDesktop = () => {
                     e.stopPropagation();
                     handleNextDestination(e);
                   }}
-                  className="group absolute -right-12 md:-right-16 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300 hidden sm:block"
+                  className="group absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-50 p-2 hover:scale-110 transition-transform duration-300 hidden sm:block"
                 >
                   <ChevronRight size={36} strokeWidth={1.5} className="text-slate-800 opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
                 </button>

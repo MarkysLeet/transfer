@@ -284,7 +284,7 @@ export const Destinations = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const CarouselContent = () => (
+  const renderCarousel = () => (
     <div className={`relative max-w-[1200px] mx-auto overflow-hidden ${isDesktop ? '' : 'py-12'}`}>
       <div
         className="overflow-visible"
@@ -400,7 +400,7 @@ export const Destinations = () => {
             className="absolute inset-0 z-20 flex items-center justify-center"
           >
             <div className="w-full">
-              <CarouselContent />
+              {renderCarousel()}
             </div>
           </motion.div>
 
@@ -438,7 +438,7 @@ export const Destinations = () => {
             </motion.h2>
             <div className="h-1 bg-slate-200 w-24 rounded-full mx-auto" />
           </div>
-          <CarouselContent />
+          {renderCarousel()}
         </div>
       </div>
       )}

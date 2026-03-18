@@ -1,8 +1,8 @@
 
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight, X, MousePointerClick } from "lucide-react";
@@ -17,7 +17,7 @@ type DestinationCard = {
   images: string[];
 };
 
-export const Destinations = () => {
+export const DestinationsDesktop = () => {
   const tDestinations = useTranslations("Destinations");
   const tCards = useTranslations("Destinations.Cards");
   const [selectedCard, setSelectedCard] = useState<DestinationCard | null>(null);
@@ -250,36 +250,81 @@ export const Destinations = () => {
 
   const handleBookSelect = () => {
     if (!selectedCard) return;
-    const title = selectedCard.id; // Passing raw ID to sync with value in combobox better, but combobox uses "value" mapping.
-    // Wait, the user said "To field auto populated with that specific city's name". Combobox value works best with raw ID/value.
-    const rawValue = selectedCard.id === "fethiyeKemer" ? "fethiye" : selectedCard.id; // Just map it properly
+    const rawValue = selectedCard.id === "fethiyeKemer" ? "fethiye" : selectedCard.id;
 
     setSelectedCard(null);
     window.dispatchEvent(new CustomEvent('selectDestination', { detail: rawValue }));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Background Blur and Darken mapping
+  const bgBlur = useTransform(scrollYProgress, [0, 0.3], ["blur(0px)", "blur(10px)"]);
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.3], [0, 0.6]);
+
+  // Content fade-in and scale mapping
+  const carouselOpacity = useTransform(scrollYProgress, [0.1, 0.4], [0, 1]);
+  const carouselScale = useTransform(scrollYProgress, [0.1, 0.4], [0.8, 1]);
+  const carouselPointerEvents = useTransform(scrollYProgress, (v) => v > 0.2 ? "auto" : "none");
+
+  // Title translation
+  const titleY = useTransform(scrollYProgress, [0, 0.3], [0, -100]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+
   return (
-    <section id="destinations" className="py-20 md:py-32 bg-[#FAFAFA] overflow-hidden">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-16">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 tracking-wider"
-          >
-            {tDestinations("title")}
-          </motion.h2>
-          <div className="h-1 bg-slate-200 w-24 rounded-full mx-auto" />
+    <section
+      ref={sectionRef}
+      id="destinations"
+      className="h-[200vh] relative"
+    >
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+        {/* Background Image Phase 1 & 2 */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="https://storage.yandexcloud.net/arina-reels-storage/antalya_coast.jpg"
+            alt="Destinations Background"
+            fill
+            className="object-cover"
+            priority
+          />
+          <motion.div
+            className="absolute inset-0 bg-black z-10"
+            style={{ opacity: bgOpacity }}
+          />
+          <motion.div
+            className="absolute inset-0 backdrop-blur-md z-10"
+            style={{ backdropFilter: bgBlur, WebkitBackdropFilter: bgBlur }}
+          />
         </div>
 
-        {/* Embla Cover Flow Carousel */}
-        <div className="relative max-w-[1200px] mx-auto overflow-hidden py-24">
-          <div
-            className="overflow-visible"
-            ref={emblaRef}
+        <motion.div
+          style={{ y: titleY, opacity: titleOpacity }}
+          className="relative z-20 text-center flex flex-col items-center pointer-events-none"
+        >
+          <h2 className="text-5xl md:text-7xl font-bold mb-6 text-white tracking-wider drop-shadow-xl">
+            {tDestinations("title")}
+          </h2>
+          <div className="h-1 bg-white/50 w-32 rounded-full" />
+        </motion.div>
+
+        {/* Embla Cover Flow Carousel Phase 2 */}
+        <motion.div
+          style={{
+            opacity: carouselOpacity,
+            scale: carouselScale,
+            pointerEvents: carouselPointerEvents
+          }}
+          className="absolute inset-0 z-30 flex items-center justify-center"
+        >
+          <div className="w-full max-w-[1400px] mx-auto overflow-hidden py-24 relative">
+            <div
+              className="overflow-visible"
+              ref={emblaRef}
             style={{
               maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
               WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)'
@@ -332,20 +377,21 @@ export const Destinations = () => {
             </div>
           </div>
 
-          {/* Navigation Controls */}
-          <button
-            onClick={() => emblaApi?.scrollPrev()}
-            className="absolute -left-2 md:-left-10 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
-          >
-            <ChevronLeft size={24} strokeWidth={1.5} />
-          </button>
-          <button
-            onClick={() => emblaApi?.scrollNext()}
-            className="absolute -right-2 md:-right-10 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/80 hover:bg-white shadow-[0_4px_14px_0_rgba(0,0,0,0.05)] border border-slate-100/50 text-slate-800 transition-all backdrop-blur-sm hidden md:flex items-center justify-center hover:scale-105"
-          >
-            <ChevronRight size={24} strokeWidth={1.5} />
-          </button>
-        </div>
+            {/* Navigation Controls */}
+            <button
+              onClick={() => emblaApi?.scrollPrev()}
+              className="absolute left-4 lg:left-12 top-1/2 -translate-y-1/2 z-30 p-5 rounded-full bg-white/90 hover:bg-white shadow-xl text-slate-800 transition-all backdrop-blur-md hidden md:flex items-center justify-center hover:scale-110"
+            >
+              <ChevronLeft size={28} strokeWidth={1.5} />
+            </button>
+            <button
+              onClick={() => emblaApi?.scrollNext()}
+              className="absolute right-4 lg:right-12 top-1/2 -translate-y-1/2 z-30 p-5 rounded-full bg-white/90 hover:bg-white shadow-xl text-slate-800 transition-all backdrop-blur-md hidden md:flex items-center justify-center hover:scale-110"
+            >
+              <ChevronRight size={28} strokeWidth={1.5} />
+            </button>
+          </div>
+        </motion.div>
       </div>
 
       <AnimatePresence>

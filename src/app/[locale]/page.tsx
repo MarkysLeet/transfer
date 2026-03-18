@@ -1,25 +1,25 @@
 import { Hero } from "@/components/sections/Hero";
 import { FeaturesShowcase } from "@/components/sections/FeaturesShowcase";
-import { Destinations } from "@/components/sections/Destinations";
+import { DestinationsWrapper } from "@/components/sections/DestinationsWrapper";
 import { Loyalty } from "@/components/sections/Loyalty";
-import { HowItWorks } from "@/components/sections/HowItWorks";
-import { Reviews } from "@/components/sections/Reviews";
-import { FAQ } from "@/components/sections/FAQ";
+import { HowItWorksWrapper } from "@/components/sections/HowItWorksWrapper";
+import { TrustSectionWrapper } from "@/components/sections/TrustSectionWrapper";
+import { getIsMobile } from "@/lib/device";
 
 import {setRequestLocale} from 'next-intl/server';
 
 export default async function Home({params}: {params: Promise<{locale: string}>}) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const isMobile = await getIsMobile();
 
   return (
     <>
       <Hero />
       <FeaturesShowcase />
-      <Destinations />
-      <HowItWorks />
-      <Reviews />
-      <FAQ />
+      <DestinationsWrapper isMobile={isMobile} />
+      <HowItWorksWrapper isMobile={isMobile} />
+      <TrustSectionWrapper isMobile={isMobile} />
       <Loyalty />
     </>
   );

@@ -11,6 +11,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomBar } from "@/components/layout/MobileBottomBar";
 import { FloatingNav } from "@/components/layout/FloatingNav";
+import { getIsMobile } from "@/lib/device";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -44,6 +45,7 @@ export default async function RootLayout({
   setRequestLocale(locale);
 
   const messages = await getMessages();
+  const isMobile = await getIsMobile();
 
   return (
     <html lang={locale} className={clsx(inter.variable, "lg:snap-y lg:snap-mandatory")}>
@@ -57,7 +59,7 @@ export default async function RootLayout({
         />
 
         <NextIntlClientProvider messages={messages}>
-          <SmoothScroll>
+          <SmoothScroll isMobile={isMobile}>
             <Header />
             <FloatingNav />
             <main className="min-h-screen relative z-0 max-w-[100vw]">

@@ -5,22 +5,20 @@ import { useEffect, useState } from "react";
 
 export default function SmoothScroll({
   children,
+  isMobile,
 }: {
   children: React.ReactNode;
+  isMobile: boolean;
 }) {
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   // If on desktop where we apply CSS native scroll snapping, we disable Lenis smooth scroll
-  // Because Lenis and native CSS scroll-snap fight each other.
+  // completely by not wrapping in ReactLenis. We use the server-side detected `isMobile` flag
+  // to avoid hydration mismatches entirely.
+  if (!isMobile) {
+    return <>{children}</>;
+  }
+
   return (
-    <ReactLenis root options={{ lerp: 0.1, duration: 0.8, smoothWheel: true, orientation: 'vertical', gestureOrientation: 'vertical' }} autoProps={{ enable: !isDesktop }}>
+    <ReactLenis root options={{ lerp: 0.1, duration: 0.8, smoothWheel: true }}>
       {children}
     </ReactLenis>
   );

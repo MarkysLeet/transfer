@@ -1,7 +1,6 @@
 "use client";
 import { useState, useCallback, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { MousePointer2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Wifi, Wind, Baby, Coffee, CreditCard, ShieldCheck, ChevronLeft, ChevronRight, X, Check, Plus, Info } from "lucide-react";
@@ -24,6 +23,7 @@ const vitoExteriorImage = "https://res.cloudinary.com/dcnwhciua/image/upload/v17
 const vwExteriorImage = "https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png";
 
 type CarClass = "vw" | "vito";
+type ViewType = "exterior" | "interior";
 
 // --- Extracted FeatureCard Component ---
 const FeatureCard = ({ feature, className = "", minibarTooltipText }: { feature: any, className?: string, minibarTooltipText?: string }) => {
@@ -47,7 +47,7 @@ const FeatureCard = ({ feature, className = "", minibarTooltipText }: { feature:
   return (
     <motion.button
       onClick={() => feature.isUpsell && feature.toggle && feature.toggle()}
-      className={`relative p-5 md:p-6 rounded-2xl bg-white/90 backdrop-blur-sm border shadow-xl shadow-black/5 transition-all duration-300 group flex flex-col items-start gap-4 text-left w-full
+      className={`relative p-5 md:p-6 rounded-2xl bg-white/90 backdrop-blur-sm border shadow-xl shadow-black/5 transition-all duration-300 group flex flex-col items-start gap-4 text-left w-full h-full
         ${feature.isUpsell
            ? (feature.active ? "border-[#2F4157] bg-[#F4EFEB]/30" : "border-slate-100/50 hover:border-slate-300 hover:bg-white cursor-pointer")
            : "border-slate-100/50 hover:border-slate-200 cursor-default bg-white/80"
@@ -143,6 +143,7 @@ export const FeaturesShowcase = () => {
   const t = useTranslations("Features");
   const tWidget = useTranslations("BookingWidget");
   const [selectedClass, setSelectedClass] = useState<CarClass>("vw");
+  const [currentView, setCurrentView] = useState<ViewType>("exterior");
 
   const currentInteriorImages = selectedClass === "vw" ? vwInteriorImages : vitoInteriorImages;
   const currentExteriorImage = selectedClass === "vw" ? vwExteriorImage : vitoExteriorImage;
@@ -223,21 +224,6 @@ export const FeaturesShowcase = () => {
   }, [selectedClass, emblaApi]);
 
   const [activeInteriorSlide, setActiveInteriorSlide] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isInteriorPhase, setIsInteriorPhase] = useState(false);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (latest > 0.4 && !isInteriorPhase) {
-      setIsInteriorPhase(true);
-    } else if (latest <= 0.4 && isInteriorPhase) {
-      setIsInteriorPhase(false);
-    }
-  });
 
   // Auto-play interior slideshow on desktop
   useEffect(() => {
@@ -248,137 +234,65 @@ export const FeaturesShowcase = () => {
   }, [currentInteriorImages.length]);
 
   return (
-    <section id="features" className="relative bg-[#FAFAFA] text-slate-900">
+    <section id="features" className="relative bg-[#FAFAFA] text-slate-900 py-16 md:py-24">
+      <div className="container mx-auto px-4 max-w-7xl">
 
-      {/* Top Header - Mobile only, since Desktop uses absolute bottom tabs */}
-      <div className="pt-16 md:pt-24 pb-8 lg:hidden">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-3xl md:text-5xl font-bold mb-6 text-slate-900 tracking-wider"
-            >
-              {t("title") || "Our Fleet"}
-            </motion.h2>
-            <div className="h-1 bg-slate-200 w-24 rounded-full mx-auto mb-10" />
-
-            {/* Car Class Selector Tab */}
-            <div className="flex bg-white/80 backdrop-blur-md p-1 rounded-2xl shadow-sm border border-slate-200/60 mx-auto w-full max-w-md relative">
-              <button
-                type="button"
-                onClick={() => setSelectedClass("vw")}
-                className={`flex-1 relative py-3 text-sm font-medium transition-colors z-10 rounded-xl ${
-                  selectedClass === "vw" ? "text-[#E2DED3]" : "text-[#2F4157] hover:bg-white/40"
-                }`}
-              >
-                {selectedClass === "vw" && (
-                  <motion.div
-                    layoutId="fleetClassBg"
-                    className="absolute inset-0 bg-[#2F4157] rounded-xl shadow-[inset_0_4px_6px_rgba(0,0,0,0.3)] z-[-1]"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <span className="relative z-20">{tWidget("vwClassShort")}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSelectedClass("vito")}
-                className={`flex-1 relative py-3 text-sm font-medium transition-colors z-10 rounded-xl ${
-                  selectedClass === "vito" ? "text-[#E2DED3]" : "text-[#2F4157] hover:bg-white/40"
-                }`}
-              >
-                {selectedClass === "vito" && (
-                  <motion.div
-                    layoutId="fleetClassBg"
-                    className="absolute inset-0 bg-[#2F4157] rounded-xl shadow-[inset_0_4px_6px_rgba(0,0,0,0.3)] z-[-1]"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <span className="relative z-20">{tWidget("vitoClassShort")}</span>
-              </button>
-            </div>
-          </div>
+        {/* Header Title (Shared) */}
+        <div className="text-center mb-12">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 tracking-wider"
+          >
+            {t("title") || "Our Fleet"}
+          </motion.h2>
+          <div className="h-1 bg-slate-200 w-24 rounded-full mx-auto" />
         </div>
-      </div>
 
-      {/* =========================================
-          DESKTOP CINEMATIC SCROLLJACKING (>=1024px)
-          ========================================= */}
-      <div ref={containerRef} className="hidden lg:block h-[300vh] relative">
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+        {/* =========================================
+            DESKTOP LAYOUT (>= 1024px)
+            ========================================= */}
+        <div className="hidden lg:flex gap-12 min-h-[600px]">
 
-          <div className="absolute inset-0 max-w-[1400px] mx-auto w-full px-8 flex items-center justify-center">
+          {/* Left Column - Visuals (~60%) */}
+          <div className="w-3/5 flex flex-col justify-between">
+            <div className="relative w-full flex-1 flex items-center justify-center rounded-3xl mb-8">
+              <AnimatePresence mode="wait">
+                {currentView === "exterior" ? (
+                  <motion.div
+                    key={`ext-${selectedClass}`}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.05 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    {/* Soft Shadow */}
+                    <div className="absolute top-[75%] w-[80%] h-[30%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/20 via-black/5 to-transparent blur-xl rounded-full pointer-events-none" />
 
-            {/* Background Title Overlay (Static throughout) */}
-            <div className="absolute top-[20%] left-10 opacity-30 pointer-events-none z-0">
-               <h2 className="text-[8rem] font-bold leading-none tracking-tighter uppercase text-slate-300 whitespace-nowrap">
-                  {currentCarTitle[0]}<br/>{currentCarTitle[1]}
-               </h2>
-            </div>
-
-            <AnimatePresence mode="wait">
-              {!isInteriorPhase ? (
-                // --- SLIDE 1: EXTERIOR ---
-                <motion.div
-                  key="exterior-view"
-                  initial={{ opacity: 0, filter: "blur(10px)" }}
-                  whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  exit={{ opacity: 0, scale: 0.95, filter: "blur(5px)" }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
-                  className="absolute inset-0 flex items-center justify-center z-10"
-                >
-                  {/* Car Exterior Photo */}
-                  <motion.div className="absolute inset-0 flex items-center justify-center z-10">
-                    <div className="absolute top-[60%] w-[800px] h-[300px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/20 via-black/5 to-transparent blur-2xl rounded-full pointer-events-none" />
-
-                    <div className="relative w-[800px] h-[500px]">
+                    <div className="relative w-full h-[400px]">
                       <Image
                         src={currentExteriorImage}
                         alt={`${currentCarTitle.join(" ")} Exterior`}
                         fill
                         className="object-contain drop-shadow-2xl"
-                        sizes="50vw"
+                        sizes="(max-width: 1024px) 100vw, 60vw"
                         priority
                       />
                     </div>
                   </motion.div>
-
-                  {/* Exterior Cards */}
+                ) : (
                   <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                    className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center"
+                    key={`int-${selectedClass}`}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    className="absolute inset-0 flex items-center justify-center"
                   >
-                    <div className="absolute left-[5%] top-[30%] w-[300px] pointer-events-auto">
-                      <FeatureCard feature={exteriorFeatures[0]} minibarTooltipText={t("minibarTooltip")} />
-                    </div>
-                    <div className="absolute right-[5%] top-[25%] w-[300px] pointer-events-auto">
-                      <FeatureCard feature={exteriorFeatures[1]} minibarTooltipText={t("minibarTooltip")} />
-                    </div>
-                    <div className="absolute right-[10%] top-[60%] w-[300px] pointer-events-auto">
-                      <FeatureCard feature={exteriorFeatures[2]} minibarTooltipText={t("minibarTooltip")} />
-                    </div>
-                  </motion.div>
-                </motion.div>
-              ) : (
-                // --- SLIDE 2: INTERIOR ---
-                <motion.div
-                  key="interior-view"
-                  initial={{ opacity: 0, scale: 1.05, filter: "blur(5px)" }}
-                  animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
-                  className="absolute inset-0 flex items-center justify-center z-10"
-                >
-                  {/* Interior Photo Slideshow */}
-                  <motion.div className="absolute inset-0 flex items-center justify-center z-10">
-                    <div className="relative w-[900px] h-[600px] rounded-3xl overflow-hidden shadow-2xl border border-white/40">
+                    <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl border border-slate-200/60 bg-white">
                       <AnimatePresence mode="wait">
                         <motion.div
                           key={activeInteriorSlide}
@@ -393,7 +307,7 @@ export const FeaturesShowcase = () => {
                             alt={`${currentCarTitle.join(" ")} Interior`}
                             fill
                             className="object-cover"
-                            sizes="60vw"
+                            sizes="(max-width: 1024px) 100vw, 60vw"
                           />
                         </motion.div>
                       </AnimatePresence>
@@ -402,149 +316,311 @@ export const FeaturesShowcase = () => {
                           <button
                             key={idx}
                             onClick={() => setActiveInteriorSlide(idx)}
-                            className={`w-2 h-2 rounded-full transition-all shadow-sm ${
-                              idx === activeInteriorSlide ? "bg-white w-6" : "bg-white/50 hover:bg-white/80"
+                            className={`w-2.5 h-2.5 rounded-full transition-all shadow-sm ${
+                              idx === activeInteriorSlide ? "bg-white w-8" : "bg-white/50 hover:bg-white/80"
                             }`}
                           />
                         ))}
                       </div>
                     </div>
                   </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
-                  {/* Interior Cards */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                    className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center"
-                  >
-                     <div className="absolute left-[2%] top-[20%] w-[300px] pointer-events-auto">
-                      <FeatureCard feature={interiorFeatures[0]} minibarTooltipText={t("minibarTooltip")} />
-                    </div>
-                    <div className="absolute left-[5%] top-[65%] w-[300px] pointer-events-auto">
-                      <FeatureCard feature={interiorFeatures[1]} minibarTooltipText={t("minibarTooltip")} />
-                    </div>
-                    <div className="absolute right-[2%] top-[45%] w-[300px] pointer-events-auto">
-                      <FeatureCard feature={interiorFeatures[2]} minibarTooltipText={t("minibarTooltip")} />
-                    </div>
-                  </motion.div>
+            {/* Apple-style Segmented Control (View Toggle) */}
+            <div className="flex justify-center mt-auto">
+              <div className="flex bg-slate-100/80 p-1.5 rounded-full shadow-inner border border-slate-200 w-full max-w-[400px]">
+                <button
+                  onClick={() => setCurrentView("exterior")}
+                  className={`flex-1 relative py-2.5 text-sm font-semibold transition-colors z-10 rounded-full ${
+                    currentView === "exterior" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  {currentView === "exterior" && (
+                    <motion.div
+                      layoutId="viewToggleBgDesk"
+                      className="absolute inset-0 bg-white rounded-full shadow-md z-[-1]"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-20">Exterior</span>
+                </button>
+                <button
+                  onClick={() => setCurrentView("interior")}
+                  className={`flex-1 relative py-2.5 text-sm font-semibold transition-colors z-10 rounded-full ${
+                    currentView === "interior" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  {currentView === "interior" && (
+                    <motion.div
+                      layoutId="viewToggleBgDesk"
+                      className="absolute inset-0 bg-white rounded-full shadow-md z-[-1]"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-20">Interior</span>
+                </button>
+              </div>
+            </div>
+          </div>
 
-                  {/* Scroll Indicator */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 1 }}
-                    className="absolute bottom-10 inset-x-0 flex flex-col items-center justify-center gap-2 pointer-events-none z-30"
-                  >
-                    <span className="text-xs uppercase tracking-[0.2em] text-slate-400 font-medium">Scroll</span>
-                    <div className="w-[1px] h-12 bg-slate-300 relative overflow-hidden">
-                      <motion.div
-                        animate={{ y: [0, 48] }}
-                        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                        className="absolute inset-x-0 top-0 h-4 bg-slate-600"
-                      />
+          {/* Right Column - Information (~40%) */}
+          <div className="w-2/5 flex flex-col justify-between">
+
+            {/* Car Model Tabs */}
+            <div className="flex flex-col gap-6">
+              <div className="flex bg-slate-100/80 p-1.5 rounded-2xl shadow-inner border border-slate-200">
+                <button
+                  onClick={() => setSelectedClass("vw")}
+                  className={`flex-1 relative py-3.5 text-sm font-semibold transition-colors z-10 rounded-xl ${
+                    selectedClass === "vw" ? "text-slate-900" : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
+                  }`}
+                >
+                  {selectedClass === "vw" && (
+                    <motion.div
+                      layoutId="fleetClassBgDesk"
+                      className="absolute inset-0 bg-white rounded-xl shadow-md z-[-1]"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-20">{tWidget("vwClassShort")}</span>
+                </button>
+                <button
+                  onClick={() => setSelectedClass("vito")}
+                  className={`flex-1 relative py-3.5 text-sm font-semibold transition-colors z-10 rounded-xl ${
+                    selectedClass === "vito" ? "text-slate-900" : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
+                  }`}
+                >
+                  {selectedClass === "vito" && (
+                    <motion.div
+                      layoutId="fleetClassBgDesk"
+                      className="absolute inset-0 bg-white rounded-xl shadow-md z-[-1]"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-20">{tWidget("vitoClassShort")}</span>
+                </button>
+              </div>
+
+              {/* Large Selected Car Title */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedClass}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="mb-8"
+                >
+                  <h3 className="text-4xl lg:text-5xl font-bold tracking-tight text-slate-900">
+                    <span className="block text-slate-400 text-xl font-medium mb-1">{currentCarTitle[0]}</span>
+                    {currentCarTitle[1]}
+                  </h3>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Feature Cards Grid */}
+            <div className="mt-auto">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`${currentView}-${selectedClass}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4 }}
+                  className="grid grid-cols-2 gap-4"
+                >
+                  {(currentView === "exterior" ? exteriorFeatures : interiorFeatures).map((feature) => (
+                    <div key={feature.id} className="min-h-[140px]">
+                      <FeatureCard feature={feature} minibarTooltipText={t("minibarTooltip")} />
                     </div>
-                  </motion.div>
+                  ))}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+          </div>
+        </div>
+
+        {/* =========================================
+            MOBILE LAYOUT (< 1024px)
+            ========================================= */}
+        <div className="lg:hidden flex flex-col gap-8">
+
+          {/* Car Class Tabs */}
+          <div className="flex bg-slate-100/80 p-1.5 rounded-2xl shadow-inner border border-slate-200 max-w-md mx-auto w-full">
+            <button
+              onClick={() => setSelectedClass("vw")}
+              className={`flex-1 relative py-3 text-sm font-semibold transition-colors z-10 rounded-xl ${
+                selectedClass === "vw" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              {selectedClass === "vw" && (
+                <motion.div
+                  layoutId="fleetClassBgMob"
+                  className="absolute inset-0 bg-white rounded-xl shadow-md z-[-1]"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+              <span className="relative z-20">{tWidget("vwClassShort")}</span>
+            </button>
+            <button
+              onClick={() => setSelectedClass("vito")}
+              className={`flex-1 relative py-3 text-sm font-semibold transition-colors z-10 rounded-xl ${
+                selectedClass === "vito" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              {selectedClass === "vito" && (
+                <motion.div
+                  layoutId="fleetClassBgMob"
+                  className="absolute inset-0 bg-white rounded-xl shadow-md z-[-1]"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+              <span className="relative z-20">{tWidget("vitoClassShort")}</span>
+            </button>
+          </div>
+
+          <div className="text-center">
+            <AnimatePresence mode="wait">
+                <motion.h3
+                  key={selectedClass}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-3xl font-bold text-slate-900"
+                >
+                  <span className="block text-slate-500 text-sm font-medium mb-1 uppercase tracking-widest">{currentCarTitle[0]}</span>
+                  {currentCarTitle[1]}
+                </motion.h3>
+            </AnimatePresence>
+          </div>
+
+          {/* Visual Area (Photo / Carousel) */}
+          <div className="relative w-full aspect-[4/3] flex items-center justify-center rounded-3xl">
+            <AnimatePresence mode="wait">
+              {currentView === "exterior" ? (
+                <motion.div
+                  key={`ext-mob-${selectedClass}`}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.05 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0 flex items-center justify-center"
+                >
+                  {/* Soft Shadow */}
+                  <div className="absolute top-[75%] w-[80%] h-[30%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/20 via-black/5 to-transparent blur-xl rounded-full pointer-events-none" />
+
+                  <div className="relative w-full h-[300px] sm:h-[400px]">
+                    <Image
+                      src={currentExteriorImage}
+                      alt={`${currentCarTitle.join(" ")} Exterior`}
+                      fill
+                      className="object-contain drop-shadow-2xl"
+                      sizes="100vw"
+                      priority
+                    />
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key={`int-mob-${selectedClass}`}
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0"
+                >
+                  <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-xl border border-slate-200/60 bg-white">
+                    <div className="overflow-hidden w-full h-full cursor-pointer" ref={emblaRef} onClick={() => openLightbox(interiorIndex)}>
+                      <div className="flex h-full touch-pan-y">
+                        {currentInteriorImages.map((src, idx) => (
+                          <div key={idx} className="flex-[0_0_100%] min-w-0 relative h-full">
+                            <Image
+                              src={src}
+                              alt={`${currentCarTitle.join(" ")} Interior ${idx + 1}`}
+                              fill
+                              className="object-cover"
+                              sizes="100vw"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    {/* Dots */}
+                    <div className="absolute bottom-4 inset-x-0 flex justify-center gap-2 z-20 pointer-events-none">
+                      {currentInteriorImages.map((_, idx) => (
+                        <button
+                          key={idx}
+                          className={`w-2.5 h-2.5 rounded-full transition-all shadow-sm ${
+                            idx === interiorIndex ? "bg-white w-6" : "bg-white/50"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
-
           </div>
 
-          {/* Floating Global Car Tabs (Desktop) */}
-          <div className="absolute bottom-12 inset-x-0 flex justify-center z-50 pointer-events-none">
-            <div className="flex bg-white/60 backdrop-blur-md rounded-full p-1.5 shadow-xl border border-white/40 pointer-events-auto">
-              <button
-                onClick={() => setSelectedClass("vw")}
-                className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
-                  selectedClass === "vw"
-                    ? "bg-[#2F4157] text-[#E2DED3] shadow-md"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
-                }`}
-              >
-                {tWidget("vwClassShort")}
-              </button>
-              <button
-                onClick={() => setSelectedClass("vito")}
-                className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
-                  selectedClass === "vito"
-                    ? "bg-[#2F4157] text-[#E2DED3] shadow-md"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
-                }`}
-              >
-                {tWidget("vitoClassShort")}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* =========================================
-          MOBILE & TABLET VERTICAL STACK (<1024px)
-          ========================================= */}
-      <div className="lg:hidden flex flex-col px-4 pb-20 gap-16">
-
-        {/* Exterior Section */}
-        <div className="flex flex-col gap-8">
-          <div className="relative w-full aspect-[4/3] flex items-center justify-center">
-             {/* Soft shadow */}
-             <div className="absolute top-[65%] w-[80%] h-[40%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black/20 via-black/5 to-transparent blur-xl rounded-full" />
-             <Image
-                src={currentExteriorImage}
-                alt={`${currentCarTitle.join(" ")} Exterior`}
-                fill
-                className="object-contain drop-shadow-xl z-10"
-                sizes="100vw"
-                priority
-              />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {exteriorFeatures.map(f => <FeatureCard key={f.id} feature={f} minibarTooltipText={t("minibarTooltip")} />)}
-          </div>
-        </div>
-
-        <div className="w-full h-px bg-slate-200" />
-
-        {/* Interior Section */}
-        <div className="flex flex-col gap-8">
-          <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-xl border border-white/60 bg-white">
-            <div className="overflow-hidden w-full h-full cursor-pointer" ref={emblaRef} onClick={() => openLightbox(interiorIndex)}>
-              <div className="flex h-full touch-pan-y">
-                {currentInteriorImages.map((src, idx) => (
-                  <div key={idx} className="flex-[0_0_100%] min-w-0 relative h-full">
-                    <Image
-                      src={src}
-                      alt={`${currentCarTitle.join(" ")} Interior ${idx + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="100vw"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Mobile Dots */}
-            <div className="absolute bottom-4 inset-x-0 flex justify-center gap-2 z-20">
-              {currentInteriorImages.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => emblaApi?.scrollTo(idx)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all shadow-sm ${
-                    idx === interiorIndex ? "bg-white w-6" : "bg-white/50"
-                  }`}
+          {/* View Toggle (Segmented Control) */}
+          <div className="flex bg-slate-100/80 p-1.5 rounded-full shadow-inner border border-slate-200 w-full max-w-sm mx-auto">
+            <button
+              onClick={() => setCurrentView("exterior")}
+              className={`flex-1 relative py-2.5 text-sm font-semibold transition-colors z-10 rounded-full ${
+                currentView === "exterior" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              {currentView === "exterior" && (
+                <motion.div
+                  layoutId="viewToggleBgMob"
+                  className="absolute inset-0 bg-white rounded-full shadow-md z-[-1]"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
-              ))}
-            </div>
+              )}
+              <span className="relative z-20">Exterior</span>
+            </button>
+            <button
+              onClick={() => setCurrentView("interior")}
+              className={`flex-1 relative py-2.5 text-sm font-semibold transition-colors z-10 rounded-full ${
+                currentView === "interior" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              {currentView === "interior" && (
+                <motion.div
+                  layoutId="viewToggleBgMob"
+                  className="absolute inset-0 bg-white rounded-full shadow-md z-[-1]"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+              <span className="relative z-20">Interior</span>
+            </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {interiorFeatures.map(f => <FeatureCard key={f.id} feature={f} minibarTooltipText={t("minibarTooltip")} />)}
-          </div>
+          {/* Feature Cards Grid (2x2) */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`${currentView}-${selectedClass}`}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.4 }}
+              className="grid grid-cols-2 gap-3 sm:gap-4"
+            >
+              {(currentView === "exterior" ? exteriorFeatures : interiorFeatures).map((feature) => (
+                <div key={feature.id} className="min-h-[120px] sm:min-h-[140px]">
+                  <FeatureCard feature={feature} minibarTooltipText={t("minibarTooltip")} />
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
       </div>
-
 
       {/* Lightbox Modal (Shared) */}
       <AnimatePresence>

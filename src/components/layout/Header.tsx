@@ -9,11 +9,6 @@ import { usePathname, useRouter } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 
-const links = [
-  { label: "Оснащение", href: "#features" },
-  { label: "Маршруты", href: "#destinations" },
-  { label: "Black Diamond Club", href: "#loyalty" },
-];
 
 export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -22,6 +17,12 @@ export const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
   const t = useTranslations("Navigation");
+
+  const links = [
+    { label: t("fleet"), href: "#features" },
+    { label: t("routes"), href: "#destinations" },
+    { label: t("club"), href: "#loyalty" },
+  ];
 
   const [isHidden, setIsHidden] = useState(false);
 

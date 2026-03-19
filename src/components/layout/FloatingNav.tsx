@@ -4,17 +4,20 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLenis } from "lenis/react";
 
-const sections = [
-  { id: "hero", label: "Home" },
-  { id: "features", label: "Fleet" },
-  { id: "destinations", label: "Destinations" },
-  { id: "how-it-works", label: "Booking" },
-  { id: "reviews", label: "Reviews" },
-  { id: "faq", label: "FAQ" }
-];
+import { useTranslations } from "next-intl";
 
 export const FloatingNav = () => {
+  const t = useTranslations("Navigation");
   const [activeSection, setActiveSection] = useState("hero");
+
+  const sections = [
+    { id: "hero", label: t("home") },
+    { id: "features", label: t("fleet") },
+    { id: "destinations", label: t("routes") },
+    { id: "how-it-works", label: t("booking") },
+    { id: "reviews", label: t("reviews") },
+    { id: "faq", label: t("faq") }
+  ];
   const [isDesktop, setIsDesktop] = useState(false);
   const lenis = useLenis();
 

@@ -59,7 +59,11 @@
     "whatsappMessage": "Hello, I would like to book a VIP transfer. Route: Antalya Airport - [Your Hotel/Destination]. Date: [Date]. Passengers: [Number]",
     "home": "Home",
     "routes": "Routes",
-    "club": "Referral System"
+    "club": "Referral System",
+    "fleet": "Fleet",
+    "booking": "Booking",
+    "reviews": "Reviews",
+    "faq": "FAQ"
   },
   "BookingWidget": {
     "from": "From (Airport, Hotel, City)",

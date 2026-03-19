@@ -282,7 +282,7 @@ export const Destinations = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold text-white tracking-wider mb-6 drop-shadow-lg"
+            className="text-4xl md:text-5xl font-bold !text-white tracking-wider mb-6 drop-shadow-lg"
           >
             {tDestinations("title")}
           </motion.h2>

@@ -236,14 +236,17 @@ export const BookingWidget = () => {
         </div>
 
         {/* Button Outside Glass Container */}
-        <div className="w-full md:w-auto flex items-stretch">
+        <div className="w-full md:w-auto flex flex-col items-center md:items-stretch gap-2">
           <Button
             onClick={handleBook}
             variant="primary"
-            className="w-full md:w-auto h-14 px-10 rounded-xl flex items-center justify-center gap-2 text-base shadow-lg hover:shadow-xl hover:opacity-90 transition-all duration-300"
+            className="w-full h-14 px-10 rounded-xl flex items-center justify-center gap-2 text-base shadow-lg hover:shadow-xl hover:opacity-90 transition-all duration-300"
           >
             {t("bookButton")}
           </Button>
+          <span className="text-xs text-slate-500 font-medium tracking-wide">
+            {t("trustMessage")}
+          </span>
         </div>
       </div>
 
@@ -272,7 +275,7 @@ export const BookingWidget = () => {
       </AnimatePresence>
 
       {/* Checkboxes Outside */}
-      <div className="flex flex-wrap gap-2 md:gap-8 justify-center items-center relative z-40">
+      <div className="flex flex-wrap gap-2 md:gap-8 justify-center items-center relative z-40 mt-2">
         <Checkbox
           label={t("roundTrip")}
           checked={roundTrip}
@@ -314,10 +317,10 @@ const Checkbox = ({
     return (
       <button
         onClick={onChange}
-        className={`flex items-center gap-1.5 md:gap-2 group focus:outline-none px-3 py-1.5 md:px-6 md:py-2.5 rounded-xl transition-all duration-300 ${
+        className={`flex items-center gap-1.5 md:gap-2 group focus:outline-none px-3.5 py-2 md:px-6 md:py-2.5 rounded-full md:rounded-xl transition-all duration-300 ${
           checked
             ? "bg-[#2F4157] text-[#E2DED3] shadow-[inset_0_4px_6px_rgba(0,0,0,0.3)]"
-            : "bg-white text-[#2F4157] shadow-sm border border-slate-200 hover:shadow-md hover:-translate-y-0.5"
+            : "bg-white/90 backdrop-blur-sm text-[#2F4157] shadow-sm border border-slate-200/60 hover:shadow-md hover:-translate-y-0.5 hover:bg-white"
         }`}
       >
         <div className="relative w-3 h-3 md:w-4 md:h-4 flex items-center justify-center">

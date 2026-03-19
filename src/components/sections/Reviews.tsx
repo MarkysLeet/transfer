@@ -61,10 +61,16 @@ export const Reviews = () => {
         <MessageSquare className="w-5 h-5 text-[#2F4157]" />
       </div>
 
-      <div className="flex gap-1 mb-4">
-        {[...Array(review.rating)].map((_, i) => (
-          <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-        ))}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex gap-1">
+          {[...Array(review.rating)].map((_, i) => (
+            <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+          ))}
+        </div>
+        <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100/50 flex items-center gap-1">
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+          Verified Trip
+        </span>
       </div>
 
       <p className="text-slate-600 leading-relaxed font-light mb-6 flex-grow">

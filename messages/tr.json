@@ -85,7 +85,8 @@
     "estimatedPrice": "Tahmini fiyat: €{price}",
     "priceOnRequest": "Talep üzerine fiyat",
     "searching": "Aranıyor...",
-    "noResults": "Sonuç bulunamadı"
+    "noResults": "Sonuç bulunamadı",
+    "trustMessage": "Hızlı rezervasyon. Ön ödeme yok."
   },
   "Cities": {
     "antalya": "Antalya",

@@ -58,7 +58,7 @@ export const MobileBottomBar = () => {
               <button
                 key={tab.id}
                 onClick={() => handleNavClick(tab.id)}
-                className="flex flex-col items-center justify-center w-full h-full text-text-primary hover:text-accent transition-colors"
+                className={`flex flex-col items-center justify-center w-full h-full transition-colors ${tab.id === 'routes' ? 'text-white hover:text-white/80' : 'text-text-primary hover:text-accent'}`}
               >
                 <Icon size={24} className="mb-1" strokeWidth={1.5} />
                 <span className="text-[10px] font-medium tracking-wide">{tab.label}</span>

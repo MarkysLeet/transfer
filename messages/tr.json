@@ -59,7 +59,11 @@
     "whatsappMessage": "Merhaba, VIP transfer rezervasyonu yapmak istiyorum. Güzergah: Antalya Havalimanı - [Otel/Hedef]. Tarih: [Tarih]. Yolcu sayısı: [Kişi sayısı]",
     "home": "Ana Sayfa",
     "routes": "Rotalar",
-    "club": "Tavsiye Sistemi"
+    "club": "Tavsiye Sistemi",
+    "fleet": "Donanım",
+    "booking": "Rezervasyon",
+    "reviews": "Yorumlar",
+    "faq": "SSS"
   },
   "BookingWidget": {
     "from": "Nereden",

@@ -7,8 +7,8 @@
   },
   "Features": {
     "title": "Unsere Flotte",
-    "exterior": "Exterieur",
-    "interior": "Interieur",
+    "exterior": "Außen",
+    "interior": "Innen",
     "wifi": "Ultraschnelles 5G Wi-Fi",
     "climate": "Erweiterte Klimaregelung",
     "childSeat": "Kostenloser Kindersitz (ISOFIX)",
@@ -59,7 +59,11 @@
     "whatsappMessage": "Hallo, ich möchte einen VIP-Transfer buchen. Strecke: Flughafen Antalya - [Hotel/Zielort]. Datum: [Datum]. Personen: [Anzahl]",
     "home": "Startseite",
     "routes": "Routen",
-    "club": "Empfehlungsprogramm"
+    "club": "Empfehlungsprogramm",
+    "fleet": "Ausstattung",
+    "booking": "Buchung",
+    "reviews": "Bewertungen",
+    "faq": "FAQ"
   },
   "BookingWidget": {
     "from": "Von",

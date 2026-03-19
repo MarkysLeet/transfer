@@ -344,7 +344,7 @@ export const FeaturesShowcase = () => {
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
-                  <span className="relative z-20">Exterior</span>
+                  <span className="relative z-20">{t("exterior")}</span>
                 </button>
                 <button
                   onClick={() => setCurrentView("interior")}
@@ -359,7 +359,7 @@ export const FeaturesShowcase = () => {
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
-                  <span className="relative z-20">Interior</span>
+                  <span className="relative z-20">{t("interior")}</span>
                 </button>
               </div>
             </div>
@@ -582,7 +582,7 @@ export const FeaturesShowcase = () => {
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <span className="relative z-20">Exterior</span>
+                  <span className="relative z-20">{t("exterior")}</span>
             </button>
             <button
               onClick={() => setCurrentView("interior")}
@@ -597,7 +597,7 @@ export const FeaturesShowcase = () => {
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <span className="relative z-20">Interior</span>
+                  <span className="relative z-20">{t("interior")}</span>
             </button>
           </div>
 

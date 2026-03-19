@@ -85,7 +85,8 @@
     "estimatedPrice": "Estimated price: €{price}",
     "priceOnRequest": "Price on request",
     "searching": "Searching...",
-    "noResults": "No results found"
+    "noResults": "No results found",
+    "trustMessage": "Fast booking. No prepayment."
   },
   "Cities": {
     "antalya": "Antalya",

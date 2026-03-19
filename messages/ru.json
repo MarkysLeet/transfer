@@ -85,7 +85,8 @@
     "estimatedPrice": "Ориентировочная стоимость: €{price}",
     "priceOnRequest": "Цена по запросу",
     "searching": "Поиск...",
-    "noResults": "Ничего не найдено"
+    "noResults": "Ничего не найдено",
+    "trustMessage": "Быстрое бронирование. Без предоплаты."
   },
   "Cities": {
     "antalya": "Анталья",

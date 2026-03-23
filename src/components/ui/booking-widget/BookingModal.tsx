@@ -90,10 +90,11 @@ export const BookingModal = () => {
           className="relative w-full max-w-[450px] bg-[#F4EFEB] h-full shadow-2xl overflow-hidden overflow-x-hidden
                      max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-auto max-lg:h-[90dvh] max-lg:max-w-none
                      max-lg:rounded-t-3xl flex flex-col"
+            style={isMobile ? { touchAction: "none" } : {}}
         >
            {/* Mobile Drag Handle */}
           <div
-            className="lg:hidden w-full flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing shrink-0 sticky top-0 bg-[#F4EFEB] z-10"
+            className="lg:hidden w-full flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing shrink-0 sticky top-0 bg-[#F4EFEB] z-10 touch-none"
             onPointerDown={(e) => {
               if (isMobile) {
                 dragControls.start(e);
@@ -103,7 +104,10 @@ export const BookingModal = () => {
             <div className="w-12 h-1.5 bg-slate-300 rounded-full" />
           </div>
 
-          <div className="p-6 md:p-8 flex flex-col flex-1 pb-20 max-lg:pb-[env(safe-area-inset-bottom,24px)] overflow-hidden">
+          <div
+            className="p-6 md:p-8 flex flex-col flex-1 pb-20 max-lg:pb-[env(safe-area-inset-bottom,24px)] overflow-hidden"
+            style={isMobile ? { touchAction: "auto" } : {}}
+          >
             {/* Header */}
             <div className="flex items-center justify-between mb-8 shrink-0">
               <h2 className="text-2xl font-semibold text-slate-900">

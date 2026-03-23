@@ -56,8 +56,8 @@ export const MobileBottomBar = () => {
       transition={{ type: "spring", stiffness: 260, damping: 20, duration: 0.6 }}
       className="fixed bottom-0 left-0 right-0 z-40 md:hidden pointer-events-none pb-[env(safe-area-inset-bottom)] flex flex-col justify-end"
     >
-      {/* Increased height from 72px to 84px to accommodate the text below FAB without overlapping the safe area */}
-      <div className="relative w-full h-[84px] pointer-events-auto filter drop-shadow-[0_-4px_24px_rgba(0,0,0,0.08)] mt-6">
+      {/* Decreased height back to 72px */}
+      <div className="relative w-full h-[72px] pointer-events-auto filter drop-shadow-[0_-4px_24px_rgba(0,0,0,0.08)] mt-6">
         {/* SVG background for the notched glassmorphism bar */}
         <div className="absolute inset-0 w-full h-full overflow-hidden rounded-t-[10px]">
           <svg
@@ -79,7 +79,7 @@ export const MobileBottomBar = () => {
               - Completes rectangle down to bottom
             */}
             <path
-              d="M0 0 H140 C148 0 154 3 158 10 C168 28 178 40 195 40 C212 40 222 28 232 10 C236 3 242 0 250 0 H390 V84 H0 Z"
+              d="M0 0 H140 C148 0 154 3 158 10 C168 28 178 40 195 40 C212 40 222 28 232 10 C236 3 242 0 250 0 H390 V72 H0 Z"
               fill="currentColor"
               className="backdrop-blur-xl"
             />

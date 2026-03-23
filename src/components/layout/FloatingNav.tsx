@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLenis } from "lenis/react";
 
@@ -10,14 +10,33 @@ export const FloatingNav = () => {
   const t = useTranslations("Navigation");
   const [activeSection, setActiveSection] = useState("hero");
 
-  const sections = [
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const pendingSectionRef = useRef<string | null>(null);
+
+  const throttledSetActiveSection = useCallback((id: string) => {
+    if (timeoutRef.current === null) {
+      setActiveSection(id);
+      timeoutRef.current = setTimeout(() => {
+        timeoutRef.current = null;
+        if (pendingSectionRef.current) {
+          setActiveSection(pendingSectionRef.current);
+          pendingSectionRef.current = null;
+        }
+      }, 100);
+    } else {
+      pendingSectionRef.current = id;
+    }
+  }, []);
+
+  const sections = useMemo(() => [
     { id: "hero", label: t("home") },
     { id: "fleet", label: t("fleet") },
     { id: "destinations", label: t("routes") },
     { id: "how-it-works", label: t("booking") },
     { id: "reviews", label: t("reviews") },
     { id: "faq", label: t("faq") }
-  ];
+  ], [t]);
+
   const [isDesktop, setIsDesktop] = useState(false);
   const lenis = useLenis();
 
@@ -35,7 +54,7 @@ export const FloatingNav = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
+            throttledSetActiveSection(entry.target.id);
           }
         });
       },
@@ -51,7 +70,7 @@ export const FloatingNav = () => {
     });
 
     return () => observer.disconnect();
-  }, [isDesktop]);
+  }, [isDesktop, throttledSetActiveSection, sections]);
 
   const scrollTo = (id: string) => {
     if (lenis) {
@@ -81,7 +100,16 @@ export const FloatingNav = () => {
                 </motion.span>
               )}
             </AnimatePresence>
-            <div className={`w-1.5 rounded-full transition-all duration-500 bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)] ${isActive ? "h-8" : "h-1.5 opacity-50 group-hover:opacity-100 group-hover:h-3"}`} />
+            <div className="relative flex items-center justify-center w-1.5 h-8">
+              <div className={`w-1.5 h-1.5 rounded-full bg-white transition-all duration-300 ${isActive ? "opacity-0" : "opacity-50 group-hover:opacity-100 group-hover:h-3"}`} />
+              {isActive && (
+                <motion.div
+                  layoutId="activeNavIndicator"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  className="absolute w-1.5 h-8 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+                />
+              )}
+            </div>
           </div>
         );
       })}

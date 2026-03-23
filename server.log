@@ -1,13 +1,43 @@
 
-> vip-transfer@0.1.0 start
-> next start
+> vip-transfer@0.1.0 dev
+> next dev
 
-▲ Next.js 16.1.6
+▲ Next.js 16.1.6 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
 
 ✓ Starting...
-✓ Ready in 1652ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+✓ Ready in 2.2s
+○ Compiling /[locale] ...
+ GET /en 200 in 8.8s (compile: 7.6s, proxy.ts: 143ms, generate-params: 981ms, render: 1002ms)
 ⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
-⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342349/468308041_18464263342065049_6129014434542481614_n_roqojc.jpg 401
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+ GET /en 200 in 802ms (compile: 312ms, proxy.ts: 58ms, generate-params: 58ms, render: 432ms)
+ GET /en 200 in 326ms (compile: 49ms, proxy.ts: 11ms, generate-params: 34ms, render: 266ms)
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+ GET /en 200 in 264ms (compile: 37ms, proxy.ts: 6ms, generate-params: 27ms, render: 222ms)
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+ GET /en 200 in 294ms (compile: 37ms, proxy.ts: 6ms, generate-params: 27ms, render: 251ms)
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+ GET /en 200 in 203ms (compile: 36ms, proxy.ts: 7ms, generate-params: 28ms, render: 161ms)
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+ GET /en 200 in 292ms (compile: 42ms, proxy.ts: 6ms, generate-params: 30ms, render: 244ms)
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+✓ Compiled in 683ms
+ GET /en 200 in 1142ms (compile: 502ms, proxy.ts: 8ms, generate-params: 43ms, render: 633ms)
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+ GET /en 200 in 334ms (compile: 53ms, proxy.ts: 8ms, generate-params: 38ms, render: 274ms)
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
+ GET /en 200 in 241ms (compile: 42ms, proxy.ts: 8ms, generate-params: 33ms, render: 192ms)
+⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401
 ⨯ upstream image response failed for https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png 401

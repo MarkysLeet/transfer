@@ -234,7 +234,7 @@ export const FeaturesShowcase = () => {
   }, [currentInteriorImages.length]);
 
   return (
-    <section id="features" className="relative bg-[#FAFAFA] text-slate-900 py-16 md:py-24">
+    <section id="fleet" className="relative bg-[#FAFAFA] text-slate-900 py-16 md:py-24">
       <div className="container mx-auto px-4 max-w-7xl">
 
         {/* Header Title (Shared) */}

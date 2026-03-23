@@ -55,13 +55,13 @@
     "privilege2Desc": "Status für Ihre Gäste: Empfehlen Sie uns und machen Sie Freunden bei ihrer ersten Fahrt ein 5% Kompliment. Jede ihrer Fahrten bringt Ihren nächsten Bonustransfer näher."
   },
   "Navigation": {
-    "contact": "Kontakt",
+    "contact": "Concierge",
     "whatsappMessage": "Hallo, ich möchte einen VIP-Transfer buchen. Strecke: Flughafen Antalya - [Hotel/Zielort]. Datum: [Datum]. Personen: [Anzahl]",
     "home": "Startseite",
     "routes": "Routen",
     "club": "Empfehlungsprogramm",
-    "fleet": "Ausstattung",
-    "booking": "Buchung",
+    "fleet": "Fuhrpark",
+    "booking": "Buchen",
     "reviews": "Bewertungen",
     "faq": "FAQ"
   },

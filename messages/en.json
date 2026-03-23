@@ -55,13 +55,13 @@
     "privilege2Desc": "Status for your guests: recommend us and give friends a 5% compliment on their first trip. Each of their trips brings your next bonus transfer closer."
   },
   "Navigation": {
-    "contact": "Contact",
+    "contact": "Concierge",
     "whatsappMessage": "Hello, I would like to book a VIP transfer. Route: Antalya Airport - [Your Hotel/Destination]. Date: [Date]. Passengers: [Number]",
     "home": "Home",
     "routes": "Routes",
     "club": "Referral System",
     "fleet": "Fleet",
-    "booking": "Booking",
+    "booking": "Order",
     "reviews": "Reviews",
     "faq": "FAQ"
   },

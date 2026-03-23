@@ -19,7 +19,7 @@ export const Header = () => {
   const t = useTranslations("Navigation");
 
   const links = [
-    { label: t("fleet"), href: "#features" },
+    { label: t("fleet"), href: "#fleet" },
     { label: t("routes"), href: "#destinations" },
     { label: t("club"), href: "#loyalty" },
   ];

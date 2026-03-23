@@ -12,7 +12,7 @@ export const FloatingNav = () => {
 
   const sections = [
     { id: "hero", label: t("home") },
-    { id: "features", label: t("fleet") },
+    { id: "fleet", label: t("fleet") },
     { id: "destinations", label: t("routes") },
     { id: "how-it-works", label: t("booking") },
     { id: "reviews", label: t("reviews") },

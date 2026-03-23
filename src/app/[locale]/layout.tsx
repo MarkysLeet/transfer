@@ -11,6 +11,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomBar } from "@/components/layout/MobileBottomBar";
 import { FloatingNav } from "@/components/layout/FloatingNav";
+import { FloatingLanguagePill } from "@/components/layout/FloatingLanguagePill";
 import { BookingModal } from "@/components/ui/booking-widget/BookingModal";
 
 const inter = Inter({
@@ -61,6 +62,7 @@ export default async function RootLayout({
           <SmoothScroll>
             <Header />
             <FloatingNav />
+            <FloatingLanguagePill />
             <main className="min-h-screen relative z-0 max-w-[100vw]">
               {children}
             </main>

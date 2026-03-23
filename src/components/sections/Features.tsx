@@ -48,7 +48,7 @@ export const Features = () => {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6 }}
             className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 tracking-wider"
           >
@@ -57,7 +57,7 @@ export const Features = () => {
           <motion.div
             initial={{ width: 0 }}
             whileInView={{ width: 80 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.8 }}
             className="h-1 bg-slate-200 mx-auto rounded-full"
           />
@@ -67,7 +67,7 @@ export const Features = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, amount: 0.2, margin: "-100px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {features.map((feature, index) => (

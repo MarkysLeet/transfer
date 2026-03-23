@@ -17,8 +17,14 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
     minibar, toggleMinibar,
     englishDriver, toggleEnglishDriver,
     estimatedPrice, setEstimatedPrice,
-    from, to, fromPlaceId, toPlaceId
+    from, to, fromPlaceId, toPlaceId,
+    passengers, fleetOrder, setFleetOrder
   } = useBookingStore();
+
+  const totalPassengers = passengers.adults + passengers.children + passengers.infants;
+  const isGroup = totalPassengers >= 8;
+  const totalCapacity = (fleetOrder.vito * 7) + (fleetOrder.transporter * 7);
+  const isGroupValid = totalCapacity >= totalPassengers;
 
   const [isPriceLoading, setIsPriceLoading] = useState(false);
   const [priceError, setPriceError] = useState(false);
@@ -84,24 +90,85 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
         {t("back")}
       </button>
 
-      {/* Car Selector */}
-      <div className="-mx-4 md:mx-0">
-        <CarClassSelector selectedClass={selectedClass} onChange={setSelectedClass} />
-      </div>
-
-      {/* Options Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        {/* Child Seat Stepper */}
-        <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl">
-          <div>
-            <div className="text-sm font-medium text-slate-900">{t("childSeat")}</div>
-            <div className="text-xs text-slate-500">{t("free")}</div>
+      {/* Group Fleet Selection vs Single Car Selector */}
+      {isGroup ? (
+        <div className="flex flex-col gap-4">
+          <div className="text-sm font-medium text-slate-900 bg-slate-50 p-3 rounded-lg border border-slate-100">
+            {t("groupFleetSelection")}
           </div>
-          <Stepper value={childSeat} onChange={setChildSeat} min={0} />
+          <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+            <div>
+              <div className="font-medium text-slate-900">{t("vitoClass")}</div>
+              <div className="text-xs text-slate-500">{t("capacity", { count: 7 })}</div>
+            </div>
+            <Stepper value={fleetOrder.vito} onChange={(v) => setFleetOrder(v, fleetOrder.transporter)} min={0} />
+          </div>
+          <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+            <div>
+              <div className="font-medium text-slate-900">{t("vwClass")}</div>
+              <div className="text-xs text-slate-500">{t("capacity", { count: 7 })}</div>
+            </div>
+            <Stepper value={fleetOrder.transporter} onChange={(v) => setFleetOrder(fleetOrder.vito, v)} min={0} />
+          </div>
+          <AnimatePresence>
+            {!isGroupValid && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="text-sm text-red-500 bg-red-50 p-3 rounded-lg mt-2">
+                  {t("groupCapacityWarning", { passengers: totalPassengers, capacity: totalCapacity })}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      ) : (
+        <div className="-mx-4 md:mx-0">
+          <CarClassSelector selectedClass={selectedClass} onChange={setSelectedClass} />
+        </div>
+      )}
+
+      {/* Options List */}
+      <div className="flex flex-col gap-3 mt-4 w-full">
+        {/* Child Seat Toggle & Stepper */}
+        <div className="flex flex-col p-4 bg-slate-50 border border-slate-100 rounded-xl gap-3 w-full">
+          <div className="flex items-center justify-between w-full">
+            <div>
+              <div className="text-sm font-medium text-slate-900">{t("childSeat")}</div>
+              <div className="text-xs text-slate-500">{t("free")}</div>
+            </div>
+            <Toggle
+              checked={childSeat > 0}
+              onChange={() => {
+                if (childSeat > 0) {
+                  setChildSeat(0);
+                } else {
+                  setChildSeat(1);
+                }
+              }}
+            />
+          </div>
+          <AnimatePresence>
+            {childSeat > 0 && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden flex items-center justify-between border-t border-slate-200/50 pt-3 w-full"
+              >
+                <div className="text-sm text-slate-600 pl-1">{t("passengersCount")}</div>
+                {/* Max 3 seats based on typical vehicle limits */}
+                <Stepper value={childSeat} onChange={setChildSeat} min={1} max={3} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Minibar Toggle */}
-        <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl">
+        <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl w-full">
           <div>
             <div className="text-sm font-medium text-slate-900">{t("minibar")}</div>
             <div className="text-xs text-slate-500">{t("extraCharge")}</div>
@@ -110,7 +177,7 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
         </div>
 
         {/* English Driver Toggle */}
-        <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl md:col-span-2">
+        <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl w-full">
           <div>
             <div className="text-sm font-medium text-slate-900">{t("englishDriver")}</div>
             <div className="text-xs text-slate-500">{t("free")}</div>
@@ -144,7 +211,7 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
           )}
         </AnimatePresence>
 
-        <Button onClick={onNext} className="w-full h-14 rounded-xl" variant="primary">
+        <Button onClick={onNext} disabled={isGroup && !isGroupValid} className="w-full h-14 rounded-xl" variant="primary">
           {t("next")}
         </Button>
       </div>
@@ -152,19 +219,20 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
   );
 };
 
-const Stepper = ({ value, onChange, min = 0 }: { value: number; onChange: (v: number) => void; min?: number }) => (
-  <div className="flex items-center gap-3 bg-white rounded-lg p-1 border border-slate-100 shadow-sm">
+const Stepper = ({ value, onChange, min = 0, max = 100 }: { value: number; onChange: (v: number) => void; min?: number; max?: number }) => (
+  <div className="flex items-center gap-3 bg-slate-50 rounded-lg p-1 border border-slate-100">
     <button
       onClick={() => value > min && onChange(value - 1)}
       disabled={value <= min}
-      className={`w-7 h-7 rounded-md flex items-center justify-center transition-colors ${value <= min ? "text-slate-300" : "bg-slate-50 text-slate-700 hover:text-slate-900"}`}
+      className={`w-7 h-7 rounded-md flex items-center justify-center transition-colors ${value <= min ? "text-slate-300" : "bg-white shadow-sm text-slate-700 hover:text-slate-900"}`}
     >
       -
     </button>
     <span className="w-4 text-center text-sm font-medium text-slate-900">{value}</span>
     <button
-      onClick={() => onChange(value + 1)}
-      className="w-7 h-7 rounded-md bg-slate-50 flex items-center justify-center text-slate-700 hover:text-slate-900 transition-colors"
+      onClick={() => value < max && onChange(value + 1)}
+      disabled={value >= max}
+      className={`w-7 h-7 rounded-md flex items-center justify-center transition-colors ${value >= max ? "text-slate-300" : "bg-white shadow-sm text-slate-700 hover:text-slate-900"}`}
     >
       +
     </button>
@@ -174,11 +242,15 @@ const Stepper = ({ value, onChange, min = 0 }: { value: number; onChange: (v: nu
 const Toggle = ({ checked, onChange }: { checked: boolean; onChange: () => void }) => (
   <button
     onClick={onChange}
-    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${checked ? 'bg-accent' : 'bg-slate-200'}`}
+    role="switch"
+    aria-checked={checked}
+    className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#2F4157]/20 focus:ring-offset-2 ${checked ? 'bg-[#2F4157]' : 'bg-slate-300'}`}
   >
     <span className="sr-only">Toggle</span>
-    <span
-      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${checked ? 'translate-x-6' : 'translate-x-1'}`}
+    <motion.span
+      layout
+      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+      className={`inline-block h-5 w-5 rounded-full bg-white shadow-sm transform ${checked ? 'translate-x-5' : 'translate-x-1'}`}
     />
   </button>
 );

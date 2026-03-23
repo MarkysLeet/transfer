@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 export type CarClassType = 'vw' | 'vito';
-export type PaymentMethodType = 'cash' | 'card' | 'crypto';
+export type PaymentMethodType = 'cash' | 'card';
 
 interface Passengers {
   adults: number;
@@ -77,6 +77,9 @@ interface BookingStore {
   estimatedPrice: number | null;
   setEstimatedPrice: (value: number | null) => void;
 
+  fleetOrder: { vito: number; transporter: number };
+  setFleetOrder: (vito: number, transporter: number) => void;
+
   resetBooking: () => void;
 }
 
@@ -102,6 +105,7 @@ const initialState = {
   phone: '',
   paymentMethod: 'cash' as PaymentMethodType,
   estimatedPrice: null,
+  fleetOrder: { vito: 1, transporter: 1 },
 };
 
 export const useBookingStore = create<BookingStore>((set) => ({
@@ -142,6 +146,8 @@ export const useBookingStore = create<BookingStore>((set) => ({
   setPaymentMethod: (value) => set({ paymentMethod: value }),
 
   setEstimatedPrice: (value) => set({ estimatedPrice: value }),
+
+  setFleetOrder: (vito, transporter) => set((state) => ({ fleetOrder: { vito, transporter } })),
 
   resetBooking: () => set({ ...initialState }),
 }));

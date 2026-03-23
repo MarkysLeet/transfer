@@ -82,8 +82,13 @@
     "waDetails": "Seçenekler: {options}",
     "myLocation": "Konumum",
     "locateError": "Konum belirlenemedi",
-    "vwClass": "Volkswagen Transporter (1-5 kişi)",
-    "vitoClass": "MB Vito (1-8 kişi)",
+    "secondCarUpsell": "Araçlarımız 7 kişiye kadar misafiri konforla ağırlar. Siparişe ikinci bir Mercedes-Benz Vito eklensin mi?",
+    "secondCarRequiredWa": "Dikkat: 2 araç gereklidir (8+ kişilik grup)",
+    "vwClass": "Volkswagen Transporter",
+    "vitoClass": "Mercedes-Benz Vito",
+    "groupFleetSelection": "Grup Filo Seçimi",
+    "capacity": "Kapasite: {count}",
+    "groupCapacityWarning": "Grup: {passengers} kişi. Seçilen kapasite: {capacity} kişi. Lütfen daha fazla araç ekleyin.",
     "vwClassShort": "Volkswagen Transporter",
     "vitoClassShort": "Mercedes-Benz Vito",
     "estimatedPrice": "Tahmini fiyat: €{price}",
@@ -109,7 +114,6 @@
     "paymentMethod": "Ödeme yöntemi seçin",
     "payCash": "Nakit",
     "payCard": "Kart",
-    "payCrypto": "Kripto",
     "confirmBooking": "Rezervasyonu Onayla"
   },
   "Cities": {

@@ -18,7 +18,7 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
     date, setDate, time, setTime,
     returnDate, setReturnDate, returnTime, setReturnTime,
     passengers, updatePassengers,
-    setCoords
+    setCoords,
   } = useBookingStore();
 
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
@@ -41,6 +41,16 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (!date) {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      setDate(`${year}-${month}-${day}`);
+    }
+  }, [date, setDate]);
 
   const handleGeolocation = () => {
     if (!navigator.geolocation) {
@@ -116,21 +126,21 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
       {/* Date & Time */}
       <div className="flex gap-3">
         <div className="flex-1 relative">
-          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full h-14 pl-10 pr-4 bg-white/60 border border-slate-200/60 rounded-xl outline-none focus:ring-2 focus:ring-accent/20 transition-all text-sm text-slate-900"
+            className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
           />
         </div>
         <div className="w-1/3 relative">
-          <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+          <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
           <input
             type="time"
             value={time}
             onChange={(e) => setTime(e.target.value)}
-            className="w-full h-14 pl-10 pr-4 bg-white/60 border border-slate-200/60 rounded-xl outline-none focus:ring-2 focus:ring-accent/20 transition-all text-sm text-slate-900"
+            className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
           />
         </div>
       </div>
@@ -146,21 +156,21 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
           >
             <div className="flex gap-3 pt-1">
               <div className="flex-1 relative">
-                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
                 <input
                   type="date"
                   value={returnDate}
                   onChange={(e) => setReturnDate(e.target.value)}
-                  className="w-full h-14 pl-10 pr-4 bg-white/60 border border-slate-200/60 rounded-xl outline-none focus:ring-2 focus:ring-accent/20 transition-all text-sm text-slate-900"
+                  className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
                 />
               </div>
               <div className="w-1/3 relative">
-                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
                 <input
                   type="time"
                   value={returnTime}
                   onChange={(e) => setReturnTime(e.target.value)}
-                  className="w-full h-14 pl-10 pr-4 bg-white/60 border border-slate-200/60 rounded-xl outline-none focus:ring-2 focus:ring-accent/20 transition-all text-sm text-slate-900"
+                  className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
                 />
               </div>
             </div>

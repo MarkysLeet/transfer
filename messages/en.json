@@ -82,8 +82,13 @@
     "waDetails": "Options: {options}",
     "myLocation": "My Location",
     "locateError": "Could not determine location",
-    "vwClass": "Volkswagen Transporter (1-5 pax)",
-    "vitoClass": "MB Vito (1-8 pax)",
+    "secondCarUpsell": "Our cars accommodate up to 7 guests with comfort. Add a second Mercedes-Benz Vito to the order?",
+    "secondCarRequiredWa": "Attention: 2 cars required (group of 8+ people)",
+    "vwClass": "Volkswagen Transporter",
+    "vitoClass": "Mercedes-Benz Vito",
+    "groupFleetSelection": "Group Fleet Selection",
+    "capacity": "Capacity: {count}",
+    "groupCapacityWarning": "Group: {passengers} pax. Selected capacity: {capacity} pax. Please add more vehicles.",
     "vwClassShort": "Volkswagen Transporter",
     "vitoClassShort": "Mercedes-Benz Vito",
     "estimatedPrice": "Estimated price: €{price}",
@@ -109,7 +114,6 @@
     "paymentMethod": "Select payment method",
     "payCash": "Cash",
     "payCard": "Bank Card",
-    "payCrypto": "Crypto",
     "confirmBooking": "Confirm Booking"
   },
   "Cities": {

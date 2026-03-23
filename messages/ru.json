@@ -82,8 +82,13 @@
     "waDetails": "Опции: {options}",
     "myLocation": "Моя геопозиция",
     "locateError": "Не удалось определить местоположение",
-    "vwClass": "Volkswagen Transporter (1-5 чел.)",
-    "vitoClass": "MB Vito (1-8 чел.)",
+    "secondCarUpsell": "Наши автомобили вмещают до 7 гостей с комфортом. Добавить второй Mercedes-Benz Vito в заказ?",
+    "secondCarRequiredWa": "Внимание: Требуется 2 автомобиля (группа от 8 человек)",
+    "vwClass": "Volkswagen Transporter",
+    "vitoClass": "Mercedes-Benz Vito",
+    "groupFleetSelection": "Выбор автопарка для группы",
+    "capacity": "Вместимость: {count}",
+    "groupCapacityWarning": "Группа: {passengers} чел. Выбранная вместимость: {capacity} чел. Добавьте автомобили.",
     "vwClassShort": "Volkswagen Transporter",
     "vitoClassShort": "Mercedes-Benz Vito",
     "estimatedPrice": "Ориентировочная стоимость: €{price}",
@@ -109,7 +114,6 @@
     "paymentMethod": "Выберите способ оплаты",
     "payCash": "Наличные",
     "payCard": "Карта",
-    "payCrypto": "Крипта",
     "confirmBooking": "Подтвердить бронирование"
   },
   "Cities": {

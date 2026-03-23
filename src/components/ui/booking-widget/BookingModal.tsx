@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { X } from "lucide-react";
 import { useBookingStore } from "@/store/useBookingStore";
 import { Step1Route } from "./Step1Route";
@@ -16,6 +16,7 @@ export const BookingModal = () => {
   const lenis = useLenis();
 
   const [isMobile, setIsMobile] = useState(false);
+  const dragControls = useDragControls();
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 1024);
@@ -77,6 +78,8 @@ export const BookingModal = () => {
           variants={variants}
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
           drag={isMobile ? "y" : false}
+          dragListener={false}
+          dragControls={dragControls}
           dragConstraints={{ top: 0, bottom: 0 }}
           dragElastic={0.2}
           onDragEnd={(e, { offset, velocity }) => {
@@ -84,12 +87,19 @@ export const BookingModal = () => {
               setIsOpen(false);
             }
           }}
-          className="relative w-full max-w-[450px] bg-[#F4EFEB] h-full shadow-2xl overflow-y-auto overflow-x-hidden
+          className="relative w-full max-w-[450px] bg-[#F4EFEB] h-full shadow-2xl overflow-hidden overflow-x-hidden
                      max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-auto max-lg:h-[90dvh] max-lg:max-w-none
                      max-lg:rounded-t-3xl flex flex-col"
         >
            {/* Mobile Drag Handle */}
-          <div className="lg:hidden w-full flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing shrink-0 sticky top-0 bg-[#F4EFEB] z-10">
+          <div
+            className="lg:hidden w-full flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing shrink-0 sticky top-0 bg-[#F4EFEB] z-10"
+            onPointerDown={(e) => {
+              if (isMobile) {
+                dragControls.start(e);
+              }
+            }}
+          >
             <div className="w-12 h-1.5 bg-slate-300 rounded-full" />
           </div>
 

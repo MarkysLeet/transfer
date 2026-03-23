@@ -77,8 +77,8 @@ interface BookingStore {
   estimatedPrice: number | null;
   setEstimatedPrice: (value: number | null) => void;
 
-  requiresSecondCar: boolean;
-  setRequiresSecondCar: (value: boolean) => void;
+  fleetOrder: { vito: number; transporter: number };
+  setFleetOrder: (vito: number, transporter: number) => void;
 
   resetBooking: () => void;
 }
@@ -105,7 +105,7 @@ const initialState = {
   phone: '',
   paymentMethod: 'cash' as PaymentMethodType,
   estimatedPrice: null,
-  requiresSecondCar: false,
+  fleetOrder: { vito: 1, transporter: 1 },
 };
 
 export const useBookingStore = create<BookingStore>((set) => ({
@@ -147,7 +147,7 @@ export const useBookingStore = create<BookingStore>((set) => ({
 
   setEstimatedPrice: (value) => set({ estimatedPrice: value }),
 
-  setRequiresSecondCar: (value) => set({ requiresSecondCar: value }),
+  setFleetOrder: (vito, transporter) => set((state) => ({ fleetOrder: { vito, transporter } })),
 
   resetBooking: () => set({ ...initialState }),
 }));

@@ -136,7 +136,7 @@ export const BookingModal = () => {
     const {
       roundTrip, from, to, date, time, returnDate, returnTime,
       passengers, selectedClass, childSeat, minibar, englishDriver,
-      name, phone, paymentMethod, estimatedPrice, requiresSecondCar
+      name, phone, paymentMethod, estimatedPrice, fleetOrder
     } = store;
 
     let message = `💎 *New Booking Request*\n\n`;
@@ -151,15 +151,17 @@ export const BookingModal = () => {
     }
 
     // Passengers
+    const totalPassengers = passengers.adults + passengers.children + passengers.infants;
     message += `\n👥 *Passengers:* ${passengers.adults} Adults, ${passengers.children} Children, ${passengers.infants} Infants\n`;
 
-    // Car
-    const carClassName = selectedClass === "vw" ? "Volkswagen Transporter" : "Mercedes-Benz Vito";
-    message += `\n🚘 *Car Class:* ${carClassName}\n`;
-
-    // Upsell Second Car
-    if (requiresSecondCar) {
-      message += `\n⚠️ *${t("secondCarRequiredWa")}*\n`;
+    // Car / Fleet Logic
+    if (totalPassengers >= 8) {
+      message += `\n🚘 *Group Fleet (${totalPassengers} pax):*\n`;
+      if (fleetOrder.vito > 0) message += `   - ${fleetOrder.vito}x Mercedes-Benz Vito\n`;
+      if (fleetOrder.transporter > 0) message += `   - ${fleetOrder.transporter}x Volkswagen Transporter\n`;
+    } else {
+      const carClassName = selectedClass === "vw" ? "Volkswagen Transporter" : "Mercedes-Benz Vito";
+      message += `\n🚘 *Car Class:* ${carClassName}\n`;
     }
 
     // Options

@@ -21,10 +21,12 @@ export const MobileBottomBar = () => {
     }
   };
 
-  const tabs = [
+  const leftTabs = [
     { id: 'home', icon: Home, label: t('home') },
     { id: 'fleet', icon: CarFront, label: t('fleet') },
-    { id: 'order', icon: MapPin, label: t('booking'), isAccent: true },
+  ];
+
+  const rightTabs = [
     { id: 'reviews', icon: Star, label: t('reviews') },
     { id: 'concierge', icon: Phone, label: t('contact') },
   ];
@@ -34,38 +36,103 @@ export const MobileBottomBar = () => {
       initial={{ y: "100%", opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 260, damping: 20, duration: 0.6 }}
-      className="fixed bottom-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-t border-slate-200/50 md:hidden pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_24px_-8px_rgba(0,0,0,0.1)]"
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden pointer-events-none pb-[env(safe-area-inset-bottom)] flex flex-col justify-end"
     >
-      <div className="flex justify-around items-end h-[72px] px-2 pb-2">
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
+      <div className="relative w-full h-[72px] pointer-events-auto filter drop-shadow-[0_-4px_24px_rgba(0,0,0,0.08)]">
+        {/* SVG background for the notched glassmorphism bar */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden rounded-t-[10px]">
+          <svg
+            width="100%"
+            height="100%"
+            viewBox="0 0 390 72"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-full text-white/85"
+            style={{ filter: "drop-shadow(0px -4px 12px rgba(0, 0, 0, 0.05))" }}
+          >
+            {/*
+              Smooth Notch Path explanation:
+              - Starts at top left (0,0)
+              - Goes to width 140px (before notch)
+              - Cubic bezier curves down to center (195, 42)
+              - Cubic bezier curves back up to width 250px (after notch)
+              - Goes to top right (390, 0)
+              - Completes rectangle down to bottom
+            */}
+            <path
+              d="M0 0 H140 C148 0 154 3 158 10 C168 28 178 40 195 40 C212 40 222 28 232 10 C236 3 242 0 250 0 H390 V72 H0 Z"
+              fill="currentColor"
+              className="backdrop-blur-xl"
+            />
+            {/* Soft inner top border to enhance glass effect */}
+            <path
+              d="M0 0 H140 C148 0 154 3 158 10 C168 28 178 40 195 40 C212 40 222 28 232 10 C236 3 242 0 250 0 H390"
+              fill="none"
+              stroke="rgba(255, 255, 255, 0.8)"
+              strokeWidth="1.5"
+            />
+            {/* Subtle outer top border for definition */}
+            <path
+              d="M0 0 H140 C148 0 154 3 158 10 C168 28 178 40 195 40 C212 40 222 28 232 10 C236 3 242 0 250 0 H390"
+              fill="none"
+              stroke="rgba(203, 213, 225, 0.4)"
+              strokeWidth="0.5"
+            />
+          </svg>
+        </div>
 
-          if (tab.isAccent) {
-            return (
-              <button
-                key={tab.id}
-                onClick={() => handleNavClick(tab.id)}
-                className="relative flex flex-col items-center justify-center w-[72px] h-full group -mt-6"
-              >
-                <div className="absolute top-0 flex items-center justify-center w-14 h-14 bg-[#2F4157] text-[#E2DED3] rounded-full shadow-lg shadow-[#2F4157]/30 border-4 border-[#FAFAFA] transition-transform active:scale-95">
-                  <Icon size={26} strokeWidth={1.5} />
-                </div>
-                <span className="mt-auto text-[10px] font-semibold text-[#2F4157] tracking-wide pb-1">{tab.label}</span>
-              </button>
-            );
-          }
+        {/* FAB (Floating Action Button) */}
+        <div className="absolute left-1/2 -top-6 -translate-x-1/2 flex items-center justify-center pointer-events-auto">
+          <button
+            onClick={() => handleNavClick("order")}
+            className="group relative flex items-center justify-center w-[60px] h-[60px] bg-[#2F4157] text-[#E2DED3] rounded-full shadow-lg shadow-[#2F4157]/40 transition-all duration-200 active:scale-95 active:opacity-90 overflow-hidden border border-[#3e5672]/50"
+            aria-label={t('booking')}
+          >
+            {/*
+              Sweep glare effect (Desktop/Hover)
+            */}
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/15 to-transparent group-hover:animate-[sweep_2s_ease-in-out_infinite] pointer-events-none" style={{ transform: 'translateX(-150%) skewX(-25deg)' }} />
 
-          return (
-            <button
-              key={tab.id}
-              onClick={() => handleNavClick(tab.id)}
-              className="flex flex-col items-center justify-center w-full h-full text-slate-500 active:text-[#2F4157] transition-colors"
-            >
-              <Icon size={24} className="mb-1.5" strokeWidth={1.5} />
-              <span className="text-[10px] font-medium tracking-wide">{tab.label}</span>
-            </button>
-          );
-        })}
+            <MapPin size={24} strokeWidth={1.25} className="relative z-10 transition-transform duration-300 group-active:scale-95" />
+          </button>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="absolute inset-0 flex justify-between px-2 pointer-events-none" style={{ pointerEvents: 'none' }}>
+          {/* Left Tabs */}
+          <div className="flex w-[40%] justify-around items-end pb-2 pointer-events-auto" style={{ pointerEvents: 'auto' }}>
+            {leftTabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleNavClick(tab.id)}
+                  className="flex flex-col items-center justify-center w-full h-[60px] text-slate-400 hover:text-slate-600 active:text-[#2F4157] transition-all duration-300 active:scale-95 group"
+                >
+                  <Icon size={24} strokeWidth={1.25} className="mb-1.5 transition-colors duration-300 group-active:text-[#2F4157]" />
+                  <span className="text-[10px] font-medium tracking-wide transition-colors duration-300 group-active:text-[#2F4157] group-active:font-semibold">{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right Tabs */}
+          <div className="flex w-[40%] justify-around items-end pb-2 pointer-events-auto" style={{ pointerEvents: 'auto' }}>
+             {rightTabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleNavClick(tab.id)}
+                  className="flex flex-col items-center justify-center w-full h-[60px] text-slate-400 hover:text-slate-600 active:text-[#2F4157] transition-all duration-300 active:scale-95 group"
+                >
+                  <Icon size={24} strokeWidth={1.25} className="mb-1.5 transition-colors duration-300 group-active:text-[#2F4157]" />
+                  <span className="text-[10px] font-medium tracking-wide transition-colors duration-300 group-active:text-[#2F4157] group-active:font-semibold">{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </motion.div>
   );

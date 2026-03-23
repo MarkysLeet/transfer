@@ -30,7 +30,7 @@ export const Loyalty = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.8 }}
             className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white border border-slate-100 mb-8 shadow-md"
           >
@@ -40,7 +40,7 @@ export const Loyalty = () => {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-slate-900 tracking-wider"
           >
@@ -52,7 +52,7 @@ export const Loyalty = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, amount: 0.2, margin: "-50px" }}
           variants={{
             hidden: { opacity: 0 },
             visible: {

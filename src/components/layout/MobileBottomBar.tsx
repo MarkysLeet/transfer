@@ -100,7 +100,7 @@ export const MobileBottomBar = () => {
           </svg>
         </div>
 
-        {/* FAB (Floating Action Button) with Text Below */}
+        {/* FAB (Floating Action Button) without Text Below */}
         <div className="absolute left-1/2 -top-6 -translate-x-1/2 flex flex-col items-center justify-center pointer-events-auto h-full w-[80px]">
           <div className="flex-1 flex items-end pb-[26px]">
             <button
@@ -113,10 +113,6 @@ export const MobileBottomBar = () => {
               <MapPin size={24} strokeWidth={1.25} className="relative z-10 transition-transform duration-300 group-active:scale-95" />
             </button>
           </div>
-          {/* Label below FAB, strictly aligned with other tabs */}
-          <span className="text-[10px] font-medium tracking-wide text-slate-500 absolute bottom-[9px]">
-            {t('booking')}
-          </span>
         </div>
 
         {/* Navigation Tabs */}

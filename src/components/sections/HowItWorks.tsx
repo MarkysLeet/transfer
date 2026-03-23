@@ -31,7 +31,7 @@ export const HowItWorks = () => {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6 }}
             className="text-3xl md:text-5xl font-bold mb-6 text-slate-900 tracking-wider"
           >
@@ -43,7 +43,7 @@ export const HowItWorks = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, amount: 0.2, margin: "-50px" }}
           variants={{
             hidden: { opacity: 0 },
             visible: {
@@ -60,7 +60,7 @@ export const HowItWorks = () => {
             <motion.div
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
               className="h-full bg-gradient-to-r from-[#2F4157]/20 via-[#2F4157] to-[#2F4157]/20 origin-left"
             />

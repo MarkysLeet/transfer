@@ -11,6 +11,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomBar } from "@/components/layout/MobileBottomBar";
 import { FloatingNav } from "@/components/layout/FloatingNav";
+import { BookingModal } from "@/components/ui/booking-widget/BookingModal";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -65,6 +66,7 @@ export default async function RootLayout({
             </main>
             <Footer />
             <MobileBottomBar />
+            <BookingModal />
           </SmoothScroll>
         </NextIntlClientProvider>
       </body>

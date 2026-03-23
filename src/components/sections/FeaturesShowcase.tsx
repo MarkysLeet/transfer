@@ -153,7 +153,7 @@ export const FeaturesShowcase = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const { childSeat, minibar, toggleChildSeat, toggleMinibar } = useBookingStore();
+  const { childSeat, minibar, setChildSeat, toggleMinibar } = useBookingStore();
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [lightboxEmblaRef, lightboxEmblaApi] = useEmblaCarousel({ loop: true, startIndex: lightboxIndex });
@@ -207,7 +207,7 @@ export const FeaturesShowcase = () => {
 
   // Split features
   const exteriorFeatures = [
-    { id: "childSeat", icon: Baby, title: t("childSeat"), isUpsell: true, active: childSeat, toggle: toggleChildSeat },
+    { id: "childSeat", icon: Baby, title: t("childSeat"), isUpsell: true, active: childSeat, toggle: () => setChildSeat(childSeat > 0 ? 0 : 1) },
     { id: "noHiddenFees", icon: ShieldCheck, title: t("noHiddenFees"), isUpsell: false },
     { id: "wifi", icon: Wifi, title: t("wifi"), isUpsell: false },
   ];

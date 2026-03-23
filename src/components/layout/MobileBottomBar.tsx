@@ -26,9 +26,27 @@ export const MobileBottomBar = () => {
     { id: 'fleet', icon: CarFront, label: t('fleet') },
   ];
 
+  const WhatsAppIcon = ({ size = 24, strokeWidth = 1.25, className = "" }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+      <path d="M16.5 16c-1.5 1-3.5.5-5.5-.5-2-1-3.5-3-3.5-5.5.5-2 2-3 3-2l1 2.5c.5 1.5-1 2-1 2s1.5 3.5 3.5 4.5c0 0 1.5-1.5 2.5-1l2 1.5c1 1-.5 2-1 2z" />
+    </svg>
+  );
+
   const rightTabs = [
     { id: 'reviews', icon: Star, label: t('reviews') },
-    { id: 'concierge', icon: Phone, label: t('contact') },
+    { id: 'concierge', icon: WhatsAppIcon, label: "WhatsApp" },
   ];
 
   return (

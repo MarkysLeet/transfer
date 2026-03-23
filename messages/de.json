@@ -82,8 +82,10 @@
     "waDetails": "Optionen: {options}",
     "myLocation": "Mein Standort",
     "locateError": "Standort konnte nicht ermittelt werden",
-    "vwClass": "Volkswagen Transporter (1-5 Pers.)",
-    "vitoClass": "MB Vito (1-8 Pers.)",
+    "secondCarUpsell": "Unsere Autos bieten bequem Platz für bis zu 7 Gäste. Einen zweiten Mercedes-Benz Vito zur Bestellung hinzufügen?",
+    "secondCarRequiredWa": "Achtung: 2 Autos erforderlich (Gruppe von 8+ Personen)",
+    "vwClass": "Volkswagen Transporter",
+    "vitoClass": "Mercedes-Benz Vito",
     "vwClassShort": "Volkswagen Transporter",
     "vitoClassShort": "Mercedes-Benz Vito",
     "estimatedPrice": "Geschätzter Preis: €{price}",
@@ -109,7 +111,6 @@
     "paymentMethod": "Zahlungsmethode wählen",
     "payCash": "Bargeld",
     "payCard": "Karte",
-    "payCrypto": "Krypto",
     "confirmBooking": "Buchung bestätigen"
   },
   "Cities": {

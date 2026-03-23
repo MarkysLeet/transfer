@@ -18,7 +18,8 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
     date, setDate, time, setTime,
     returnDate, setReturnDate, returnTime, setReturnTime,
     passengers, updatePassengers,
-    setCoords
+    setCoords,
+    requiresSecondCar, setRequiresSecondCar
   } = useBookingStore();
 
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
@@ -41,6 +42,16 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (!date) {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      setDate(`${year}-${month}-${day}`);
+    }
+  }, [date, setDate]);
 
   const handleGeolocation = () => {
     if (!navigator.geolocation) {
@@ -116,21 +127,21 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
       {/* Date & Time */}
       <div className="flex gap-3">
         <div className="flex-1 relative">
-          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full h-14 pl-10 pr-4 bg-white/60 border border-slate-200/60 rounded-xl outline-none focus:ring-2 focus:ring-accent/20 transition-all text-sm text-slate-900"
+            className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
           />
         </div>
         <div className="w-1/3 relative">
-          <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+          <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
           <input
             type="time"
             value={time}
             onChange={(e) => setTime(e.target.value)}
-            className="w-full h-14 pl-10 pr-4 bg-white/60 border border-slate-200/60 rounded-xl outline-none focus:ring-2 focus:ring-accent/20 transition-all text-sm text-slate-900"
+            className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
           />
         </div>
       </div>
@@ -146,21 +157,21 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
           >
             <div className="flex gap-3 pt-1">
               <div className="flex-1 relative">
-                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
                 <input
                   type="date"
                   value={returnDate}
                   onChange={(e) => setReturnDate(e.target.value)}
-                  className="w-full h-14 pl-10 pr-4 bg-white/60 border border-slate-200/60 rounded-xl outline-none focus:ring-2 focus:ring-accent/20 transition-all text-sm text-slate-900"
+                  className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
                 />
               </div>
               <div className="w-1/3 relative">
-                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
                 <input
                   type="time"
                   value={returnTime}
                   onChange={(e) => setReturnTime(e.target.value)}
-                  className="w-full h-14 pl-10 pr-4 bg-white/60 border border-slate-200/60 rounded-xl outline-none focus:ring-2 focus:ring-accent/20 transition-all text-sm text-slate-900"
+                  className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
                 />
               </div>
             </div>
@@ -213,6 +224,36 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Second Car Upsell Logic */}
+      <AnimatePresence>
+        {totalPassengers >= 8 && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="bg-[#2F4157]/5 border border-[#2F4157]/10 rounded-xl p-4 flex items-center justify-between gap-4 mt-1">
+              <span className="text-sm text-[#2F4157] font-medium leading-snug">
+                {t("secondCarUpsell")}
+              </span>
+              <button
+                onClick={() => setRequiresSecondCar(!requiresSecondCar)}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#2F4157]/20 focus:ring-offset-2 ${requiresSecondCar ? 'bg-[#2F4157]' : 'bg-slate-300'}`}
+                role="switch"
+                aria-checked={requiresSecondCar}
+              >
+                <span className="sr-only">Toggle second car</span>
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${requiresSecondCar ? 'translate-x-6' : 'translate-x-1'}`}
+                />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Next Button */}
       <Button

@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, User, Phone, CheckCircle2, Wallet, CreditCard, Bitcoin } from "lucide-react";
+import { ChevronLeft, User, Phone, CheckCircle2, Wallet, CreditCard } from "lucide-react";
 import { useBookingStore } from "@/store/useBookingStore";
 import { Button } from "../Button";
 import { PaymentMethodType } from "@/store/useBookingStore";
@@ -54,7 +54,7 @@ export const Step3Contacts = ({ onBack, onConfirm }: { onBack: () => void; onCon
       {/* Payment Method */}
       <div className="flex flex-col gap-3 mt-4">
         <h3 className="text-sm font-medium text-slate-900">{t("paymentMethod")}</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <PaymentCard
             type="cash"
             icon={<Wallet className="w-5 h-5" />}
@@ -68,13 +68,6 @@ export const Step3Contacts = ({ onBack, onConfirm }: { onBack: () => void; onCon
             label={t("payCard")}
             selected={paymentMethod === "card"}
             onClick={() => setPaymentMethod("card")}
-          />
-          <PaymentCard
-            type="crypto"
-            icon={<Bitcoin className="w-5 h-5" />}
-            label={t("payCrypto")}
-            selected={paymentMethod === "crypto"}
-            onClick={() => setPaymentMethod("crypto")}
           />
         </div>
       </div>

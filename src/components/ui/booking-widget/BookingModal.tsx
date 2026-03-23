@@ -136,7 +136,7 @@ export const BookingModal = () => {
     const {
       roundTrip, from, to, date, time, returnDate, returnTime,
       passengers, selectedClass, childSeat, minibar, englishDriver,
-      name, phone, paymentMethod, estimatedPrice
+      name, phone, paymentMethod, estimatedPrice, requiresSecondCar
     } = store;
 
     let message = `💎 *New Booking Request*\n\n`;
@@ -156,6 +156,11 @@ export const BookingModal = () => {
     // Car
     const carClassName = selectedClass === "vw" ? "Volkswagen Transporter" : "Mercedes-Benz Vito";
     message += `\n🚘 *Car Class:* ${carClassName}\n`;
+
+    // Upsell Second Car
+    if (requiresSecondCar) {
+      message += `\n⚠️ *${t("secondCarRequiredWa")}*\n`;
+    }
 
     // Options
     const options = [];

@@ -85,17 +85,17 @@ export const BookingModal = () => {
             }
           }}
           className="relative w-full max-w-[450px] bg-[#F4EFEB] h-full shadow-2xl overflow-y-auto overflow-x-hidden
-                     max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-auto max-lg:h-[90vh] max-lg:max-w-none
-                     max-lg:rounded-t-3xl"
+                     max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-auto max-lg:h-[90dvh] max-lg:max-w-none
+                     max-lg:rounded-t-3xl flex flex-col"
         >
            {/* Mobile Drag Handle */}
-          <div className="lg:hidden w-full flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing">
+          <div className="lg:hidden w-full flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing shrink-0 sticky top-0 bg-[#F4EFEB] z-10">
             <div className="w-12 h-1.5 bg-slate-300 rounded-full" />
           </div>
 
-          <div className="p-6 md:p-8 flex flex-col min-h-full pb-20 max-lg:pb-10">
+          <div className="p-6 md:p-8 flex flex-col flex-1 pb-20 max-lg:pb-[env(safe-area-inset-bottom,24px)] overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-8 shrink-0">
               <h2 className="text-2xl font-semibold text-slate-900">
                 {step === 1 && t("step1Title")}
                 {step === 2 && t("step2Title")}
@@ -110,7 +110,7 @@ export const BookingModal = () => {
             </div>
 
             {/* Content Area */}
-            <div className="flex-1">
+            <div className="flex-1 overflow-y-auto">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={step}

@@ -94,19 +94,19 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
       {isGroup ? (
         <div className="flex flex-col gap-4">
           <div className="text-sm font-medium text-slate-900 bg-slate-50 p-3 rounded-lg border border-slate-100">
-            Group Fleet Selection
+            {t("groupFleetSelection")}
           </div>
           <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
             <div>
               <div className="font-medium text-slate-900">{t("vitoClass")}</div>
-              <div className="text-xs text-slate-500">Capacity: 7</div>
+              <div className="text-xs text-slate-500">{t("capacity", { count: 7 })}</div>
             </div>
             <Stepper value={fleetOrder.vito} onChange={(v) => setFleetOrder(v, fleetOrder.transporter)} min={0} />
           </div>
           <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
             <div>
               <div className="font-medium text-slate-900">{t("vwClass")}</div>
-              <div className="text-xs text-slate-500">Capacity: 7</div>
+              <div className="text-xs text-slate-500">{t("capacity", { count: 7 })}</div>
             </div>
             <Stepper value={fleetOrder.transporter} onChange={(v) => setFleetOrder(fleetOrder.vito, v)} min={0} />
           </div>
@@ -119,7 +119,7 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
                 className="overflow-hidden"
               >
                 <div className="text-sm text-red-500 bg-red-50 p-3 rounded-lg mt-2">
-                  Group: {totalPassengers} pax. Selected capacity: {totalCapacity} pax. Please add more vehicles.
+                  {t("groupCapacityWarning", { passengers: totalPassengers, capacity: totalCapacity })}
                 </div>
               </motion.div>
             )}
@@ -131,11 +131,11 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
         </div>
       )}
 
-      {/* Options Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      {/* Options List */}
+      <div className="flex flex-col gap-3 mt-4 w-full">
         {/* Child Seat Toggle & Stepper */}
-        <div className="flex flex-col p-4 bg-slate-50 border border-slate-100 rounded-xl gap-3">
-          <div className="flex items-center justify-between">
+        <div className="flex flex-col p-4 bg-slate-50 border border-slate-100 rounded-xl gap-3 w-full">
+          <div className="flex items-center justify-between w-full">
             <div>
               <div className="text-sm font-medium text-slate-900">{t("childSeat")}</div>
               <div className="text-xs text-slate-500">{t("free")}</div>
@@ -157,7 +157,7 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden flex items-center justify-between border-t border-slate-200/50 pt-3"
+                className="overflow-hidden flex items-center justify-between border-t border-slate-200/50 pt-3 w-full"
               >
                 <div className="text-sm text-slate-600 pl-1">{t("passengersCount")}</div>
                 {/* Max 3 seats based on typical vehicle limits */}
@@ -168,7 +168,7 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
         </div>
 
         {/* Minibar Toggle */}
-        <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl">
+        <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl w-full">
           <div>
             <div className="text-sm font-medium text-slate-900">{t("minibar")}</div>
             <div className="text-xs text-slate-500">{t("extraCharge")}</div>
@@ -177,7 +177,7 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
         </div>
 
         {/* English Driver Toggle */}
-        <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl md:col-span-2">
+        <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl w-full">
           <div>
             <div className="text-sm font-medium text-slate-900">{t("englishDriver")}</div>
             <div className="text-xs text-slate-500">{t("free")}</div>

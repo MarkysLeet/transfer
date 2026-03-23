@@ -101,25 +101,26 @@ export const MobileBottomBar = () => {
         </div>
 
         {/* FAB (Floating Action Button) with Text Below */}
-        <div className="absolute left-1/2 -top-8 -translate-x-1/2 flex flex-col items-center justify-center pointer-events-auto">
-          <button
-            onClick={() => handleNavClick("order")}
-            className="group relative flex items-center justify-center w-[60px] h-[60px] bg-[#2F4157] text-[#E2DED3] rounded-full shadow-lg shadow-[#2F4157]/40 transition-all duration-200 active:scale-95 active:opacity-90 overflow-hidden border border-[#3e5672]/50 mb-1"
-            aria-label={t('booking')}
-          >
-            {/* Sweep glare effect */}
-            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/15 to-transparent group-hover:animate-[sweep_2s_ease-in-out_infinite] pointer-events-none" style={{ transform: 'translateX(-150%) skewX(-25deg)' }} />
-            <MapPin size={24} strokeWidth={1.25} className="relative z-10 transition-transform duration-300 group-active:scale-95" />
-          </button>
-          {/* Label below FAB, fine-tuned position, no hover effects needed as it is just label */}
-          <span className="text-[10px] font-medium tracking-wide text-slate-500 mt-1">
+        <div className="absolute left-1/2 -top-6 -translate-x-1/2 flex flex-col items-center justify-center pointer-events-auto h-full w-[80px]">
+          <div className="flex-1 flex items-end pb-[26px]">
+            <button
+              onClick={() => handleNavClick("order")}
+              className="group relative flex items-center justify-center w-[60px] h-[60px] bg-[#2F4157] text-[#E2DED3] rounded-full shadow-lg shadow-[#2F4157]/40 transition-all duration-200 active:scale-95 active:opacity-90 overflow-hidden border border-[#3e5672]/50"
+              aria-label={t('booking')}
+            >
+              {/* Sweep glare effect */}
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/15 to-transparent group-hover:animate-[sweep_2s_ease-in-out_infinite] pointer-events-none" style={{ transform: 'translateX(-150%) skewX(-25deg)' }} />
+              <MapPin size={24} strokeWidth={1.25} className="relative z-10 transition-transform duration-300 group-active:scale-95" />
+            </button>
+          </div>
+          {/* Label below FAB, strictly aligned with other tabs */}
+          <span className="text-[10px] font-medium tracking-wide text-slate-500 absolute bottom-[9px]">
             {t('booking')}
           </span>
         </div>
 
         {/* Navigation Tabs */}
-        {/* Added top padding to tabs to adjust for increased bar height */}
-        <div className="absolute inset-0 pt-3 flex justify-between px-2 pointer-events-none" style={{ pointerEvents: 'none' }}>
+        <div className="absolute inset-0 flex justify-between px-2 pointer-events-none" style={{ pointerEvents: 'none' }}>
           {/* Left Tabs */}
           <div className="flex w-[40%] justify-around items-end pb-2 pointer-events-auto" style={{ pointerEvents: 'auto' }}>
             {leftTabs.map((tab) => {
@@ -128,7 +129,7 @@ export const MobileBottomBar = () => {
                 <button
                   key={tab.id}
                   onClick={() => handleNavClick(tab.id)}
-                  className="flex flex-col items-center justify-center w-full h-[60px] text-slate-400 hover:text-slate-600 active:text-[#2F4157] transition-all duration-300 active:scale-95 group"
+                  className="flex flex-col items-center justify-end w-full h-full pb-0.5 text-slate-400 hover:text-slate-600 active:text-[#2F4157] transition-all duration-300 active:scale-95 group"
                 >
                   <Icon size={24} strokeWidth={1.25} className="mb-1.5 transition-colors duration-300 group-active:text-[#2F4157]" />
                   <span className="text-[10px] font-medium tracking-wide transition-colors duration-300 group-active:text-[#2F4157] group-active:font-semibold">{tab.label}</span>
@@ -145,7 +146,7 @@ export const MobileBottomBar = () => {
                 <button
                   key={tab.id}
                   onClick={() => handleNavClick(tab.id)}
-                  className="flex flex-col items-center justify-center w-full h-[60px] text-slate-400 hover:text-slate-600 active:text-[#2F4157] transition-all duration-300 active:scale-95 group"
+                  className="flex flex-col items-center justify-end w-full h-full pb-0.5 text-slate-400 hover:text-slate-600 active:text-[#2F4157] transition-all duration-300 active:scale-95 group"
                 >
                   <Icon size={24} strokeWidth={1.25} className="mb-1.5 transition-colors duration-300 group-active:text-[#2F4157]" />
                   <span className="text-[10px] font-medium tracking-wide transition-colors duration-300 group-active:text-[#2F4157] group-active:font-semibold">{tab.label}</span>

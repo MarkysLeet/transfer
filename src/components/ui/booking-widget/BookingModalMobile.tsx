@@ -25,7 +25,7 @@ export const BookingModalMobile = () => {
             <div className="w-12 h-1.5 bg-slate-300 rounded-full" />
           </div>
 
-          <div className="p-6 flex flex-col flex-1 overflow-y-auto pb-20 max-lg:pb-[env(safe-area-inset-bottom,24px)]">
+          <div className="flex flex-col flex-1 overflow-hidden">
             <BookingModalContent />
           </div>
         </Drawer.Content>

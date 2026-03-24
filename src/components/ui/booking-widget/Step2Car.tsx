@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 import { useBookingStore } from "@/store/useBookingStore";
+import { useCurrencyStore } from "@/store/useCurrencyStore";
 import { CarClassSelector } from "../CarClassSelector";
 import { Button } from "../Button";
 import { useLoadScript } from "@react-google-maps/api";
@@ -10,6 +11,7 @@ import { useLoadScript } from "@react-google-maps/api";
 const LIBRARIES: ("places" | "geometry")[] = ["places", "geometry"];
 
 export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () => void }) => {
+  const { formatPrice } = useCurrencyStore();
   const t = useTranslations("BookingWidget");
   const {
     selectedClass, setSelectedClass,
@@ -203,7 +205,7 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
                   <span className="text-sm font-medium text-slate-700">{t("priceOnRequest")}</span>
                 ) : estimatedPrice ? (
                   <span className="text-[15px] font-semibold text-[#2F4157]">
-                    {t("estimatedPrice", { price: estimatedPrice })}
+                    {t("estimatedPrice", { price: formatPrice(estimatedPrice) })}
                   </span>
                 ) : null}
               </div>

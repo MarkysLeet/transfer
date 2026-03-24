@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "@/i18n/routing";
 import { useLocale } from "next-intl";
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
+import { useCurrencyStore, Currency } from "@/store/useCurrencyStore";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Simple flag components instead of images to keep it light
@@ -63,6 +64,8 @@ export function FloatingLanguagePill() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { currency, setCurrency, symbols } = useCurrencyStore();
+  const currencies: Currency[] = ['EUR', 'USD', 'TRY'];
 
   const locales = ['ru', 'en', 'tr', 'de'];
 
@@ -93,7 +96,10 @@ export function FloatingLanguagePill() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1.5 px-3 py-2 bg-white/70 backdrop-blur-md border border-white/40 shadow-sm rounded-full transition-all active:scale-95"
       >
-        {flags[locale] || <FlagEN />}
+        <div className="flex items-center gap-1">
+          {flags[locale] || <FlagEN />}
+          <span className="text-xs font-medium text-slate-700 ml-1">{symbols[currency]}</span>
+        </div>
         <ChevronDown size={14} className={`text-slate-600 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
@@ -104,19 +110,47 @@ export function FloatingLanguagePill() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full right-0 mt-2 p-1.5 bg-white/80 backdrop-blur-lg border border-white/50 shadow-lg rounded-2xl flex flex-col gap-1 min-w-[56px]"
+            className="absolute top-full right-0 mt-2 p-3 bg-white/90 backdrop-blur-xl border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-3xl flex flex-col gap-4 min-w-[140px] z-[110]"
           >
-            {locales.map((l) => (
-              <button
-                key={l}
-                onClick={() => switchLocale(l)}
-                className={`flex justify-center items-center p-2 rounded-xl transition-colors ${
-                  l === locale ? "bg-slate-100/80 shadow-inner" : "hover:bg-slate-50 active:bg-slate-200"
-                }`}
-              >
-                {flags[l]}
-              </button>
-            ))}
+            <div>
+              <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2 px-1">Language</div>
+              <div className="grid grid-cols-2 gap-1">
+                {locales.map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => switchLocale(l)}
+                    className={`flex justify-center items-center p-2 rounded-xl transition-colors ${
+                      l === locale ? "bg-slate-100 shadow-inner" : "hover:bg-slate-50 active:bg-slate-200"
+                    }`}
+                  >
+                    {flags[l]}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="h-px bg-slate-100 w-full" />
+
+            <div>
+              <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2 px-1">Currency</div>
+              <div className="flex flex-col gap-1">
+                {currencies.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => {
+                      setCurrency(c);
+                      setIsOpen(false);
+                    }}
+                    className={`flex items-center justify-between px-3 py-2 rounded-xl transition-colors text-xs font-medium ${
+                      c === currency ? "bg-slate-100 text-slate-900 shadow-inner" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 active:bg-slate-200"
+                    }`}
+                  >
+                    <span>{c}</span>
+                    <span className="text-slate-400">{symbols[c]}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -13,6 +13,7 @@ import { MobileBottomBar } from "@/components/layout/MobileBottomBar";
 import { FloatingNav } from "@/components/layout/FloatingNav";
 import { FloatingLanguagePill } from "@/components/layout/FloatingLanguagePill";
 import { BookingModal } from "@/components/ui/booking-widget/BookingModal";
+import { CurrencyProvider } from "@/components/providers/CurrencyProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -59,17 +60,19 @@ export default async function RootLayout({
         />
 
         <NextIntlClientProvider messages={messages}>
-          <SmoothScroll>
-            <Header />
-            <FloatingNav />
-            <FloatingLanguagePill />
-            <main className="min-h-screen relative z-0 max-w-[100vw]">
-              {children}
-            </main>
-            <Footer />
-            <MobileBottomBar />
-            <BookingModal />
-          </SmoothScroll>
+          <CurrencyProvider>
+            <SmoothScroll>
+              <Header />
+              <FloatingNav />
+              <FloatingLanguagePill />
+              <main className="min-h-screen relative z-0 max-w-[100vw]">
+                {children}
+              </main>
+              <Footer />
+              <MobileBottomBar />
+              <BookingModal />
+            </SmoothScroll>
+          </CurrencyProvider>
         </NextIntlClientProvider>
       </body>
     </html>

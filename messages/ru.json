@@ -91,7 +91,7 @@
     "groupCapacityWarning": "Группа: {passengers} чел. Выбранная вместимость: {capacity} чел. Добавьте автомобили.",
     "vwClassShort": "Volkswagen Transporter",
     "vitoClassShort": "Mercedes-Benz Vito",
-    "estimatedPrice": "Ориентировочная стоимость: €{price}",
+    "estimatedPrice": "Ориентировочная стоимость: {price}",
     "priceOnRequest": "Цена по запросу",
     "searching": "Поиск...",
     "noResults": "Ничего не найдено",

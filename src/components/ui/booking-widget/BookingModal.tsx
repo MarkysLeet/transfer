@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { X } from "lucide-react";
 import { useBookingStore } from "@/store/useBookingStore";
+import { useCurrencyStore } from "@/store/useCurrencyStore";
 import { Step1Route } from "./Step1Route";
 import { Step2Car } from "./Step2Car";
 import { Step3Contacts } from "./Step3Contacts";
@@ -13,6 +14,7 @@ import { useLenis } from "lenis/react";
 export const BookingModal = () => {
   const t = useTranslations("BookingWidget");
   const { isOpen, setIsOpen, step, setStep } = useBookingStore();
+  const { formatPrice } = useCurrencyStore();
   const lenis = useLenis();
 
   const [isMobile, setIsMobile] = useState(false);
@@ -87,8 +89,7 @@ export const BookingModal = () => {
               setIsOpen(false);
             }
           }}
-          style={isMobile ? { touchAction: "auto" } : undefined}
-          className="relative w-full max-w-[450px] bg-[#F4EFEB] h-full shadow-2xl overflow-hidden overflow-x-hidden
+          className="relative w-full max-w-[450px] bg-[#F4EFEB] h-full shadow-2xl overflow-x-hidden
                      max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-auto max-lg:h-[90dvh] max-lg:max-w-none
                      max-lg:rounded-t-3xl flex flex-col"
         >
@@ -196,7 +197,8 @@ export const BookingModal = () => {
     message += `💳 *Payment Method:* ${paymentMethod.toUpperCase()}\n`;
 
     if (estimatedPrice) {
-       message += `\n💰 *Estimated Total:* €${estimatedPrice}\n`;
+       const convertedPrice = formatPrice(estimatedPrice);
+       message += `\n💰 *Estimated Total:* ${convertedPrice}\n`;
     }
 
     const whatsappUrl = `https://wa.me/905418462550?text=${encodeURIComponent(message)}`;

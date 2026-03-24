@@ -188,14 +188,6 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
         </div>
       </div>
 
-      {/* Next Button & Price */}
-      <div className="mt-8">
-        <div className="lg:hidden mt-2 w-full">
-          <Button onClick={onNext} disabled={isGroup && !isGroupValid} className="w-full h-14 rounded-xl" variant="primary">
-            {t("next")}
-          </Button>
-        </div>
-      </div>
     </div>
   );
 };

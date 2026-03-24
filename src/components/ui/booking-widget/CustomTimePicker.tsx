@@ -1,9 +1,12 @@
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
-export const CustomTimePicker = ({ value, onChange, className }: { value: string; onChange: (v: string) => void; className?: string }) => {
+export const CustomTimePicker = ({ value, onChange, icon }: { value: string; onChange: (v: string) => void; icon?: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [dropdownStyle, setDropdownStyle] = useState({});
 
   // Generate 15-minute intervals
   const generateTimes = () => {
@@ -21,49 +24,108 @@ export const CustomTimePicker = ({ value, onChange, className }: { value: string
   const times = generateTimes();
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        triggerRef.current &&
+        !triggerRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, []);
 
+  useEffect(() => {
+    if (isOpen && triggerRef.current) {
+      const updatePosition = () => {
+        const rect = triggerRef.current?.getBoundingClientRect();
+        if (rect) {
+          // Adjust position and width to match the trigger exactly
+          // We add window.scrollY if needed, though on mobile inside a fixed modal this works.
+          setDropdownStyle({
+            top: `${rect.bottom + 8}px`,
+            left: `${rect.left}px`,
+            width: `${rect.width}px`,
+          });
+        }
+      };
+
+      updatePosition();
+      window.addEventListener("scroll", updatePosition, true);
+      window.addEventListener("resize", updatePosition);
+
+      return () => {
+        window.removeEventListener("scroll", updatePosition, true);
+        window.removeEventListener("resize", updatePosition);
+      };
+    }
+  }, [isOpen]);
+
+  // Prevent scroll propagation from portal to parent modal, preserving existing scroll locks
+  useEffect(() => {
+    let originalOverflow = "";
+    if (isOpen) {
+      originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      if (isOpen) {
+        document.body.style.overflow = originalOverflow;
+      }
+    };
+  }, [isOpen]);
+
   return (
-    <div className={`relative ${className || ""}`} ref={dropdownRef}>
+    <div className="relative w-full h-full">
       <button
         type="button"
+        ref={triggerRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full h-full text-left outline-none flex items-center justify-between transition-all"
+        className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] relative"
       >
+        {icon && (
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+            {icon}
+          </span>
+        )}
         <span className={value ? "text-white" : "text-white/50"}>{value || "00:00"}</span>
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
+      {isOpen && typeof document !== "undefined" && createPortal(
+        <AnimatePresence>
           <motion.div
-            initial={{ opacity: 0, y: 5 }}
+            ref={dropdownRef}
+            initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 5 }}
-            transition={{ duration: 0.15 }}
-            className="absolute left-0 right-0 top-full mt-2 bg-white rounded-xl shadow-lg border border-slate-100 max-h-48 overflow-y-auto z-[60] py-2 scrollbar-hide"
+            exit={{ opacity: 0, y: -5 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            style={dropdownStyle}
+            className="fixed bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-slate-100 max-h-56 overflow-y-auto z-[9999] py-2 scrollbar-hide overscroll-contain"
           >
             {times.map((time) => (
               <button
                 key={time}
+                type="button"
                 onClick={() => {
                   onChange(time);
                   setIsOpen(false);
                 }}
-                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-50 transition-colors ${value === time ? "bg-slate-50 text-[#2F4157] font-medium" : "text-slate-700"}`}
+                className={`w-full min-h-[44px] flex items-center justify-center px-4 py-2 text-base hover:bg-slate-50 transition-colors ${value === time ? "bg-[#F4EFEB] text-[#2F4157] font-semibold" : "text-slate-700"}`}
               >
                 {time}
               </button>
             ))}
           </motion.div>
-        )}
-      </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 };

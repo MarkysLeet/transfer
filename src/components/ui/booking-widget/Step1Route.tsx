@@ -125,8 +125,8 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
       </div>
 
       {/* Date & Time */}
-      <div className="flex gap-3">
-        <div className="flex-1 relative">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-[1.5fr_1fr]">
+        <div className="relative">
           <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
           <input
             type="date"
@@ -135,11 +135,12 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
             className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
           />
         </div>
-        <div className="w-1/3 relative z-[45]">
-          <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
-          <div className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus-within:ring-2 focus-within:ring-accent/30 transition-all text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-             <CustomTimePicker value={time} onChange={setTime} className="w-full h-full text-white" />
-          </div>
+        <div className="relative z-[45]">
+          <CustomTimePicker
+             value={time}
+             onChange={setTime}
+             icon={<Clock className="w-5 h-5 text-white/70" />}
+          />
         </div>
       </div>
 
@@ -152,8 +153,8 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
             exit={{ height: 0, opacity: 0 }}
             className="overflow-visible"
           >
-            <div className="flex gap-3 pt-1">
-              <div className="flex-1 relative">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-[1.5fr_1fr] pt-1">
+              <div className="relative">
                 <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
                 <input
                   type="date"
@@ -162,11 +163,12 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
                   className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
                 />
               </div>
-              <div className="w-1/3 relative z-40">
-                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
-                <div className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus-within:ring-2 focus-within:ring-accent/30 transition-all text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-                   <CustomTimePicker value={returnTime} onChange={setReturnTime} className="w-full h-full text-white" />
-                </div>
+              <div className="relative z-40">
+                <CustomTimePicker
+                   value={returnTime}
+                   onChange={setReturnTime}
+                   icon={<Clock className="w-5 h-5 text-white/70" />}
+                />
               </div>
             </div>
           </motion.div>

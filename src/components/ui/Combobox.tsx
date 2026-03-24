@@ -105,10 +105,19 @@ export const Combobox = ({
   }, []);
 
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
     const timer = setTimeout(() => setMounted(true), 0);
-    return () => clearTimeout(timer);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timer);
+    };
   }, []);
 
   const handleSelect = (description: string, placeId: string) => {
@@ -190,62 +199,115 @@ export const Combobox = ({
         </button>
       )}
 
-      {mounted && createPortal(
-        <AnimatePresence>
-          {isOpen && (autocompleteValue.trim().length > 0) && (
-            <motion.div
-              id="combobox-dropdown-portal"
-              data-lenis-prevent="true"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-              style={{
-                position: 'absolute',
-                top: `${dropdownPosition.top + 8}px`,
-                left: `${dropdownPosition.left}px`,
-                width: `${dropdownPosition.width}px`,
-                zIndex: 9999,
-              }}
-            >
-              <div className="relative bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto hide-scrollbar py-2">
-                {status === "OK" ? (
-                  data.map(({ place_id, description, structured_formatting: { main_text, secondary_text } }) => (
-                    <button
-                      key={place_id}
-                      onPointerDown={(e) => {
-                        e.preventDefault();
-                        handleSelect(description, place_id);
-                      }}
-                      className="w-full text-left px-4 py-2 hover:bg-slate-50 transition-colors flex items-start gap-3"
-                    >
-                      <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-slate-900">{main_text}</span>
-                        <span className="text-xs text-slate-500">{secondary_text}</span>
-                      </div>
-                    </button>
-                  ))
-                ) : (
-                  <div className="px-4 py-3 text-sm text-slate-500 flex items-center gap-2">
-                    {status === "ZERO_RESULTS" ? (
-                      <>
+
+      {mounted && (
+        isMobile ? (
+          <AnimatePresence>
+            {isOpen && (autocompleteValue.trim().length > 0) && (
+              <motion.div
+                data-lenis-prevent="true"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="absolute left-0 right-0 top-[calc(100%+8px)] z-[9999]"
+              >
+                <div className="relative bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto hide-scrollbar py-2">
+                  {status === "OK" ? (
+                    data.map(({ place_id, description, structured_formatting: { main_text, secondary_text } }) => (
+                      <button
+                        key={place_id}
+                        onPointerDown={(e) => {
+                          e.preventDefault();
+                          handleSelect(description, place_id);
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-slate-50 transition-colors flex items-start gap-3"
+                      >
                         <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />
-                        <span>{t("noResults", { defaultMessage: "No results found" })}</span>
-                      </>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium text-slate-900">{main_text}</span>
+                          <span className="text-xs text-slate-500">{secondary_text}</span>
+                        </div>
+                      </button>
+                    ))
+                  ) : (
+                    <div className="px-4 py-3 text-sm text-slate-500 flex items-center gap-2">
+                      {status === "ZERO_RESULTS" ? (
+                        <>
+                          <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />
+                          <span>{t("noResults", { defaultMessage: "No results found" })}</span>
+                        </>
+                      ) : (
+                        <>
+                          <div className="w-4 h-4 rounded-full border-2 border-slate-300 border-t-[#2F4157] animate-spin" />
+                          <span>{t("searching", { defaultMessage: "Searching..." })}</span>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        ) : (
+          createPortal(
+            <AnimatePresence>
+              {isOpen && (autocompleteValue.trim().length > 0) && (
+                <motion.div
+                  id="combobox-dropdown-portal"
+                  data-lenis-prevent="true"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    position: 'absolute',
+                    top: `${dropdownPosition.top + 8}px`,
+                    left: `${dropdownPosition.left}px`,
+                    width: `${dropdownPosition.width}px`,
+                    zIndex: 9999,
+                  }}
+                >
+                  <div className="relative bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto hide-scrollbar py-2">
+                    {status === "OK" ? (
+                      data.map(({ place_id, description, structured_formatting: { main_text, secondary_text } }) => (
+                        <button
+                          key={place_id}
+                          onPointerDown={(e) => {
+                            e.preventDefault();
+                            handleSelect(description, place_id);
+                          }}
+                          className="w-full text-left px-4 py-2 hover:bg-slate-50 transition-colors flex items-start gap-3"
+                        >
+                          <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium text-slate-900">{main_text}</span>
+                            <span className="text-xs text-slate-500">{secondary_text}</span>
+                          </div>
+                        </button>
+                      ))
                     ) : (
-                      <>
-                        <div className="w-4 h-4 rounded-full border-2 border-slate-300 border-t-[#2F4157] animate-spin" />
-                        <span>{t("searching", { defaultMessage: "Searching..." })}</span>
-                      </>
+                      <div className="px-4 py-3 text-sm text-slate-500 flex items-center gap-2">
+                        {status === "ZERO_RESULTS" ? (
+                          <>
+                            <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />
+                            <span>{t("noResults", { defaultMessage: "No results found" })}</span>
+                          </>
+                        ) : (
+                          <>
+                            <div className="w-4 h-4 rounded-full border-2 border-slate-300 border-t-[#2F4157] animate-spin" />
+                            <span>{t("searching", { defaultMessage: "Searching..." })}</span>
+                          </>
+                        )}
+                      </div>
                     )}
                   </div>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>,
-        document.body
+                </motion.div>
+              )}
+            </AnimatePresence>,
+            document.body
+          )
+        )
       )}
     </div>
   );

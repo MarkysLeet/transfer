@@ -21,8 +21,10 @@ export const BookingModal = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Handle global scroll lock for lenis and body
+  // Handle global scroll lock for lenis and body ONLY on desktop
   useEffect(() => {
+    if (!mounted || isMobile) return;
+
     if (isOpen) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
@@ -37,7 +39,7 @@ export const BookingModal = () => {
       document.documentElement.style.overflow = "";
       lenis?.start();
     };
-  }, [isOpen, lenis]);
+  }, [isOpen, lenis, isMobile, mounted]);
 
   if (!mounted) return null;
 

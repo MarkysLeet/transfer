@@ -104,7 +104,7 @@ export const BookingModal = () => {
           </div>
 
           <div
-            className="p-6 md:p-8 flex flex-col flex-1 pb-20 max-lg:pb-[env(safe-area-inset-bottom,24px)]"
+            className="p-6 md:p-8 flex flex-col flex-1 min-h-0 pb-20 max-lg:pb-[env(safe-area-inset-bottom,24px)]"
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-8 shrink-0">
@@ -123,7 +123,7 @@ export const BookingModal = () => {
 
             {/* Content Area */}
             <div
-              className="flex-1 overflow-y-auto overscroll-y-contain"
+              className="flex-1 overflow-y-auto overscroll-y-contain min-h-0"
               style={isMobile ? { touchAction: "pan-y" } : undefined}
             >
               <AnimatePresence mode="wait">

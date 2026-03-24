@@ -93,15 +93,17 @@ export const Step3Contacts = ({ onBack, onConfirm }: { onBack: () => void; onCon
           )}
         </AnimatePresence>
 
-        <Button
-          onClick={onConfirm}
-          disabled={!isNextEnabled}
-          className="w-full h-14 rounded-xl flex items-center justify-center gap-2"
-          variant="primary"
-        >
-          {t("confirmBooking")}
-          <CheckCircle2 className="w-5 h-5" />
-        </Button>
+        <div className="lg:hidden mt-2 w-full">
+          <Button
+            onClick={onConfirm}
+            disabled={!isNextEnabled}
+            className="w-full h-14 rounded-xl flex items-center justify-center gap-2"
+            variant="primary"
+          >
+            {t("confirmBooking")}
+            <CheckCircle2 className="w-5 h-5" />
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -225,14 +225,16 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
       </div>
 
       {/* Next Button */}
-      <Button
-        onClick={onNext}
-        disabled={!isNextEnabled}
-        className="w-full h-14 rounded-xl mt-4"
-        variant="primary"
-      >
-        {t("next")}
-      </Button>
+      <div className="lg:hidden mt-4">
+        <Button
+          onClick={onNext}
+          disabled={!isNextEnabled}
+          className="w-full h-14 rounded-xl"
+          variant="primary"
+        >
+          {t("next")}
+        </Button>
+      </div>
     </div>
   );
 };

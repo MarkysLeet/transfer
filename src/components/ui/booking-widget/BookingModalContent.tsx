@@ -2,12 +2,13 @@
 
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, CheckCircle2 } from "lucide-react";
 import { useBookingStore } from "@/store/useBookingStore";
 import { useCurrencyStore } from "@/store/useCurrencyStore";
 import { Step1Route } from "./Step1Route";
 import { Step2Car } from "./Step2Car";
 import { Step3Contacts } from "./Step3Contacts";
+import { Button } from "../Button";
 
 export const BookingModalContent = () => {
   const t = useTranslations("BookingWidget");
@@ -77,10 +78,18 @@ export const BookingModalContent = () => {
     }, 500);
   }
 
+  const store = useBookingStore();
+  const isStep1Valid = store.from && store.to && store.date && store.time && (!store.roundTrip || (store.returnDate && store.returnTime));
+  const isGroup = (store.passengers.adults + store.passengers.children + store.passengers.infants) >= 8;
+  const totalCapacity = (store.fleetOrder.vito * 7) + (store.fleetOrder.transporter * 7);
+  const isGroupValid = totalCapacity >= (store.passengers.adults + store.passengers.children + store.passengers.infants);
+  const isStep2Valid = isGroup ? isGroupValid : true;
+  const isStep3Valid = store.name.trim().length > 0 && store.phone.trim().length > 0;
+
   return (
     <>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8 shrink-0">
+      <div className="flex items-center justify-between mb-8 shrink-0 lg:p-8 lg:pb-0">
         <h2 className="text-2xl font-semibold text-slate-900">
           {step === 1 && t("step1Title")}
           {step === 2 && t("step2Title")}
@@ -95,7 +104,7 @@ export const BookingModalContent = () => {
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 overflow-y-auto overscroll-y-contain min-h-0">
+      <div className="flex-1 overflow-y-auto overscroll-y-contain min-h-0 lg:px-8 lg:pb-8">
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -109,6 +118,49 @@ export const BookingModalContent = () => {
             {step === 3 && <Step3Contacts onBack={() => setStep(2)} onConfirm={handleConfirm} />}
           </motion.div>
         </AnimatePresence>
+      </div>
+
+      {/* Sticky Footer (Desktop Only) */}
+      <div className="hidden lg:flex flex-col flex-none p-8 border-t border-slate-200/60 bg-[#F4EFEB] z-10 shrink-0 shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.05)]">
+        {step === 1 && (
+          <Button
+            onClick={() => setStep(2)}
+            disabled={!isStep1Valid}
+            className="w-full h-14 rounded-xl"
+            variant="primary"
+          >
+            {t("next")}
+          </Button>
+        )}
+        {step === 2 && (
+          <div className="flex flex-col gap-3">
+            <div className="flex justify-between items-center px-2">
+              <span className="text-slate-500 font-medium">{t("estimatedTotal")}</span>
+              <span className="text-2xl font-semibold text-slate-900">
+                {store.estimatedPrice !== null ? formatPrice(store.estimatedPrice) : "..."}
+              </span>
+            </div>
+            <Button
+              onClick={() => setStep(3)}
+              disabled={!isStep2Valid}
+              className="w-full h-14 rounded-xl"
+              variant="primary"
+            >
+              {t("next")}
+            </Button>
+          </div>
+        )}
+        {step === 3 && (
+          <Button
+            onClick={handleConfirm}
+            disabled={!isStep3Valid}
+            className="w-full h-14 rounded-xl flex items-center justify-center gap-2"
+            variant="primary"
+          >
+            {t("confirmBooking")}
+            <CheckCircle2 className="w-5 h-5" />
+          </Button>
+        )}
       </div>
     </>
   );

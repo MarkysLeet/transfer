@@ -28,9 +28,9 @@ export const BookingModalDesktop = () => {
           animate={{ x: 0, y: 0 }}
           exit={{ x: "100%", y: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="relative w-[450px] bg-[#F4EFEB] h-full shadow-2xl overflow-x-hidden flex flex-col"
+          className="relative w-[450px] max-w-[100vw] bg-[#F4EFEB] h-[100dvh] shadow-2xl overflow-hidden flex flex-col"
         >
-          <div className="p-8 flex flex-col flex-1 min-h-0">
+          <div className="flex flex-col flex-1 min-h-0 relative">
             <BookingModalContent />
           </div>
         </motion.div>

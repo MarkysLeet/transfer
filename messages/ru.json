@@ -114,7 +114,8 @@
     "paymentMethod": "Выберите способ оплаты",
     "payCash": "Наличные",
     "payCard": "Карта",
-    "confirmBooking": "Подтвердить бронирование"
+    "confirmBooking": "Подтвердить бронирование",
+    "estimatedTotal": "Ориентировочная стоимость"
   },
   "Cities": {
     "antalya": "Анталья",

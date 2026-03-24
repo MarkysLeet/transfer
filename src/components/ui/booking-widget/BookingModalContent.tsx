@@ -104,7 +104,10 @@ export const BookingModalContent = () => {
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 overflow-y-auto overscroll-y-contain min-h-0 lg:px-8 lg:pb-8">
+      <div
+        className="flex-1 overflow-y-auto overscroll-y-contain min-h-0 lg:px-8 lg:pb-8"
+        data-lenis-prevent="true"
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={step}

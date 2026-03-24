@@ -114,7 +114,8 @@
     "paymentMethod": "Zahlungsmethode wählen",
     "payCash": "Bargeld",
     "payCard": "Karte",
-    "confirmBooking": "Buchung bestätigen"
+    "confirmBooking": "Buchung bestätigen",
+    "estimatedTotal": "Geschätzter Gesamtbetrag"
   },
   "Cities": {
     "antalya": "Antalya",

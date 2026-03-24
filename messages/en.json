@@ -114,7 +114,8 @@
     "paymentMethod": "Select payment method",
     "payCash": "Cash",
     "payCard": "Bank Card",
-    "confirmBooking": "Confirm Booking"
+    "confirmBooking": "Confirm Booking",
+    "estimatedTotal": "Estimated Total"
   },
   "Cities": {
     "antalya": "Antalya",

@@ -114,7 +114,8 @@
     "paymentMethod": "Ödeme yöntemi seçin",
     "payCash": "Nakit",
     "payCard": "Kart",
-    "confirmBooking": "Rezervasyonu Onayla"
+    "confirmBooking": "Rezervasyonu Onayla",
+    "estimatedTotal": "Tahmini Tutar"
   },
   "Cities": {
     "antalya": "Antalya",

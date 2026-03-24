@@ -91,7 +91,7 @@
     "groupCapacityWarning": "Grup: {passengers} kişi. Seçilen kapasite: {capacity} kişi. Lütfen daha fazla araç ekleyin.",
     "vwClassShort": "Volkswagen Transporter",
     "vitoClassShort": "Mercedes-Benz Vito",
-    "estimatedPrice": "Tahmini fiyat: €{price}",
+    "estimatedPrice": "Tahmini fiyat: {price}",
     "priceOnRequest": "Talep üzerine fiyat",
     "searching": "Aranıyor...",
     "noResults": "Sonuç bulunamadı",
@@ -114,7 +114,8 @@
     "paymentMethod": "Ödeme yöntemi seçin",
     "payCash": "Nakit",
     "payCard": "Kart",
-    "confirmBooking": "Rezervasyonu Onayla"
+    "confirmBooking": "Rezervasyonu Onayla",
+    "estimatedTotal": "Tahmini Tutar"
   },
   "Cities": {
     "antalya": "Antalya",

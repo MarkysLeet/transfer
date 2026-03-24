@@ -91,7 +91,7 @@
     "groupCapacityWarning": "Group: {passengers} pax. Selected capacity: {capacity} pax. Please add more vehicles.",
     "vwClassShort": "Volkswagen Transporter",
     "vitoClassShort": "Mercedes-Benz Vito",
-    "estimatedPrice": "Estimated price: €{price}",
+    "estimatedPrice": "Estimated price: {price}",
     "priceOnRequest": "Price on request",
     "searching": "Searching...",
     "noResults": "No results found",
@@ -114,7 +114,8 @@
     "paymentMethod": "Select payment method",
     "payCash": "Cash",
     "payCard": "Bank Card",
-    "confirmBooking": "Confirm Booking"
+    "confirmBooking": "Confirm Booking",
+    "estimatedTotal": "Estimated Total"
   },
   "Cities": {
     "antalya": "Antalya",

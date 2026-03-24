@@ -2,10 +2,12 @@ import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, User, Phone, CheckCircle2, Wallet, CreditCard } from "lucide-react";
 import { useBookingStore } from "@/store/useBookingStore";
+import { useCurrencyStore } from "@/store/useCurrencyStore";
 import { Button } from "../Button";
 import { PaymentMethodType } from "@/store/useBookingStore";
 
 export const Step3Contacts = ({ onBack, onConfirm }: { onBack: () => void; onConfirm: () => void }) => {
+  const { formatPrice } = useCurrencyStore();
   const t = useTranslations("BookingWidget");
   const {
     name, setName,
@@ -84,22 +86,24 @@ export const Step3Contacts = ({ onBack, onConfirm }: { onBack: () => void; onCon
             >
               <div className="bg-white/80 backdrop-blur-md px-6 py-2.5 rounded-2xl shadow-sm border border-slate-200/50 flex items-center gap-2 min-w-[200px] justify-center">
                 <span className="text-[15px] font-semibold text-[#2F4157]">
-                  {t("estimatedPrice", { price: estimatedPrice })}
+                  {t("estimatedPrice", { price: formatPrice(estimatedPrice) })}
                 </span>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <Button
-          onClick={onConfirm}
-          disabled={!isNextEnabled}
-          className="w-full h-14 rounded-xl flex items-center justify-center gap-2"
-          variant="primary"
-        >
-          {t("confirmBooking")}
-          <CheckCircle2 className="w-5 h-5" />
-        </Button>
+        <div className="lg:hidden mt-2 w-full">
+          <Button
+            onClick={onConfirm}
+            disabled={!isNextEnabled}
+            className="w-full h-14 rounded-xl flex items-center justify-center gap-2"
+            variant="primary"
+          >
+            {t("confirmBooking")}
+            <CheckCircle2 className="w-5 h-5" />
+          </Button>
+        </div>
       </div>
     </div>
   );

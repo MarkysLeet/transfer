@@ -91,7 +91,7 @@
     "groupCapacityWarning": "Группа: {passengers} чел. Выбранная вместимость: {capacity} чел. Добавьте автомобили.",
     "vwClassShort": "Volkswagen Transporter",
     "vitoClassShort": "Mercedes-Benz Vito",
-    "estimatedPrice": "Ориентировочная стоимость: €{price}",
+    "estimatedPrice": "Ориентировочная стоимость: {price}",
     "priceOnRequest": "Цена по запросу",
     "searching": "Поиск...",
     "noResults": "Ничего не найдено",
@@ -114,7 +114,8 @@
     "paymentMethod": "Выберите способ оплаты",
     "payCash": "Наличные",
     "payCard": "Карта",
-    "confirmBooking": "Подтвердить бронирование"
+    "confirmBooking": "Подтвердить бронирование",
+    "estimatedTotal": "Ориентировочная стоимость"
   },
   "Cities": {
     "antalya": "Анталья",

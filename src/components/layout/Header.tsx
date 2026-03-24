@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { CurrencySwitcher } from "./CurrencySwitcher";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
@@ -86,7 +87,10 @@ export const Header = () => {
             BLACK DIAMOND <span className={cn("font-light transition-colors duration-300", scrolled ? "text-[#2F4157]/70" : "text-[#E2DED3]/70")}>TRANSFER</span>
           </Link>
           <div className="flex items-center gap-6">
-            <LanguageSwitcher isScrolled={scrolled} />
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher isScrolled={scrolled} />
+              <CurrencySwitcher isScrolled={scrolled} />
+            </div>
             <Button variant="primary" size="sm" className="flex gap-2" onClick={() => window.open(whatsappUrl, '_blank')}>
               <Phone size={18} />
               <span>{t("contact")}</span>

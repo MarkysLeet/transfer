@@ -106,8 +106,14 @@ export const CustomTimePicker = ({ value, onChange, icon }: { value: string; onC
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            style={dropdownStyle}
-            className="fixed bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-slate-100 max-h-56 overflow-y-auto z-[9999] py-2 scrollbar-hide overscroll-contain"
+            className="fixed bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-slate-100 max-h-56 overflow-y-auto z-[9999] py-2 scrollbar-hide overscroll-contain pointer-events-auto"
+            style={{ ...dropdownStyle, touchAction: "pan-y" }}
+            onPointerDown={(e) => e.stopPropagation()}
+            onPointerMove={(e) => e.stopPropagation()}
+            onWheel={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+            data-lenis-prevent="true"
           >
             {times.map((time) => (
               <button

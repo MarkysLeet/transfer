@@ -148,7 +148,7 @@ export const Combobox = ({
       {allowGeolocation ? (
         <div className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-[#2F4157]/80 hover:text-[#2F4157] transition-colors">
           <button
-            onClick={(e) => {
+            onPointerDown={(e) => {
               e.preventDefault();
               e.stopPropagation();
               if (onClear) onClear();
@@ -161,7 +161,7 @@ export const Combobox = ({
             <X className="w-4 h-4" />
           </button>
           <button
-            onClick={(e) => {
+            onPointerDown={(e) => {
               e.preventDefault();
               e.stopPropagation();
               if (onGeolocationClick) onGeolocationClick();
@@ -176,7 +176,7 @@ export const Combobox = ({
         </div>
       ) : (
         <button
-          onClick={(e) => {
+          onPointerDown={(e) => {
             e.preventDefault();
             e.stopPropagation();
             if (onClear) onClear();
@@ -213,7 +213,10 @@ export const Combobox = ({
                   data.map(({ place_id, description, structured_formatting: { main_text, secondary_text } }) => (
                     <button
                       key={place_id}
-                      onClick={() => handleSelect(description, place_id)}
+                      onPointerDown={(e) => {
+                        e.preventDefault();
+                        handleSelect(description, place_id);
+                      }}
                       className="w-full text-left px-4 py-2 hover:bg-slate-50 transition-colors flex items-start gap-3"
                     >
                       <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />

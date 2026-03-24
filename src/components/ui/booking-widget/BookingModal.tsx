@@ -87,6 +87,7 @@ export const BookingModal = () => {
               setIsOpen(false);
             }
           }}
+          style={isMobile ? { touchAction: "auto" } : undefined}
           className="relative w-full max-w-[450px] bg-[#F4EFEB] h-full shadow-2xl overflow-hidden overflow-x-hidden
                      max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-auto max-lg:h-[90dvh] max-lg:max-w-none
                      max-lg:rounded-t-3xl flex flex-col"

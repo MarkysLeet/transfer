@@ -126,7 +126,7 @@ export const BookingModal = () => {
             {/* Content Area */}
             <div
               className="flex-1 overflow-y-auto overscroll-y-contain min-h-0"
-              style={isMobile ? { touchAction: "pan-y" } : undefined}
+
             >
               <AnimatePresence mode="wait">
                 <motion.div

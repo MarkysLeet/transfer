@@ -52,6 +52,7 @@ export default async function RootLayout({
     <html lang={locale} className={clsx(inter.variable)}>
       <body
         className="antialiased bg-[#FAFAFA] text-slate-900 selection:bg-bronze-500 selection:text-white relative min-h-screen overflow-x-hidden"
+        vaul-drawer-wrapper=""
       >
         {/* Global Soft Background */}
         <div

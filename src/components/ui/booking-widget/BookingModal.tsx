@@ -90,7 +90,6 @@ export const BookingModal = () => {
           className="relative w-full max-w-[450px] bg-[#F4EFEB] h-full shadow-2xl overflow-hidden overflow-x-hidden
                      max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:top-auto max-lg:h-[90dvh] max-lg:max-w-none
                      max-lg:rounded-t-3xl flex flex-col"
-            style={isMobile ? { touchAction: "none" } : {}}
         >
            {/* Mobile Drag Handle */}
           <div
@@ -105,8 +104,7 @@ export const BookingModal = () => {
           </div>
 
           <div
-            className="p-6 md:p-8 flex flex-col flex-1 pb-20 max-lg:pb-[env(safe-area-inset-bottom,24px)] overflow-hidden"
-            style={isMobile ? { touchAction: "auto" } : {}}
+            className="p-6 md:p-8 flex flex-col flex-1 pb-20 max-lg:pb-[env(safe-area-inset-bottom,24px)]"
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-8 shrink-0">
@@ -124,7 +122,10 @@ export const BookingModal = () => {
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 overflow-y-auto">
+            <div
+              className="flex-1 overflow-y-auto overscroll-y-contain"
+              style={isMobile ? { touchAction: "pan-y" } : undefined}
+            >
               <AnimatePresence mode="wait">
                 <motion.div
                   key={step}

@@ -19,7 +19,7 @@ export const Step3Contacts = ({ onBack, onConfirm }: { onBack: () => void; onCon
   const isNextEnabled = name.trim().length > 0 && phone.trim().length > 0;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 w-full">
       {/* Back Button */}
       <button onClick={onBack} className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition-colors">
         <ChevronLeft className="w-4 h-4" />
@@ -74,37 +74,6 @@ export const Step3Contacts = ({ onBack, onConfirm }: { onBack: () => void; onCon
         </div>
       </div>
 
-      {/* Submit & Price */}
-      <div className="mt-8">
-        <AnimatePresence>
-          {estimatedPrice && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className="flex justify-center mb-4"
-            >
-              <div className="bg-white/80 backdrop-blur-md px-6 py-2.5 rounded-2xl shadow-sm border border-slate-200/50 flex items-center gap-2 min-w-[200px] justify-center">
-                <span className="text-[15px] font-semibold text-[#2F4157]">
-                  {t("estimatedPrice", { price: formatPrice(estimatedPrice) })}
-                </span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <div className="lg:hidden mt-2 w-full">
-          <Button
-            onClick={onConfirm}
-            disabled={!isNextEnabled}
-            className="w-full h-14 rounded-xl flex items-center justify-center gap-2"
-            variant="primary"
-          >
-            {t("confirmBooking")}
-            <CheckCircle2 className="w-5 h-5" />
-          </Button>
-        </div>
-      </div>
     </div>
   );
 };

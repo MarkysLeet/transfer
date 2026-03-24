@@ -17,7 +17,7 @@ export const MobileBottomBar = () => {
     } else if (action === "reviews") {
       document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth' });
     } else if (action === "concierge") {
-      window.open('tel:+905418462550', '_self');
+      window.open('tel:+905452600736', '_self');
     }
   };
 

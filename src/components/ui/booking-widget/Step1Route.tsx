@@ -6,6 +6,7 @@ import { Combobox } from "../Combobox";
 import { Button } from "../Button";
 import { useState, useRef, useEffect } from "react";
 import { useLoadScript } from "@react-google-maps/api";
+import { CustomTimePicker } from "./CustomTimePicker";
 
 const LIBRARIES: ("places" | "geometry")[] = ["places", "geometry"];
 
@@ -79,7 +80,7 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
   const isNextEnabled = from && to && date && time && (!roundTrip || (returnDate && returnTime));
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 w-full">
       {/* Trip Type Segmented Control */}
       <div className="bg-slate-200/50 p-1 rounded-xl flex items-center relative z-0">
         <button
@@ -124,8 +125,8 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
       </div>
 
       {/* Date & Time */}
-      <div className="flex gap-3">
-        <div className="flex-1 relative">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-[1.5fr_1fr]">
+        <div className="relative">
           <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
           <input
             type="date"
@@ -134,13 +135,11 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
             className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
           />
         </div>
-        <div className="w-1/3 relative">
-          <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
-          <input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
+        <div className="relative z-[45]">
+          <CustomTimePicker
+             value={time}
+             onChange={setTime}
+             icon={<Clock className="w-5 h-5 text-white/70" />}
           />
         </div>
       </div>
@@ -152,10 +151,10 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
+            className="overflow-visible"
           >
-            <div className="flex gap-3 pt-1">
-              <div className="flex-1 relative">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-[1.5fr_1fr] pt-1">
+              <div className="relative">
                 <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
                 <input
                   type="date"
@@ -164,13 +163,11 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
                   className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
                 />
               </div>
-              <div className="w-1/3 relative">
-                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
-                <input
-                  type="time"
-                  value={returnTime}
-                  onChange={(e) => setReturnTime(e.target.value)}
-                  className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
+              <div className="relative z-40">
+                <CustomTimePicker
+                   value={returnTime}
+                   onChange={setReturnTime}
+                   icon={<Clock className="w-5 h-5 text-white/70" />}
                 />
               </div>
             </div>
@@ -224,17 +221,6 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
         </AnimatePresence>
       </div>
 
-      {/* Next Button */}
-      <div className="lg:hidden mt-4">
-        <Button
-          onClick={onNext}
-          disabled={!isNextEnabled}
-          className="w-full h-14 rounded-xl"
-          variant="primary"
-        >
-          {t("next")}
-        </Button>
-      </div>
     </div>
   );
 };

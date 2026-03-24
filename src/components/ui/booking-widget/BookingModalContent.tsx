@@ -68,7 +68,7 @@ export const BookingModalContent = () => {
        message += `\n💰 *Estimated Total:* ${convertedPrice}\n`;
     }
 
-    const whatsappUrl = `https://wa.me/905418462550?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/905452600736?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
 
     // Close and reset
@@ -89,7 +89,7 @@ export const BookingModalContent = () => {
   return (
     <>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8 shrink-0 lg:p-8 lg:pb-0">
+      <div className="flex items-center justify-between px-6 pt-6 mb-6 shrink-0 lg:px-8 lg:pt-8 lg:mb-8 lg:pb-0">
         <h2 className="text-2xl font-semibold text-slate-900">
           {step === 1 && t("step1Title")}
           {step === 2 && t("step2Title")}
@@ -105,7 +105,7 @@ export const BookingModalContent = () => {
 
       {/* Content Area */}
       <div
-        className="flex-1 overflow-y-auto overscroll-y-contain min-h-0 lg:px-8 lg:pb-8"
+        className="flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain min-h-0 px-6 pb-24 lg:px-8 lg:pb-8"
         data-lenis-prevent="true"
       >
         <AnimatePresence mode="wait">
@@ -115,6 +115,7 @@ export const BookingModalContent = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.2 }}
+            className="h-full"
           >
             {step === 1 && <Step1Route onNext={() => setStep(2)} />}
             {step === 2 && <Step2Car onBack={() => setStep(1)} onNext={() => setStep(3)} />}
@@ -123,8 +124,8 @@ export const BookingModalContent = () => {
         </AnimatePresence>
       </div>
 
-      {/* Sticky Footer (Desktop Only) */}
-      <div className="hidden lg:flex flex-col flex-none p-8 border-t border-slate-200/60 bg-[#F4EFEB] z-10 shrink-0 shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.05)]">
+      {/* Sticky Footer */}
+      <div className="flex flex-col flex-none p-6 lg:p-8 border-t border-slate-200/60 bg-[#F4EFEB] z-10 shrink-0 shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.05)]">
         {step === 1 && (
           <Button
             onClick={() => setStep(2)}

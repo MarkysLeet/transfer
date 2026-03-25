@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Users, Calendar, Clock } from "lucide-react";
+import { MapPin, Users, Calendar, Clock, ArrowUpDown } from "lucide-react";
 import { useBookingStore } from "@/store/useBookingStore";
 import { Combobox } from "../Combobox";
 import { Button } from "../Button";
@@ -80,6 +80,15 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
 
   const isNextEnabled = from && to && date && time && (!roundTrip || (returnDate && returnTime));
 
+  const handleSwap = () => {
+    const tempFrom = from;
+    const tempFromPlaceId = fromPlaceId;
+    setFrom(to);
+    setFromPlaceId(toPlaceId);
+    setTo(tempFrom);
+    setToPlaceId(tempFromPlaceId);
+  };
+
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Trip Type Segmented Control */}
@@ -99,7 +108,7 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
       </div>
 
       {/* Locations */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col relative">
         <div className="w-full h-14 relative z-[60]">
           <Combobox
             id="pickup"
@@ -114,7 +123,20 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
             isLoaded={isLoaded}
           />
         </div>
-        <div className="w-full h-14 relative z-50">
+
+        {/* Swap Button */}
+        <div className="absolute top-1/2 left-[calc(100%-3rem)] sm:left-[calc(100%-3.5rem)] -translate-y-1/2 z-[65] flex items-center justify-center pointer-events-none">
+           <button
+             type="button"
+             onClick={handleSwap}
+             className="w-8 h-8 bg-white border border-slate-200 rounded-full shadow-sm flex items-center justify-center text-slate-400 hover:text-slate-900 hover:bg-slate-50 transition-all pointer-events-auto active:scale-95"
+             title="Swap locations"
+           >
+             <ArrowUpDown className="w-4 h-4" />
+           </button>
+        </div>
+
+        <div className="w-full h-14 mt-3 relative z-50">
           <Combobox
             id="dropoff"
             value={to}

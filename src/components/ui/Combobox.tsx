@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Locate, MapPin, X, ChevronLeft } from "lucide-react";
+import { Locate, MapPin, X, ChevronLeft, Plane, Building, Target } from "lucide-react";
 import { useTranslations } from "next-intl";
 import usePlacesAutocomplete, { getDetails } from "use-places-autocomplete";
 import { useBookingStore } from "@/store/useBookingStore";
@@ -123,13 +123,64 @@ export const Combobox = ({
     };
   }, []);
 
-  const { activeMobileOverlayId, setActiveMobileOverlayId } = useBookingStore();
+  const { activeMobileOverlayId, setActiveMobileOverlayId, setCoords } = useBookingStore();
 
   // Use a locally generated ID if none provided, to ensure safe fallback
   const internalId = useRef(Math.random().toString(36).substring(7)).current;
   const overlayId = id || internalId;
 
   const isMobileOverlayOpen = activeMobileOverlayId === overlayId;
+
+  // We add this geolocation state here for the mobile Empty State
+  // to avoid passing it down when it should be tightly coupled with the location input itself.
+  const [isLocating, setIsLocating] = useState(false);
+
+  const handleGeolocationClick = () => {
+    if (onGeolocationClick) {
+      onGeolocationClick();
+      return;
+    }
+
+    // Default geolocation logic for the Empty State button if not provided via props
+    if (!navigator.geolocation) {
+      alert(t("locateError", { defaultMessage: "Could not determine location" }));
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        setCoords({ lat, lng });
+
+        try {
+          // Attempt reverse geocoding to get a readable address
+          const geocoder = new window.google.maps.Geocoder();
+          const response = await geocoder.geocode({ location: { lat, lng } });
+          if (response.results && response.results[0]) {
+             const address = response.results[0].formatted_address;
+             const placeId = response.results[0].place_id;
+             setValue(address, false);
+             onChange(address, placeId);
+          } else {
+             alert(t("locateError", { defaultMessage: "Could not determine location" }));
+          }
+        } catch (error) {
+          console.error("Geocoder failed due to: " + error);
+          alert(t("locateError", { defaultMessage: "Could not determine location" }));
+        } finally {
+          setIsLocating(false);
+          setActiveMobileOverlayId(null);
+        }
+      },
+      (error) => {
+        console.error("Error getting location", error);
+        alert(t("locateError", { defaultMessage: "Could not determine location" }));
+        setIsLocating(false);
+      }
+    );
+  };
   const mobileInputRef = useRef<HTMLInputElement>(null);
 
   // When overlay opens, focus input inside
@@ -169,6 +220,13 @@ export const Combobox = ({
     onChange(description, placeId);
     setIsOpen(false);
     setActiveMobileOverlayId(null);
+  };
+
+  const renderIcon = (types?: string[]) => {
+    if (!types) return <MapPin className="w-4 h-4 text-[#2F4157]" />;
+    if (types.includes("airport")) return <Plane className="w-4 h-4 text-[#2F4157]" />;
+    if (types.includes("lodging") || types.includes("establishment")) return <Building className="w-4 h-4 text-[#2F4157]" />;
+    return <MapPin className="w-4 h-4 text-[#2F4157]" />;
   };
 
   return (
@@ -265,7 +323,7 @@ export const Combobox = ({
                   {/* data-vaul-no-drag is needed to prevent Vaul from stealing interaction. We also use pointer-events-auto */}
                   {/* data-vaul-no-drag is needed to prevent Vaul from stealing interaction. We also use pointer-events-auto */}
                   <div
-                    className="flex items-center gap-3 p-4 bg-white border-b border-slate-200 shadow-sm safe-top pt-[env(safe-area-inset-top,16px)] pointer-events-auto"
+                    className="flex-none flex items-center gap-3 p-4 bg-white border-b border-slate-200 shadow-sm pt-[env(safe-area-inset-top,16px)] pointer-events-auto"
                     data-vaul-no-drag
                     onPointerDown={(e) => e.stopPropagation()}
                   >
@@ -313,50 +371,137 @@ export const Combobox = ({
                   </div>
 
                   <div
-                    className="flex-1 overflow-y-auto bg-white"
+                    className="flex-1 overflow-y-auto overscroll-contain bg-white pb-[env(safe-area-inset-bottom)]"
                     style={{ touchAction: "pan-y" }}
                   >
-                    {autocompleteValue.trim().length > 0 && (
-                      <div className="flex flex-col">
-                        {status === "OK" ? (
-                          data.map(({ place_id, description, structured_formatting: { main_text, secondary_text } }) => (
-                            <button
-                              key={place_id}
-                              onPointerDown={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleSelect(description, place_id);
-                              }}
-                              className="w-full text-left px-5 py-4 border-b border-slate-100 hover:bg-slate-50 transition-colors flex items-start gap-4"
-                            >
-                              <div className="mt-0.5 p-2 bg-slate-100 rounded-full shrink-0">
-                                <MapPin className="w-4 h-4 text-[#2F4157]" />
-                              </div>
-                              <div className="flex flex-col gap-0.5">
-                                <span className="text-[15px] font-medium text-slate-900">{main_text}</span>
-                                <span className="text-[13px] text-slate-500 line-clamp-1">{secondary_text}</span>
-                              </div>
-                            </button>
-                          ))
-                        ) : (
-                          <div className="px-5 py-6 text-[15px] text-slate-500 flex flex-col items-center justify-center gap-3 text-center">
-                            {status === "ZERO_RESULTS" ? (
-                              <>
-                                <div className="p-3 bg-slate-100 rounded-full">
-                                  <MapPin className="w-6 h-6 text-[#2F4157] opacity-40" />
-                                </div>
-                                <span>{t("noResults", { defaultMessage: "No results found" })}</span>
-                              </>
-                            ) : (
-                              <>
-                                <div className="w-6 h-6 rounded-full border-2 border-slate-200 border-t-[#2F4157] animate-spin" />
-                                <span>{t("searching", { defaultMessage: "Searching..." })}</span>
-                              </>
-                            )}
+                    <AnimatePresence mode="wait">
+                      {autocompleteValue.trim().length === 0 ? (
+                        <motion.div
+                          key="empty"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="flex flex-col"
+                        >
+                          {/* Current Location Action */}
+                          <button
+                            onPointerDown={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleGeolocationClick();
+                            }}
+                            className="w-full text-left px-5 py-4 border-b border-slate-100 hover:bg-slate-50 transition-colors flex items-center gap-4 group"
+                          >
+                            <div className="p-2 bg-[#2F4157]/5 rounded-full shrink-0 group-hover:bg-[#2F4157]/10 transition-colors">
+                              {isLocating || isLoadingLocation ? (
+                                <div className="w-5 h-5 rounded-full border-2 border-[#2F4157]/20 border-t-[#2F4157] animate-spin" />
+                              ) : (
+                                <Target className="w-5 h-5 text-[#2F4157]" />
+                              )}
+                            </div>
+                            <span className="text-[15px] font-medium text-[#2F4157]">
+                              {t("UI.myCurrentLocation")}
+                            </span>
+                          </button>
+
+                          {/* Popular Routes */}
+                          <div className="px-5 pt-6 pb-2">
+                            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                              {t("UI.popularRoutes")}
+                            </h3>
                           </div>
-                        )}
-                      </div>
-                    )}
+
+                          <button
+                            onPointerDown={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleSelect(t("PopularRoutes.antalyaAirport"), "ChIJY52Xz0R9wxQRMqPoy77YVJw"); // Approximate placeId for Antalya Airport
+                            }}
+                            className="w-full text-left px-5 py-3 hover:bg-slate-50 transition-colors flex items-center gap-4"
+                          >
+                            <div className="p-2 bg-slate-100 rounded-full shrink-0">
+                              <Plane className="w-4 h-4 text-[#2F4157]" />
+                            </div>
+                            <span className="text-[15px] font-medium text-slate-900">{t("PopularRoutes.antalyaAirport")}</span>
+                          </button>
+
+                          <button
+                            onPointerDown={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleSelect(t("PopularRoutes.kemer"), "ChIJmZ92d8jBwhQRH7Xo3G7qX2U"); // Approximate placeId for Kemer
+                            }}
+                            className="w-full text-left px-5 py-3 hover:bg-slate-50 transition-colors flex items-center gap-4"
+                          >
+                            <div className="p-2 bg-slate-100 rounded-full shrink-0">
+                              <Building className="w-4 h-4 text-[#2F4157]" />
+                            </div>
+                            <span className="text-[15px] font-medium text-slate-900">{t("PopularRoutes.kemer")}</span>
+                          </button>
+
+                          <button
+                            onPointerDown={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleSelect(t("PopularRoutes.alanya"), "ChIJj51b_3ykwxQRXy5q0W3r1rA"); // Approximate placeId for Alanya
+                            }}
+                            className="w-full text-left px-5 py-3 hover:bg-slate-50 transition-colors flex items-center gap-4"
+                          >
+                            <div className="p-2 bg-slate-100 rounded-full shrink-0">
+                              <Building className="w-4 h-4 text-[#2F4157]" />
+                            </div>
+                            <span className="text-[15px] font-medium text-slate-900">{t("PopularRoutes.alanya")}</span>
+                          </button>
+
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="results"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="flex flex-col"
+                        >
+                          {status === "OK" ? (
+                            data.map(({ place_id, description, types, structured_formatting: { main_text, secondary_text } }) => (
+                              <button
+                                key={place_id}
+                                onPointerDown={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  handleSelect(description, place_id);
+                                }}
+                                className="w-full text-left px-5 py-4 border-b border-slate-100 hover:bg-slate-50 transition-colors flex items-start gap-4"
+                              >
+                                <div className="mt-0.5 p-2 bg-slate-100 rounded-full shrink-0">
+                                  {renderIcon(types)}
+                                </div>
+                                <div className="flex flex-col gap-0.5">
+                                  <span className="text-[15px] font-medium text-slate-900">{main_text}</span>
+                                  <span className="text-[13px] text-slate-500 line-clamp-1">{secondary_text}</span>
+                                </div>
+                              </button>
+                            ))
+                          ) : (
+                            <div className="px-5 py-6 text-[15px] text-slate-500 flex flex-col items-center justify-center gap-3 text-center">
+                              {status === "ZERO_RESULTS" ? (
+                                <>
+                                  <div className="p-3 bg-slate-100 rounded-full">
+                                    <MapPin className="w-6 h-6 text-[#2F4157] opacity-40" />
+                                  </div>
+                                  <span>{t("noResults", { defaultMessage: "No results found" })}</span>
+                                </>
+                              ) : (
+                                <>
+                                  <div className="w-6 h-6 rounded-full border-2 border-slate-200 border-t-[#2F4157] animate-spin" />
+                                  <span>{t("searching", { defaultMessage: "Searching..." })}</span>
+                                </>
+                              )}
+                            </div>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </motion.div>
               )}

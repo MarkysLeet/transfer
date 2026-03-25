@@ -71,7 +71,7 @@ export const Header = () => {
 
   const locales = ['en', 'ru', 'tr', 'de'];
 
-  const whatsappUrl = `https://wa.me/905550000000?text=${encodeURIComponent(t("whatsappMessage"))}`;
+  const whatsappUrl = `https://wa.me/905452600736?text=${encodeURIComponent(t("whatsappMessage"))}`;
 
   return (
     <>

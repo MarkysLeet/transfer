@@ -132,7 +132,7 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
+            className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-[16px] md:text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
           />
         </div>
         <div className="relative z-[45]">
@@ -160,7 +160,7 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
                   type="date"
                   value={returnDate}
                   onChange={(e) => setReturnDate(e.target.value)}
-                  className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
+                  className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-[16px] md:text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
                 />
               </div>
               <div className="relative z-40">

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Locate, MapPin, X } from "lucide-react";
+import { Locate, MapPin, X, ChevronLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import usePlacesAutocomplete, { getDetails } from "use-places-autocomplete";
 
@@ -120,17 +120,44 @@ export const Combobox = ({
     };
   }, []);
 
-  const handleSelect = (description: string, placeId: string) => {
-    setValue(description, false);
-    clearSuggestions();
-    onChange(description, placeId);
-    setIsOpen(false);
-  };
+  const [isMobileOverlayOpen, setIsMobileOverlayOpen] = useState(false);
+  const mobileInputRef = useRef<HTMLInputElement>(null);
+
+  // When overlay opens, focus input inside
+  useEffect(() => {
+    if (isMobileOverlayOpen && mobileInputRef.current) {
+      setTimeout(() => {
+        mobileInputRef.current?.focus();
+      }, 100);
+    }
+  }, [isMobileOverlayOpen]);
+
+  // Lock body scroll when overlay is open
+  useEffect(() => {
+    let originalOverflow = "";
+    if (isMobileOverlayOpen) {
+      originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      if (isMobileOverlayOpen) {
+        document.body.style.overflow = originalOverflow;
+      }
+    };
+  }, [isMobileOverlayOpen]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     onChange(e.target.value);
     setIsOpen(true);
+  };
+
+  const handleSelect = (description: string, placeId: string) => {
+    setValue(description, false);
+    clearSuggestions();
+    onChange(description, placeId);
+    setIsOpen(false);
+    setIsMobileOverlayOpen(false);
   };
 
   return (
@@ -149,9 +176,18 @@ export const Combobox = ({
         placeholder={placeholder}
         value={autocompleteValue}
         onChange={handleInputChange}
-        onFocus={() => setIsOpen(true)}
+        onFocus={(e) => {
+          if (isMobile) {
+            e.preventDefault();
+            e.target.blur();
+            setIsMobileOverlayOpen(true);
+          } else {
+            setIsOpen(true);
+          }
+        }}
         disabled={!ready}
-        className={`w-full h-full bg-transparent ${icon ? 'pl-12' : 'pl-5'} pr-12 text-sm text-[#2F4157] placeholder:text-[#2F4157]/60 focus:outline-none`}
+        className={`w-full h-full bg-transparent ${icon ? 'pl-12' : 'pl-5'} pr-12 text-[16px] md:text-sm text-[#2F4157] placeholder:text-[#2F4157]/60 focus:outline-none`}
+        readOnly={isMobile} // prevent double keyboard pop-up while clicking background input
       />
 
       {allowGeolocation ? (
@@ -202,53 +238,110 @@ export const Combobox = ({
 
       {mounted && (
         isMobile ? (
-          <AnimatePresence>
-            {isOpen && (autocompleteValue.trim().length > 0) && (
-              <motion.div
-                data-lenis-prevent="true"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-                className="absolute left-0 right-0 top-[calc(100%+8px)] z-[9999]"
-              >
-                <div className="relative bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto hide-scrollbar py-2">
-                  {status === "OK" ? (
-                    data.map(({ place_id, description, structured_formatting: { main_text, secondary_text } }) => (
-                      <button
-                        key={place_id}
-                        onPointerDown={(e) => {
-                          e.preventDefault();
-                          handleSelect(description, place_id);
-                        }}
-                        className="w-full text-left px-4 py-2 hover:bg-slate-50 transition-colors flex items-start gap-3"
-                      >
-                        <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium text-slate-900">{main_text}</span>
-                          <span className="text-xs text-slate-500">{secondary_text}</span>
+          createPortal(
+            <AnimatePresence>
+              {isMobileOverlayOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="fixed inset-0 z-[99999] bg-[#F4EFEB] flex flex-col"
+                  style={{ touchAction: "none" }}
+                >
+                  {/* data-vaul-no-drag is needed to prevent Vaul from stealing interaction. We also use pointer-events-auto */}
+                  <div className="flex items-center gap-3 p-4 bg-white border-b border-slate-200 shadow-sm safe-top pt-[env(safe-area-inset-top,16px)] pointer-events-auto" data-vaul-no-drag>
+                    <button
+                      onClick={() => setIsMobileOverlayOpen(false)}
+                      className="p-2 -ml-2 text-slate-500 hover:text-slate-900 transition-colors"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+
+                    <div className="relative flex-1">
+                      {icon && (
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#2F4157] opacity-50">
+                          {icon}
                         </div>
-                      </button>
-                    ))
-                  ) : (
-                    <div className="px-4 py-3 text-sm text-slate-500 flex items-center gap-2">
-                      {status === "ZERO_RESULTS" ? (
-                        <>
-                          <MapPin className="w-4 h-4 text-[#2F4157] mt-1 shrink-0 opacity-50" />
-                          <span>{t("noResults", { defaultMessage: "No results found" })}</span>
-                        </>
-                      ) : (
-                        <>
-                          <div className="w-4 h-4 rounded-full border-2 border-slate-300 border-t-[#2F4157] animate-spin" />
-                          <span>{t("searching", { defaultMessage: "Searching..." })}</span>
-                        </>
+                      )}
+                      <input
+                        ref={mobileInputRef}
+                        type="text"
+                        placeholder={placeholder}
+                        value={autocompleteValue}
+                        onChange={(e) => {
+                          setValue(e.target.value);
+                          onChange(e.target.value);
+                          setIsOpen(true);
+                        }}
+                        className={`w-full h-12 bg-slate-100/50 border border-slate-200 rounded-xl ${icon ? 'pl-10' : 'pl-4'} pr-10 text-[16px] text-[#2F4157] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2F4157]/20 transition-shadow`}
+                      />
+                      {autocompleteValue.length > 0 && (
+                        <button
+                          onClick={() => {
+                            if (onClear) onClear();
+                            setValue("");
+                            onChange("");
+                            mobileInputRef.current?.focus();
+                          }}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
                       )}
                     </div>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  </div>
+
+                  <div
+                    className="flex-1 overflow-y-auto bg-white"
+                    style={{ touchAction: "pan-y" }}
+                  >
+                    {autocompleteValue.trim().length > 0 && (
+                      <div className="flex flex-col">
+                        {status === "OK" ? (
+                          data.map(({ place_id, description, structured_formatting: { main_text, secondary_text } }) => (
+                            <button
+                              key={place_id}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleSelect(description, place_id);
+                              }}
+                              className="w-full text-left px-5 py-4 border-b border-slate-100 hover:bg-slate-50 transition-colors flex items-start gap-4"
+                            >
+                              <div className="mt-0.5 p-2 bg-slate-100 rounded-full shrink-0">
+                                <MapPin className="w-4 h-4 text-[#2F4157]" />
+                              </div>
+                              <div className="flex flex-col gap-0.5">
+                                <span className="text-[15px] font-medium text-slate-900">{main_text}</span>
+                                <span className="text-[13px] text-slate-500 line-clamp-1">{secondary_text}</span>
+                              </div>
+                            </button>
+                          ))
+                        ) : (
+                          <div className="px-5 py-6 text-[15px] text-slate-500 flex flex-col items-center justify-center gap-3 text-center">
+                            {status === "ZERO_RESULTS" ? (
+                              <>
+                                <div className="p-3 bg-slate-100 rounded-full">
+                                  <MapPin className="w-6 h-6 text-[#2F4157] opacity-40" />
+                                </div>
+                                <span>{t("noResults", { defaultMessage: "No results found" })}</span>
+                              </>
+                            ) : (
+                              <>
+                                <div className="w-6 h-6 rounded-full border-2 border-slate-200 border-t-[#2F4157] animate-spin" />
+                                <span>{t("searching", { defaultMessage: "Searching..." })}</span>
+                              </>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>,
+            document.body
+          )
         ) : (
           createPortal(
             <AnimatePresence>

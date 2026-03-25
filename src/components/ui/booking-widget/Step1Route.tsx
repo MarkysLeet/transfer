@@ -102,6 +102,7 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
       <div className="flex flex-col gap-3">
         <div className="w-full h-14 relative z-[60]">
           <Combobox
+            id="pickup"
             value={from}
             onChange={(val, placeId) => { setFrom(val); setFromPlaceId(placeId || ""); if (val !== t("myLocation")) setCoords(null); }}
             onClear={() => { setFrom(""); setFromPlaceId(""); setCoords(null); }}
@@ -115,6 +116,7 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
         </div>
         <div className="w-full h-14 relative z-50">
           <Combobox
+            id="dropoff"
             value={to}
             onChange={(val, placeId) => { setTo(val); setToPlaceId(placeId || ""); }}
             onClear={() => { setTo(""); setToPlaceId(""); }}

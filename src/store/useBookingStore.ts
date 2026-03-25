@@ -18,6 +18,9 @@ interface BookingStore {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
 
+  activeMobileOverlayId: string | null;
+  setActiveMobileOverlayId: (value: string | null) => void;
+
   step: number;
   setStep: (value: number) => void;
 
@@ -85,6 +88,7 @@ interface BookingStore {
 
 const initialState = {
   isOpen: false,
+  activeMobileOverlayId: null as string | null,
   step: 1,
   roundTrip: false,
   from: '',
@@ -112,6 +116,7 @@ export const useBookingStore = create<BookingStore>((set) => ({
   ...initialState,
 
   setIsOpen: (value) => set({ isOpen: value }),
+  setActiveMobileOverlayId: (value) => set({ activeMobileOverlayId: value }),
   setStep: (value) => set({ step: value }),
   setRoundTrip: (value) => set({ roundTrip: value }),
 

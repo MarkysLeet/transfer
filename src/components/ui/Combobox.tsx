@@ -6,8 +6,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Locate, MapPin, X, ChevronLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import usePlacesAutocomplete, { getDetails } from "use-places-autocomplete";
+import { useBookingStore } from "@/store/useBookingStore";
 
 interface ComboboxProps {
+  id?: string;
   value: string;
   onChange: (value: string, placeId?: string) => void;
   onClear?: () => void;
@@ -20,6 +22,7 @@ interface ComboboxProps {
 }
 
 export const Combobox = ({
+  id,
   value,
   onChange,
   onClear,
@@ -120,7 +123,13 @@ export const Combobox = ({
     };
   }, []);
 
-  const [isMobileOverlayOpen, setIsMobileOverlayOpen] = useState(false);
+  const { activeMobileOverlayId, setActiveMobileOverlayId } = useBookingStore();
+
+  // Use a locally generated ID if none provided, to ensure safe fallback
+  const internalId = useRef(Math.random().toString(36).substring(7)).current;
+  const overlayId = id || internalId;
+
+  const isMobileOverlayOpen = activeMobileOverlayId === overlayId;
   const mobileInputRef = useRef<HTMLInputElement>(null);
 
   // When overlay opens, focus input inside
@@ -132,19 +141,21 @@ export const Combobox = ({
     }
   }, [isMobileOverlayOpen]);
 
-  // Lock body scroll when overlay is open
+  // Lock body scroll when overlay is open and clean up state on unmount
   useEffect(() => {
     let originalOverflow = "";
     if (isMobileOverlayOpen) {
       originalOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
+    } else {
+      clearSuggestions();
     }
     return () => {
       if (isMobileOverlayOpen) {
         document.body.style.overflow = originalOverflow;
       }
     };
-  }, [isMobileOverlayOpen]);
+  }, [isMobileOverlayOpen, clearSuggestions]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -157,7 +168,7 @@ export const Combobox = ({
     clearSuggestions();
     onChange(description, placeId);
     setIsOpen(false);
-    setIsMobileOverlayOpen(false);
+    setActiveMobileOverlayId(null);
   };
 
   return (
@@ -180,7 +191,7 @@ export const Combobox = ({
           if (isMobile) {
             e.preventDefault();
             e.target.blur();
-            setIsMobileOverlayOpen(true);
+            setActiveMobileOverlayId(overlayId);
           } else {
             setIsOpen(true);
           }
@@ -259,7 +270,7 @@ export const Combobox = ({
                     onPointerDown={(e) => e.stopPropagation()}
                   >
                     <button
-                      onClick={() => setIsMobileOverlayOpen(false)}
+                      onClick={() => setActiveMobileOverlayId(null)}
                       className="p-2 -ml-2 text-slate-500 hover:text-slate-900 transition-colors"
                     >
                       <ChevronLeft className="w-6 h-6" />

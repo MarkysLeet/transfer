@@ -250,7 +250,12 @@ export const Combobox = ({
                   style={{ touchAction: "none" }}
                 >
                   {/* data-vaul-no-drag is needed to prevent Vaul from stealing interaction. We also use pointer-events-auto */}
-                  <div className="flex items-center gap-3 p-4 bg-white border-b border-slate-200 shadow-sm safe-top pt-[env(safe-area-inset-top,16px)] pointer-events-auto" data-vaul-no-drag>
+                  {/* data-vaul-no-drag is needed to prevent Vaul from stealing interaction. We also use pointer-events-auto */}
+                  <div
+                    className="flex items-center gap-3 p-4 bg-white border-b border-slate-200 shadow-sm safe-top pt-[env(safe-area-inset-top,16px)] pointer-events-auto"
+                    data-vaul-no-drag
+                    onPointerDown={(e) => e.stopPropagation()}
+                  >
                     <button
                       onClick={() => setIsMobileOverlayOpen(false)}
                       className="p-2 -ml-2 text-slate-500 hover:text-slate-900 transition-colors"
@@ -258,9 +263,9 @@ export const Combobox = ({
                       <ChevronLeft className="w-6 h-6" />
                     </button>
 
-                    <div className="relative flex-1">
+                    <div className="relative flex-1 flex items-center">
                       {icon && (
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#2F4157] opacity-50">
+                        <div className="absolute left-3 flex items-center justify-center w-4 h-4 text-[#2F4157] opacity-50 pointer-events-none">
                           {icon}
                         </div>
                       )}
@@ -274,7 +279,9 @@ export const Combobox = ({
                           onChange(e.target.value);
                           setIsOpen(true);
                         }}
-                        className={`w-full h-12 bg-slate-100/50 border border-slate-200 rounded-xl ${icon ? 'pl-10' : 'pl-4'} pr-10 text-[16px] text-[#2F4157] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2F4157]/20 transition-shadow`}
+                        onPointerDown={(e) => e.stopPropagation()}
+                        autoFocus
+                        className={`w-full h-12 bg-slate-100/50 border border-slate-200 rounded-xl ${icon ? 'pl-9' : 'pl-4'} pr-10 text-[16px] text-[#2F4157] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2F4157]/20 transition-shadow leading-normal`}
                       />
                       {autocompleteValue.length > 0 && (
                         <button

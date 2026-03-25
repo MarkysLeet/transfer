@@ -361,23 +361,30 @@ export const Combobox = ({
             <AnimatePresence>
               {isMobileOverlayOpen && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="fixed top-0 left-0 right-0 bottom-auto z-[99999] bg-[#F4EFEB] flex flex-col pointer-events-auto"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="fixed inset-0 z-[99999] bg-black/40 flex flex-col pointer-events-auto"
                   style={{
                     touchAction: "none",
                     height: viewportHeight ? `${viewportHeight}px` : "100dvh",
                     top: viewportTop ? `${viewportTop}px` : "0px",
                   }}
-                  onPointerDown={(e) => e.stopPropagation()}
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={() => setActiveMobileOverlayId(null)}
                 >
-                  {/* data-vaul-no-drag is needed to prevent Vaul from stealing interaction. We also use pointer-events-auto */}
+                  <motion.div
+                    initial={{ y: "100%" }}
+                    animate={{ y: 0 }}
+                    exit={{ y: "100%" }}
+                    transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                    className="mt-16 bg-white rounded-t-[24px] flex flex-col flex-1 overflow-hidden"
+                    onClick={(e) => e.stopPropagation()}
+                    onPointerDown={(e) => e.stopPropagation()}
+                  >
                   {/* data-vaul-no-drag is needed to prevent Vaul from stealing interaction. We also use pointer-events-auto */}
                   <div
-                    className="flex-none flex items-center gap-3 p-4 bg-white border-b border-slate-200 shadow-sm pt-[env(safe-area-inset-top,16px)] pointer-events-auto"
+                    className="flex-none flex items-center gap-3 px-4 pt-5 pb-4 bg-white border-b border-slate-100 shadow-sm pointer-events-auto"
                     data-vaul-no-drag
                     onPointerDown={(e) => e.stopPropagation()}
                   >
@@ -425,7 +432,7 @@ export const Combobox = ({
                   </div>
 
                   <div
-                    className="flex-1 overflow-y-auto overscroll-contain bg-white pb-6 sm:pb-[env(safe-area-inset-bottom)]"
+                    className="flex-1 overflow-y-auto overscroll-contain bg-white pb-6 px-4 sm:pb-[env(safe-area-inset-bottom)]"
                     style={{ touchAction: "pan-y" }}
                   >
                     <AnimatePresence mode="wait">
@@ -444,7 +451,7 @@ export const Combobox = ({
                               e.stopPropagation();
                               handleGeolocationClick();
                             }}
-                            className="w-full text-left px-5 py-4 border-b border-slate-100 hover:bg-slate-50 transition-colors flex items-center gap-4 group"
+                            className="w-full text-left py-4 border-b border-slate-100 hover:bg-slate-50 transition-colors flex items-center gap-4 group"
                           >
                             <div className="p-2 bg-[#2F4157]/5 rounded-full shrink-0 group-hover:bg-[#2F4157]/10 transition-colors">
                               {isLocating || isLoadingLocation ? (
@@ -459,7 +466,7 @@ export const Combobox = ({
                           </button>
 
                           {/* Popular Routes */}
-                          <div className="px-5 pt-6 pb-2">
+                          <div className="pt-6 pb-2">
                             <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                               {t("UI.popularRoutes")}
                             </h3>
@@ -471,7 +478,7 @@ export const Combobox = ({
                               e.stopPropagation();
                               handleSelect(t("PopularRoutes.antalyaAirport"), "ChIJY52Xz0R9wxQRMqPoy77YVJw"); // Approximate placeId for Antalya Airport
                             }}
-                            className="w-full text-left px-5 py-3 hover:bg-slate-50 transition-colors flex items-center gap-4"
+                            className="w-full text-left py-3 hover:bg-slate-50 transition-colors flex items-center gap-4"
                           >
                             <div className="p-2 bg-slate-100 rounded-full shrink-0">
                               <Plane className="w-4 h-4 text-[#2F4157]" />
@@ -485,7 +492,7 @@ export const Combobox = ({
                               e.stopPropagation();
                               handleSelect(t("PopularRoutes.kemer"), "ChIJmZ92d8jBwhQRH7Xo3G7qX2U"); // Approximate placeId for Kemer
                             }}
-                            className="w-full text-left px-5 py-3 hover:bg-slate-50 transition-colors flex items-center gap-4"
+                            className="w-full text-left py-3 hover:bg-slate-50 transition-colors flex items-center gap-4"
                           >
                             <div className="p-2 bg-slate-100 rounded-full shrink-0">
                               <Building className="w-4 h-4 text-[#2F4157]" />
@@ -499,7 +506,7 @@ export const Combobox = ({
                               e.stopPropagation();
                               handleSelect(t("PopularRoutes.alanya"), "ChIJj51b_3ykwxQRXy5q0W3r1rA"); // Approximate placeId for Alanya
                             }}
-                            className="w-full text-left px-5 py-3 hover:bg-slate-50 transition-colors flex items-center gap-4"
+                            className="w-full text-left py-3 hover:bg-slate-50 transition-colors flex items-center gap-4"
                           >
                             <div className="p-2 bg-slate-100 rounded-full shrink-0">
                               <Building className="w-4 h-4 text-[#2F4157]" />
@@ -525,7 +532,7 @@ export const Combobox = ({
                                   e.stopPropagation();
                                   handleSelect(description, place_id);
                                 }}
-                                className="w-full text-left px-5 py-4 border-b border-slate-100 hover:bg-slate-50 transition-colors flex items-start gap-4"
+                                className="w-full text-left py-4 border-b border-slate-100 hover:bg-slate-50 transition-colors flex items-start gap-4"
                               >
                                 <div className="mt-0.5 p-2 bg-slate-100 rounded-full shrink-0">
                                   {renderIcon(types)}
@@ -537,7 +544,7 @@ export const Combobox = ({
                               </button>
                             ))
                           ) : (
-                            <div className="px-5 py-6 text-[15px] text-slate-500 flex flex-col items-center justify-center gap-3 text-center">
+                            <div className="py-6 text-[15px] text-slate-500 flex flex-col items-center justify-center gap-3 text-center">
                               {status === "ZERO_RESULTS" ? (
                                 <>
                                   <div className="p-3 bg-slate-100 rounded-full">
@@ -557,6 +564,7 @@ export const Combobox = ({
                       )}
                     </AnimatePresence>
                   </div>
+                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>,

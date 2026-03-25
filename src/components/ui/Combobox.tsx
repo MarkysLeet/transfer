@@ -257,7 +257,7 @@ export const Combobox = ({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="fixed inset-0 z-[99999] bg-[#F4EFEB] flex flex-col pointer-events-auto"
+                  className="absolute bottom-0 left-0 w-full h-[100dvh] z-[99999] bg-[#F4EFEB] flex flex-col pointer-events-auto"
                   style={{ touchAction: "none" }}
                   onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => e.stopPropagation()}

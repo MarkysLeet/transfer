@@ -30,7 +30,7 @@ export const BookingModalMobile = () => {
           </div>
 
           {/* Root for mobile full-screen overlays like Combobox */}
-          <div id="mobile-overlay-root" className="absolute z-[99999]" />
+          <div id="mobile-overlay-root" />
         </Drawer.Content>
       </Drawer.Portal>
     </Drawer.Root>

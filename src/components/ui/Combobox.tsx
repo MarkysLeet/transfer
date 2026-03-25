@@ -246,8 +246,10 @@ export const Combobox = ({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="fixed inset-0 z-[99999] bg-[#F4EFEB] flex flex-col"
+                  className="fixed inset-0 z-[99999] bg-[#F4EFEB] flex flex-col pointer-events-auto"
                   style={{ touchAction: "none" }}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {/* data-vaul-no-drag is needed to prevent Vaul from stealing interaction. We also use pointer-events-auto */}
                   {/* data-vaul-no-drag is needed to prevent Vaul from stealing interaction. We also use pointer-events-auto */}
@@ -309,8 +311,9 @@ export const Combobox = ({
                           data.map(({ place_id, description, structured_formatting: { main_text, secondary_text } }) => (
                             <button
                               key={place_id}
-                              onClick={(e) => {
+                              onPointerDown={(e) => {
                                 e.preventDefault();
+                                e.stopPropagation();
                                 handleSelect(description, place_id);
                               }}
                               className="w-full text-left px-5 py-4 border-b border-slate-100 hover:bg-slate-50 transition-colors flex items-start gap-4"

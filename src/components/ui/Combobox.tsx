@@ -183,6 +183,34 @@ export const Combobox = ({
   };
   const mobileInputRef = useRef<HTMLInputElement>(null);
 
+  const [viewportHeight, setViewportHeight] = useState(() => typeof window !== 'undefined' && window.visualViewport ? window.visualViewport.height : (typeof window !== 'undefined' ? window.innerHeight : 0));
+  const [viewportTop, setViewportTop] = useState(() => typeof window !== 'undefined' && window.visualViewport ? window.visualViewport.offsetTop : 0);
+
+  useEffect(() => {
+    if (!isMobileOverlayOpen) return;
+
+    const handleVisualViewportResize = () => {
+      if (window.visualViewport) {
+        setViewportHeight(window.visualViewport.height);
+        setViewportTop(window.visualViewport.offsetTop);
+      }
+    };
+
+    handleVisualViewportResize(); // initial set
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", handleVisualViewportResize);
+      window.visualViewport.addEventListener("scroll", handleVisualViewportResize);
+    }
+
+    return () => {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener("resize", handleVisualViewportResize);
+        window.visualViewport.removeEventListener("scroll", handleVisualViewportResize);
+      }
+    };
+  }, [isMobileOverlayOpen]);
+
   // When overlay opens, focus input inside
   useEffect(() => {
     if (isMobileOverlayOpen && mobileInputRef.current) {
@@ -194,18 +222,34 @@ export const Combobox = ({
 
   // Lock body scroll when overlay is open and clean up state on unmount
   useEffect(() => {
-    let originalOverflow = "";
     if (isMobileOverlayOpen) {
-      originalOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
+      const scrollY = window.scrollY;
+
+      const originalBodyStyle = document.body.getAttribute('style') || '';
+      const originalHtmlStyle = document.documentElement.getAttribute('style') || '';
+
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.bottom = '0';
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+      document.documentElement.style.overflow = 'hidden';
+      document.documentElement.style.touchAction = 'none';
+
+      return () => {
+        document.body.setAttribute('style', originalBodyStyle);
+        if (!originalBodyStyle) document.body.removeAttribute('style');
+
+        document.documentElement.setAttribute('style', originalHtmlStyle);
+        if (!originalHtmlStyle) document.documentElement.removeAttribute('style');
+
+        window.scrollTo(0, scrollY);
+      };
     } else {
       clearSuggestions();
     }
-    return () => {
-      if (isMobileOverlayOpen) {
-        document.body.style.overflow = originalOverflow;
-      }
-    };
   }, [isMobileOverlayOpen, clearSuggestions]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -245,9 +289,15 @@ export const Combobox = ({
         placeholder={placeholder}
         value={autocompleteValue}
         onChange={handleInputChange}
+        onTouchStart={() => {
+          if (isMobile) {
+            // We want the native focus to happen so we don't prevent default,
+            // but we preemptively open the overlay.
+            setActiveMobileOverlayId(overlayId);
+          }
+        }}
         onFocus={(e) => {
           if (isMobile) {
-            e.preventDefault();
             e.target.blur();
             setActiveMobileOverlayId(overlayId);
           } else {
@@ -315,8 +365,12 @@ export const Combobox = ({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="absolute bottom-0 left-0 w-full h-[100dvh] z-[99999] bg-[#F4EFEB] flex flex-col pointer-events-auto"
-                  style={{ touchAction: "none" }}
+                  className="fixed top-0 left-0 right-0 bottom-auto z-[99999] bg-[#F4EFEB] flex flex-col pointer-events-auto"
+                  style={{
+                    touchAction: "none",
+                    height: viewportHeight ? `${viewportHeight}px` : "100dvh",
+                    top: viewportTop ? `${viewportTop}px` : "0px",
+                  }}
                   onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -371,7 +425,7 @@ export const Combobox = ({
                   </div>
 
                   <div
-                    className="flex-1 overflow-y-auto overscroll-contain bg-white pb-[env(safe-area-inset-bottom)]"
+                    className="flex-1 overflow-y-auto overscroll-contain bg-white pb-6 sm:pb-[env(safe-area-inset-bottom)]"
                     style={{ touchAction: "pan-y" }}
                   >
                     <AnimatePresence mode="wait">

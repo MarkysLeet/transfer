@@ -115,7 +115,16 @@
     "payCash": "Bargeld",
     "payCard": "Karte",
     "confirmBooking": "Buchung bestätigen",
-    "estimatedTotal": "Geschätzter Gesamtbetrag"
+    "estimatedTotal": "Geschätzter Gesamtbetrag",
+    "UI": {
+      "myCurrentLocation": "Mein aktueller Standort",
+      "popularRoutes": "Beliebte Routen"
+    },
+    "PopularRoutes": {
+      "antalyaAirport": "Flughafen Antalya (AYT)",
+      "kemer": "Kemer",
+      "alanya": "Alanya"
+    }
   },
   "Cities": {
     "antalya": "Antalya",

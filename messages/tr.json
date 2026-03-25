@@ -115,7 +115,16 @@
     "payCash": "Nakit",
     "payCard": "Kart",
     "confirmBooking": "Rezervasyonu Onayla",
-    "estimatedTotal": "Tahmini Tutar"
+    "estimatedTotal": "Tahmini Tutar",
+    "UI": {
+      "myCurrentLocation": "Mevcut Konumum",
+      "popularRoutes": "Popüler Rotalar"
+    },
+    "PopularRoutes": {
+      "antalyaAirport": "Antalya Havalimanı (AYT)",
+      "kemer": "Kemer",
+      "alanya": "Alanya"
+    }
   },
   "Cities": {
     "antalya": "Antalya",

@@ -115,7 +115,16 @@
     "payCash": "Наличные",
     "payCard": "Карта",
     "confirmBooking": "Подтвердить бронирование",
-    "estimatedTotal": "Ориентировочная стоимость"
+    "estimatedTotal": "Ориентировочная стоимость",
+    "UI": {
+      "myCurrentLocation": "Мое текущее местоположение",
+      "popularRoutes": "Популярные маршруты"
+    },
+    "PopularRoutes": {
+      "antalyaAirport": "Аэропорт Анталья (AYT)",
+      "kemer": "Кемер",
+      "alanya": "Аланья"
+    }
   },
   "Cities": {
     "antalya": "Анталья",

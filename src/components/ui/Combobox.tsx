@@ -289,10 +289,11 @@ export const Combobox = ({
         placeholder={placeholder}
         value={autocompleteValue}
         onChange={handleInputChange}
-        onTouchStart={() => {
+        onClick={(e) => {
           if (isMobile) {
-            // We want the native focus to happen so we don't prevent default,
-            // but we preemptively open the overlay.
+            // Prevent synthetic events from bubbling up and instantly closing the newly opened overlay
+            e.preventDefault();
+            e.stopPropagation();
             setActiveMobileOverlayId(overlayId);
           }
         }}
@@ -371,7 +372,12 @@ export const Combobox = ({
                     height: viewportHeight ? `${viewportHeight}px` : "100dvh",
                     top: viewportTop ? `${viewportTop}px` : "0px",
                   }}
-                  onClick={() => setActiveMobileOverlayId(null)}
+                  onClick={(e) => {
+                    // Make sure we only close if the user actually clicked the backdrop itself
+                    if (e.target === e.currentTarget) {
+                      setActiveMobileOverlayId(null);
+                    }
+                  }}
                 >
                   <motion.div
                     initial={{ y: "100%" }}

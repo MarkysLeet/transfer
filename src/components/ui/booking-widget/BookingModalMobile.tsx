@@ -28,6 +28,9 @@ export const BookingModalMobile = () => {
           <div className="flex flex-col flex-1 overflow-hidden">
             <BookingModalContent />
           </div>
+
+          {/* Root for mobile full-screen overlays like Combobox */}
+          <div id="mobile-overlay-root" className="absolute z-[99999]" />
         </Drawer.Content>
       </Drawer.Portal>
     </Drawer.Root>

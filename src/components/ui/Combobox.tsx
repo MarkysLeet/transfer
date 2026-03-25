@@ -361,7 +361,7 @@ export const Combobox = ({
                 </motion.div>
               )}
             </AnimatePresence>,
-            document.body
+            document.getElementById("mobile-overlay-root") || document.body
           )
         ) : (
           createPortal(

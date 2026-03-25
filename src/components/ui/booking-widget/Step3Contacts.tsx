@@ -35,7 +35,7 @@ export const Step3Contacts = ({ onBack, onConfirm }: { onBack: () => void; onCon
             placeholder={t("namePlaceholder")}
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full h-14 pl-10 pr-4 bg-white/60 border border-slate-200/60 rounded-xl outline-none focus:ring-2 focus:ring-accent/20 transition-all text-sm text-slate-900"
+            className="w-full h-14 pl-10 pr-4 bg-white/60 border border-slate-200/60 rounded-xl outline-none focus:ring-2 focus:ring-accent/20 transition-all text-[16px] md:text-sm text-slate-900"
           />
         </div>
         <div className="relative">
@@ -45,7 +45,7 @@ export const Step3Contacts = ({ onBack, onConfirm }: { onBack: () => void; onCon
             placeholder={t("phonePlaceholder")}
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="w-full h-14 pl-10 pr-36 bg-white/60 border border-slate-200/60 rounded-xl outline-none focus:ring-2 focus:ring-accent/20 transition-all text-sm text-slate-900"
+            className="w-full h-14 pl-10 pr-36 bg-white/60 border border-slate-200/60 rounded-xl outline-none focus:ring-2 focus:ring-accent/20 transition-all text-[16px] md:text-sm text-slate-900"
           />
           <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1 pointer-events-none text-xs text-slate-400">
              WhatsApp / Telegram

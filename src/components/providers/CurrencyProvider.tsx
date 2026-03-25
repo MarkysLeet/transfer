@@ -21,19 +21,35 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    // 2. Fetch live rates
+    // 2. Fetch live rates (with 24-hour TTL Cache)
     const fetchRates = async () => {
       try {
+        const cacheKey = "exchange_rates_cache";
+        const cacheTimeKey = "exchange_rates_cache_time";
+        const cachedRates = localStorage.getItem(cacheKey);
+        const cachedTime = localStorage.getItem(cacheTimeKey);
+
+        const now = Date.now();
+        const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
+
+        if (cachedRates && cachedTime && (now - parseInt(cachedTime, 10)) < TWENTY_FOUR_HOURS) {
+          setRates(JSON.parse(cachedRates));
+          return;
+        }
+
         const apiUrl = process.env.NEXT_PUBLIC_EXCHANGE_RATE_API_URL || 'https://v6.exchangerate-api.com/v6/60ad81c7424f6f83932dc47c/latest/EUR';
         const response = await fetch(apiUrl);
         if (response.ok) {
           const data = await response.json();
           if (data && data.conversion_rates) {
-            setRates({
+            const newRates = {
               EUR: data.conversion_rates.EUR || 1,
               USD: data.conversion_rates.USD || 1.08,
               TRY: data.conversion_rates.TRY || 35.0,
-            });
+            };
+            setRates(newRates);
+            localStorage.setItem(cacheKey, JSON.stringify(newRates));
+            localStorage.setItem(cacheTimeKey, now.toString());
           }
         }
       } catch (error) {

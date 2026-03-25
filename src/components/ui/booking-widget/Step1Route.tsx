@@ -7,6 +7,7 @@ import { Button } from "../Button";
 import { useState, useRef, useEffect } from "react";
 import { useLoadScript } from "@react-google-maps/api";
 import { CustomTimePicker } from "./CustomTimePicker";
+import { CustomDatePicker } from "./CustomDatePicker";
 
 const LIBRARIES: ("places" | "geometry")[] = ["places", "geometry"];
 
@@ -101,6 +102,7 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
       <div className="flex flex-col gap-3">
         <div className="w-full h-14 relative z-[60]">
           <Combobox
+            id="pickup"
             value={from}
             onChange={(val, placeId) => { setFrom(val); setFromPlaceId(placeId || ""); if (val !== t("myLocation")) setCoords(null); }}
             onClear={() => { setFrom(""); setFromPlaceId(""); setCoords(null); }}
@@ -114,6 +116,7 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
         </div>
         <div className="w-full h-14 relative z-50">
           <Combobox
+            id="dropoff"
             value={to}
             onChange={(val, placeId) => { setTo(val); setToPlaceId(placeId || ""); }}
             onClear={() => { setTo(""); setToPlaceId(""); }}
@@ -126,13 +129,11 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
 
       {/* Date & Time */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-[1.5fr_1fr]">
-        <div className="relative">
-          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
-          <input
-            type="date"
+        <div className="relative z-[46]">
+          <CustomDatePicker
             value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
+            onChange={setDate}
+            icon={<Calendar className="w-5 h-5 text-white/70" />}
           />
         </div>
         <div className="relative z-[45]">
@@ -154,13 +155,11 @@ export const Step1Route = ({ onNext }: { onNext: () => void }) => {
             className="overflow-visible"
           >
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-[1.5fr_1fr] pt-1">
-              <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70 pointer-events-none z-10" />
-                <input
-                  type="date"
+              <div className="relative z-[44]">
+                <CustomDatePicker
                   value={returnDate}
-                  onChange={(e) => setReturnDate(e.target.value)}
-                  className="w-full h-14 pl-10 pr-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-accent/30 transition-all text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] [color-scheme:dark]"
+                  onChange={setReturnDate}
+                  icon={<Calendar className="w-5 h-5 text-white/70" />}
                 />
               </div>
               <div className="relative z-40">

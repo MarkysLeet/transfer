@@ -19,8 +19,8 @@ const vwInteriorImages = [
   "https://storage.yandexcloud.net/arina-reels-storage/VW3.jpg"
 ];
 
-const vitoExteriorImage = "https://res.cloudinary.com/dcnwhciua/image/upload/v1772476361/Mercedes_V-Class_Mercedes-Benz_Viano_Mercedes-Benz_Vito_Mercedes-Benz_S-Class_Minivan_PNG-removebg-preview_jmtgkz.png";
-const vwExteriorImage = "https://res.cloudinary.com/dcnwhciua/image/upload/v1773342091/upscalemedia-transformed_ldctp0.png";
+const vitoExteriorImage = "/images/fleet/vito.PNG";
+const vwExteriorImage = "/images/fleet/transporter.png";
 
 type CarClass = "vw" | "vito";
 type ViewType = "exterior" | "interior";

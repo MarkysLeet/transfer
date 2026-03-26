@@ -22,7 +22,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "VIP Трансфер в Турции | Mercedes Benz Vito",
+  title: "Black Diamond Transfer",
   description: "Премиальный трансфер в Турции. Комфорт бизнес-класса на новом Mercedes Vito. Встреча в аэропорту, поездки по городам и экскурсии.",
 };
 

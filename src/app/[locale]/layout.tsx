@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "../../globals.css";
 import {NextIntlClientProvider} from 'next-intl';
@@ -24,6 +24,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "VIP Трансфер в Турции | Mercedes Benz Vito",
   description: "Премиальный трансфер в Турции. Комфорт бизнес-класса на новом Mercedes Vito. Встреча в аэропорту, поездки по городам и экскурсии.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  interactiveWidget: "overlays-content",
 };
 
 export function generateStaticParams() {

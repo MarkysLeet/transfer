@@ -183,16 +183,15 @@ export const Combobox = ({
   };
   const mobileInputRef = useRef<HTMLInputElement>(null);
 
-  const [viewportHeight, setViewportHeight] = useState(() => typeof window !== 'undefined' && window.visualViewport ? window.visualViewport.height : (typeof window !== 'undefined' ? window.innerHeight : 0));
-  const [viewportTop, setViewportTop] = useState(() => typeof window !== 'undefined' && window.visualViewport ? window.visualViewport.offsetTop : 0);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   useEffect(() => {
     if (!isMobileOverlayOpen) return;
 
     const handleVisualViewportResize = () => {
       if (window.visualViewport) {
-        setViewportHeight(window.visualViewport.height);
-        setViewportTop(window.visualViewport.offsetTop);
+        const heightDiff = window.innerHeight - window.visualViewport.height;
+        setKeyboardHeight(heightDiff > 0 ? heightDiff : 0);
       }
     };
 
@@ -366,12 +365,8 @@ export const Combobox = ({
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="fixed inset-0 z-[99999] bg-black/40 flex flex-col pointer-events-auto"
-                  style={{
-                    touchAction: "none",
-                    height: viewportHeight ? `${viewportHeight}px` : "100dvh",
-                    top: viewportTop ? `${viewportTop}px` : "0px",
-                  }}
+                  className="fixed top-0 left-0 right-0 h-[100vh] z-[99999] bg-black/40 flex flex-col pointer-events-auto"
+                  style={{ touchAction: "none" }}
                   onClick={(e) => {
                     // Make sure we only close if the user actually clicked the backdrop itself
                     if (e.target === e.currentTarget) {
@@ -439,7 +434,10 @@ export const Combobox = ({
 
                   <div
                     className="flex-1 overflow-y-auto overscroll-contain bg-white pb-6 px-4 sm:pb-[env(safe-area-inset-bottom)]"
-                    style={{ touchAction: "pan-y" }}
+                    style={{
+                      touchAction: "pan-y",
+                      paddingBottom: keyboardHeight > 0 ? `${keyboardHeight + 24}px` : undefined,
+                    }}
                   >
                     <AnimatePresence mode="wait">
                       {autocompleteValue.trim().length === 0 ? (

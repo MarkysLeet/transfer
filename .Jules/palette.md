@@ -1,0 +1,3 @@
+## 2024-05-24 - Async Operation Loading States & Premium Error Handling
+**Learning:** For luxury/premium services, raw error states (like API distance calculation failures) diminish trust and the 'Quiet Luxury' aesthetic. Furthermore, relying purely on React `useEffect` for async state setting without a visual loading indicator makes the UI feel unresponsive or broken while the user waits.
+**Action:** Always implement a smooth skeleton/loading state for async price calculations or data fetching. If an error occurs (e.g., location not found or distance API fails), gracefully fallback to a 'Concierge' or 'On Request' phrasing instead of displaying an error message or breaking the flow, maintaining the premium feel.

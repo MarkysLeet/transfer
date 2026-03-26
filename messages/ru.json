@@ -92,6 +92,7 @@
     "vwClassShort": "Volkswagen Transporter",
     "vitoClassShort": "Mercedes-Benz Vito",
     "estimatedPrice": "Ориентировочная стоимость: {price}",
+    "onRequest": "По запросу",
     "priceOnRequest": "Цена по запросу",
     "searching": "Поиск...",
     "noResults": "Ничего не найдено",

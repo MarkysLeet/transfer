@@ -80,6 +80,12 @@ interface BookingStore {
   estimatedPrice: number | null;
   setEstimatedPrice: (value: number | null) => void;
 
+  isPriceLoading: boolean;
+  setIsPriceLoading: (value: boolean) => void;
+
+  priceError: boolean;
+  setPriceError: (value: boolean) => void;
+
   fleetOrder: { vito: number; transporter: number };
   setFleetOrder: (vito: number, transporter: number) => void;
 
@@ -109,6 +115,8 @@ const initialState = {
   phone: '',
   paymentMethod: 'cash' as PaymentMethodType,
   estimatedPrice: null,
+  isPriceLoading: false,
+  priceError: false,
   fleetOrder: { vito: 1, transporter: 1 },
 };
 
@@ -151,6 +159,8 @@ export const useBookingStore = create<BookingStore>((set) => ({
   setPaymentMethod: (value) => set({ paymentMethod: value }),
 
   setEstimatedPrice: (value) => set({ estimatedPrice: value }),
+  setIsPriceLoading: (value) => set({ isPriceLoading: value }),
+  setPriceError: (value) => set({ priceError: value }),
 
   setFleetOrder: (vito, transporter) => set((state) => ({ fleetOrder: { vito, transporter } })),
 

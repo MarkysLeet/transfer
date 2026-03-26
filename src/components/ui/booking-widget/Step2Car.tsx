@@ -19,6 +19,7 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
     minibar, toggleMinibar,
     englishDriver, toggleEnglishDriver,
     estimatedPrice, setEstimatedPrice,
+    setIsPriceLoading, setPriceError,
     from, to, fromPlaceId, toPlaceId,
     passengers, fleetOrder, setFleetOrder
   } = useBookingStore();
@@ -27,9 +28,6 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
   const isGroup = totalPassengers >= 8;
   const totalCapacity = (fleetOrder.vito * 7) + (fleetOrder.transporter * 7);
   const isGroupValid = totalCapacity >= totalPassengers;
-
-  const [isPriceLoading, setIsPriceLoading] = useState(false);
-  const [priceError, setPriceError] = useState(false);
 
   // Debounced values for Distance Matrix API (since they aren't changing dynamically in step 2, this is mostly safe, but good practice)
   const [debouncedFrom, setDebouncedFrom] = useState(from);
@@ -50,8 +48,12 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
 
   useEffect(() => {
     if (!debouncedFrom || !debouncedTo || !isLoaded) {
-      setEstimatedPrice(null);
-      setPriceError(false);
+      // Use setTimeout to avoid synchronous cascade issues when setting state
+      setTimeout(() => {
+        setEstimatedPrice(null);
+        setPriceError(false);
+        setIsPriceLoading(false);
+      }, 0);
       return;
     }
 
@@ -82,7 +84,7 @@ export const Step2Car = ({ onNext, onBack }: { onNext: () => void; onBack: () =>
         }
       }
     );
-  }, [debouncedFrom, debouncedTo, fromPlaceId, toPlaceId, selectedClass, isLoaded, setEstimatedPrice]);
+  }, [debouncedFrom, debouncedTo, fromPlaceId, toPlaceId, selectedClass, isLoaded, setEstimatedPrice, setIsPriceLoading, setPriceError]);
 
   return (
     <div className="flex flex-col gap-6 w-full">

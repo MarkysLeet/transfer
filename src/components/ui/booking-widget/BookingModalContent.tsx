@@ -140,13 +140,28 @@ export const BookingModalContent = () => {
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center px-2">
               <span className="text-slate-500 font-medium">{t("estimatedTotal")}</span>
-              <span className="text-2xl font-semibold text-slate-900">
-                {store.estimatedPrice !== null ? formatPrice(store.estimatedPrice) : "..."}
-              </span>
+              <div className="flex items-center justify-end min-h-[32px]">
+                {store.isPriceLoading ? (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="w-16 h-8 bg-slate-200 rounded-md animate-pulse"
+                  />
+                ) : store.priceError ? (
+                  <span className="text-[16px] font-medium text-slate-900">
+                    {t("onRequest")}
+                  </span>
+                ) : (
+                  <span className="text-2xl font-semibold text-slate-900">
+                    {store.estimatedPrice !== null ? formatPrice(store.estimatedPrice) : "..."}
+                  </span>
+                )}
+              </div>
             </div>
             <Button
               onClick={() => setStep(3)}
-              disabled={!isStep2Valid}
+              disabled={!isStep2Valid || store.isPriceLoading}
               className="w-full h-14 rounded-xl"
               variant="primary"
             >

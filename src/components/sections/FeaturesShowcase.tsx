@@ -19,7 +19,7 @@ const vwInteriorImages = [
   "https://storage.yandexcloud.net/arina-reels-storage/VW3.jpg"
 ];
 
-const vitoExteriorImage = "/images/fleet/vito.png";
+const vitoExteriorImage = "/images/fleet/vito.PNG";
 const vwExteriorImage = "/images/fleet/transporter.png";
 
 type CarClass = "vw" | "vito";

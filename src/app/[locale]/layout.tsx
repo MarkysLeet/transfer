@@ -14,6 +14,7 @@ import { FloatingNav } from "@/components/layout/FloatingNav";
 import { FloatingLanguagePill } from "@/components/layout/FloatingLanguagePill";
 import { BookingModal } from "@/components/ui/booking-widget/BookingModal";
 import { CurrencyProvider } from "@/components/providers/CurrencyProvider";
+import { SplashScreen } from "@/components/ui/SplashScreen";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,6 +25,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Black Diamond Transfer",
   description: "Премиальный трансфер в Турции. Комфорт бизнес-класса на новом Mercedes Vito. Встреча в аэропорту, поездки по городам и экскурсии.",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Black Diamond",
+  },
+  icons: {
+    apple: "/icons/icon-192x192.png",
+  },
 };
 
 export const viewport: Viewport = {
@@ -32,6 +41,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   interactiveWidget: "overlays-content",
+  themeColor: "#FFFFFF",
 };
 
 export function generateStaticParams() {
@@ -62,6 +72,9 @@ export default async function RootLayout({
         className="antialiased bg-[#FAFAFA] text-slate-900 selection:bg-bronze-500 selection:text-white relative min-h-screen overflow-x-hidden"
         vaul-drawer-wrapper=""
       >
+        {/* PWA Splash Screen First Impression */}
+        <SplashScreen />
+
         {/* Global Soft Background */}
         <div
           className="fixed inset-0 z-[-1] pointer-events-none bg-[#FAFAFA]"

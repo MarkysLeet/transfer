@@ -184,6 +184,23 @@ export const Combobox = ({
   const mobileInputRef = useRef<HTMLInputElement>(null);
 
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [screenHeight, setScreenHeight] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Capture initial screen height
+    setScreenHeight(window.innerHeight);
+
+    const handleResize = () => {
+      // Only update screen height if the keyboard is NOT likely open
+      // (meaning the active element is not an input or textarea)
+      if (document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
+        setScreenHeight(window.innerHeight);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (!isMobileOverlayOpen) return;
@@ -231,6 +248,7 @@ export const Combobox = ({
       document.body.style.top = `-${scrollY}px`;
       document.body.style.left = '0';
       document.body.style.right = '0';
+      document.body.style.width = '100%';
       document.body.style.bottom = '0';
       document.body.style.overflow = 'hidden';
       document.body.style.touchAction = 'none';
@@ -365,8 +383,11 @@ export const Combobox = ({
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="fixed top-0 left-0 right-0 h-[100vh] z-[99999] bg-black/40 flex flex-col pointer-events-auto"
-                  style={{ touchAction: "none" }}
+                  className="fixed top-0 left-0 right-0 z-[99999] bg-black/40 flex flex-col pointer-events-auto"
+                  style={{
+                    touchAction: "none",
+                    height: screenHeight ? `${screenHeight}px` : '100dvh'
+                  }}
                   onClick={(e) => {
                     // Make sure we only close if the user actually clicked the backdrop itself
                     if (e.target === e.currentTarget) {
@@ -413,6 +434,12 @@ export const Combobox = ({
                           setIsOpen(true);
                         }}
                         onPointerDown={(e) => e.stopPropagation()}
+                        onFocus={() => {
+                          // Force scroll reset on input focus for iOS Safari
+                          setTimeout(() => {
+                            window.scrollTo(0, 0);
+                          }, 10);
+                        }}
                         autoFocus
                         className={`w-full h-12 bg-slate-100/50 border border-slate-200 rounded-xl ${icon ? 'pl-9' : 'pl-4'} pr-10 text-[16px] text-[#2F4157] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2F4157]/20 transition-shadow leading-normal`}
                       />
